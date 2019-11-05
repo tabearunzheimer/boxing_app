@@ -5,9 +5,12 @@ class DiaryScreen extends StatefulWidget {
   _DiaryScreenState createState() => new _DiaryScreenState();
 }
 
+int selectedIndex;
+
 class _DiaryScreenState extends State<DiaryScreen> {
   @override
   Widget build(BuildContext context) {
+    selectedIndex = 1;
     return new Scaffold(
       appBar: AppBar(
         title: Text("Kickbox App", style: TextStyle(
@@ -21,7 +24,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.score),
+            icon: Icon(Icons.directions_run),
             title: Text('Training'),
           ),
           BottomNavigationBarItem(
@@ -34,8 +37,29 @@ class _DiaryScreenState extends State<DiaryScreen> {
           ),
         ],
         selectedItemColor: Color.fromRGBO(200, 0, 0, 1),
+        currentIndex: selectedIndex,
+        onTap: onTapNavigation,
 
       ),
     );
+  }
+
+  void onTapNavigation(int value) {
+    setState( (){
+      selectedIndex = value;
+      switch(value){
+        case 0:
+          print("Back to home Screen");
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/home');
+          break;
+        case 1:
+          print("Aktueller Screen");
+          break;
+        case 2:
+          print("Nicht implementiert");
+          break;
+      }
+    });
   }
 }
