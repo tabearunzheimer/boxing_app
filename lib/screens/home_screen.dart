@@ -75,7 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.pushNamed(context, '/diary');
           break;
         case 2:
-          print("Nicht implementiert");
+          print("Change to Me Screen");
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/me');
           break;
       }
     });

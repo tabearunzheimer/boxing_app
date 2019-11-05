@@ -57,7 +57,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
           print("Aktueller Screen");
           break;
         case 2:
-          print("Nicht implementiert");
+          print("Change to Me Screen");
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/me');
           break;
       }
     });
