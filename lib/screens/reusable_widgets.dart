@@ -13,16 +13,25 @@ class ReusableWidgets {
 
   Widget getAppBar() {
     return AppBar(
-      title: Text(
-        "Kickbox App", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.7),),
-      ),
+
+      title: Text("Kickbox App", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8),),),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.more_vert),
-          onPressed: () {
-            print("Test");
-          },
-          color: Color.fromRGBO(0, 0, 0, 0.7),
+        PopupMenuButton<int>(
+            icon: Icon(Icons.more_vert, color: Color.fromRGBO(0, 0, 0, 0.8),),
+            itemBuilder: (context) =>
+            [
+              PopupMenuItem(
+                textStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8),),
+                value: 1,
+                child: Text("Datenschutz"),
+              ),
+              PopupMenuDivider(),
+              PopupMenuItem(
+                textStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8),),
+                value: 2,
+                child: Text("Einstellungen",),
+              ),
+            ]
         ),
       ],
       backgroundColor: Color.fromRGBO(255, 255, 255, 1),
@@ -53,7 +62,7 @@ class ReusableWidgets {
 
   void onTapNavigation(int value) {
     //setState(() {
-    if (selectedIndex == value){
+    if (selectedIndex == value) {
       print("Aktueller Screen");
     } else {
       selectedIndex = value;
@@ -77,6 +86,6 @@ class ReusableWidgets {
     }
 
 
-   // });
+    // });
   }
 }

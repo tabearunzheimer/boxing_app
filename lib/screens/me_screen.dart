@@ -34,7 +34,15 @@ class _MeScreenState extends State<MeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Name",style: TextStyle(fontSize: 20.0),),
+                  Row(
+                    children: <Widget>[
+                      Text("Name",style: TextStyle(fontSize: 20.0),),
+                      IconButton(
+                        onPressed: null,
+                        icon: Icon(Icons.edit),
+                      ),
+                    ],
+                  ),
                   Text("User"),
                 ],
               ),
@@ -43,7 +51,7 @@ class _MeScreenState extends State<MeScreen> {
 
           ),
           SizedBox(
-            height: 20.0,
+            height: 5.0,
           ),
           Expanded(
             flex: 3,
@@ -124,7 +132,7 @@ class _MeScreenState extends State<MeScreen> {
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 5.0,
           ),
           Expanded(
             flex: 2,

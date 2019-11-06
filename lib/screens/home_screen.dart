@@ -38,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   FloatingActionButton(
                     onPressed: (){},
-                    elevation: 5.0,
-                    backgroundColor: Colors.white,
+                    elevation: 10.0,
+                    backgroundColor: Color.fromRGBO(255, 255, 255, 0.8),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
                     child: Icon(
                         Icons.play_arrow, size: 40.0, color: Colors.black,
