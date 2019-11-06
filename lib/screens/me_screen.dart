@@ -1,32 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/screens/reusable_widgets.dart';
 
 class MeScreen extends StatefulWidget {
   @override
   _MeScreenState createState() => new _MeScreenState();
 }
 
-int selectedIndex;
+int selectedIndex = 2;
+ReusableWidgets _reusableWidgets;
 
 class _MeScreenState extends State<MeScreen> {
   @override
   Widget build(BuildContext context) {
-    selectedIndex = 2;
+    _reusableWidgets = new ReusableWidgets(context, selectedIndex);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Kickbox App", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.7),),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              print("Test");
-            },
-            color: Color.fromRGBO(0, 0, 0, 0.7),
-          ),
-        ],
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-      ),
+      appBar: _reusableWidgets.getAppBar(),
       body:
       Column(
         mainAxisSize: MainAxisSize.max,
@@ -148,25 +136,7 @@ class _MeScreenState extends State<MeScreen> {
         ],
       ),
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.9),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.directions_run),
-            title: Text('Training'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            title: Text('Tagebuch'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Ich'),
-          ),
-        ],
-        selectedItemColor: Color.fromRGBO(200, 0, 0, 1),
-        currentIndex: selectedIndex,
-        onTap: onTapNavigation,
-      ),
+      bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
     );
 
   }

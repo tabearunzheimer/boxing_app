@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/screens/reusable_widgets.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -6,80 +7,54 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-int selectedIndex;
+int selectedIndex = 0;
+ReusableWidgets _reusableWidgets;
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    selectedIndex = 0;
+    _reusableWidgets = new ReusableWidgets(context, selectedIndex);
     return Scaffold(
-
-      appBar: AppBar(
-        title: Text(
-          "Kickbox App", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.7),),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              print("Test");
-            },
-            color: Color.fromRGBO(0, 0, 0, 0.7),
-          ),
-        ],
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-      ),
+      appBar: _reusableWidgets.getAppBar(),
       body:
       Stack(
         children: <Widget>[
           Center(
-            child: new Image.asset('assets/img/female_boxer.jpg', fit: BoxFit.cover, height: 900.0,),
+            heightFactor: MediaQuery.of(context).size.height,
+            widthFactor: MediaQuery.of(context).size.width,
+            child: new Image.asset('assets/img/female_boxer.jpg', fit: BoxFit.fill, height: 900.0,),
           ),
-          Center(
-            child: Text("Start your workout", style: TextStyle(fontSize: 20.0, color: Color.fromRGBO(255, 255, 255, 1),),),
+          Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    "Start your workout",
+                    style: TextStyle(
+                        fontSize: 30.0, color: Colors.white
+                    ),
+                  ),
+                  FloatingActionButton(
+                    onPressed: (){},
+                    elevation: 5.0,
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
+                    child: Icon(
+                        Icons.play_arrow, size: 40.0, color: Colors.black,
+                    ),
+
+                  ),
+                  Text("Stay motivated", style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                ]
+            ),
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.directions_run),
-            title: Text('Training'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            title: Text('Tagebuch'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text('Ich'),
-          ),
-        ],
-        selectedItemColor: Color.fromRGBO(200, 0, 0, 1),
-        currentIndex: selectedIndex,
-        onTap: onTapNavigation,
-      ),
+      bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
     );
   }
 
-  void onTapNavigation(int value) {
-    setState((){
-      selectedIndex = value;
-      switch(value){
-        case 0:
-          print("Aktueller Screen");
-          break;
-        case 1:
-          print("Change to Diary Screen");
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/diary');
-          break;
-        case 2:
-          print("Change to Me Screen");
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/me');
-          break;
-      }
-    });
-  }
+
 }
