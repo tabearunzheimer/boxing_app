@@ -13,7 +13,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
   @override
   Widget build(BuildContext context) {
     _reusableWidgets = new ReusableWidgets(context, selectedIndex);
-    List<String> ll = ["Erlernte Techniken", "Zu lernende Techniken", "Workouts", "Statistiken"];
+    List<String> ll = ["Erlernte Techniken", "Zu lernende Techniken", "Workouts", "Statistiken", "Kalender"];
     List<String> l = ["Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "..."];
     return new Scaffold(
       appBar: _reusableWidgets.getAppBar(),

@@ -11,9 +11,33 @@ class ReusableWidgets {
     selectedIndex = index;
   }
 
+  Widget getNormalAppBar(){
+    return AppBar(
+      title: Text("Kickbox App",),
+      actions: <Widget>[
+        PopupMenuButton<int>(
+            icon: Icon(Icons.more_vert,),
+            itemBuilder: (context) =>
+            [
+              PopupMenuItem(
+                value: 1,
+                child: Text("Datenschutz"),
+              ),
+              PopupMenuDivider(),
+              PopupMenuItem(
+                value: 2,
+                child: Text("Einstellungen",),
+              ),
+            ]
+        ),
+      ],
+    );
+  }
+
   Widget getAppBar() {
     return AppBar(
       title: Text("Kickbox App",),
+      automaticallyImplyLeading: false,
       actions: <Widget>[
         PopupMenuButton<int>(
             icon: Icon(Icons.more_vert,),
@@ -65,18 +89,16 @@ class ReusableWidgets {
       switch (value) {
         case 0:
           print("Change to Home Screen");
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/home');
           break;
         case 1:
           print("Change to Diary Screen");
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/diary');
+          //Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, '/diary');
           break;
         case 2:
           print("Change to Me Screen");
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/me');
+          Navigator.pushReplacementNamed(context, '/me');
           break;
       }
     }

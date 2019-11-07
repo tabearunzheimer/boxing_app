@@ -20,33 +20,44 @@ class _HomeScreenState extends State<HomeScreen> {
       Stack(
         children: <Widget>[
           Center(
-            heightFactor: MediaQuery.of(context).size.height,
-            widthFactor: MediaQuery.of(context).size.width,
-            child: new Image.asset('assets/img/female_boxer.jpg', fit: BoxFit.fill, height: 900.0,),
+            heightFactor: MediaQuery
+                .of(context)
+                .size
+                .height,
+            widthFactor: MediaQuery
+                .of(context)
+                .size
+                .width,
+            child: new Image.asset(
+              'assets/img/female_boxer.jpg', fit: BoxFit.fill, height: 900.0,),
           ),
           Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "Start your workout",
+                    "Beginne dein Training",
                     style: TextStyle(
-                      fontSize: 30.0,
+                      fontSize: 40.0,
                     ),
                   ),
-                  FloatingActionButton(
-                    onPressed: (){},
-                    elevation: 10.0,
-                    backgroundColor: Color.fromRGBO(255, 255, 255, 0.8),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
-                    child: Icon(
-                        Icons.play_arrow, size: 40.0, color: Colors.black,
+                  Container(
+                    height: 100.0,
+                    width: 100.0,
+                    child: RawMaterialButton(
+                      shape: CircleBorder(),
+                      fillColor: Color.fromRGBO(255, 255, 255, 1),
+                      child: Text("Start", style: Theme.of(context).textTheme.body2,),
+                      onPressed: startChooseWorkout,
                     ),
-
                   ),
-                  Text("Stay motivated", style: TextStyle(fontSize: 20.0)),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(55, 0, 55, 0),
+                    child: Text("Versuche regelmäßig zu trainieren um einen optimalen Trainingserfolg zu erzielen.", style: Theme.of(context).textTheme.display1, textAlign: TextAlign.center,),
+                  ),
                 ]
             ),
           ),
@@ -57,4 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+
+  void startChooseWorkout() {
+    print("Change to Choose-Workout-Style-Screen");
+    Navigator.pushNamed(context, '/chooseWorkoutStyle');
+  }
 }
