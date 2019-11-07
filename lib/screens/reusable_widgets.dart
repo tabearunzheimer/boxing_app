@@ -13,28 +13,24 @@ class ReusableWidgets {
 
   Widget getAppBar() {
     return AppBar(
-
-      title: Text("Kickbox App", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8),),),
+      title: Text("Kickbox App",),
       actions: <Widget>[
         PopupMenuButton<int>(
-            icon: Icon(Icons.more_vert, color: Color.fromRGBO(0, 0, 0, 0.8),),
+            icon: Icon(Icons.more_vert,),
             itemBuilder: (context) =>
             [
               PopupMenuItem(
-                textStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8),),
                 value: 1,
                 child: Text("Datenschutz"),
               ),
               PopupMenuDivider(),
               PopupMenuItem(
-                textStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8),),
                 value: 2,
                 child: Text("Einstellungen",),
               ),
             ]
         ),
       ],
-      backgroundColor: Color.fromRGBO(255, 255, 255, 1),
     );
   }
 

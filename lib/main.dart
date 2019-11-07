@@ -12,7 +12,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Basis App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
+        appBarTheme: AppBarTheme(
+          color: Color.fromRGBO(255, 255, 255, 1),
+        ),
+        backgroundColor: Color.fromRGBO(255, 255, 255, 0.8),
+        accentColor: Color.fromRGBO(200, 0, 0, 1),
+        textTheme: TextTheme(
+          body1: TextStyle(color: Colors.white),
+          body2: TextStyle(color: Colors.black),
+        ),
       ),
       initialRoute: '/',
       routes: {

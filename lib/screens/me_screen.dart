@@ -36,14 +36,14 @@ class _MeScreenState extends State<MeScreen> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Text("Name",style: TextStyle(fontSize: 20.0),),
+                      Text("Name",style: Theme.of(context).textTheme.body2,),
                       IconButton(
                         onPressed: null,
                         icon: Icon(Icons.edit),
                       ),
                     ],
                   ),
-                  Text("User"),
+                  Text("User", style: Theme.of(context).textTheme.body2,),
                 ],
               ),
               color: Color.fromRGBO(255, 255, 255, 1.0),
