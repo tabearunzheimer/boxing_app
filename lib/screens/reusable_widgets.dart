@@ -14,23 +14,6 @@ class ReusableWidgets {
   Widget getNormalAppBar(){
     return AppBar(
       title: Text("Kickbox App",),
-      actions: <Widget>[
-        PopupMenuButton<int>(
-            icon: Icon(Icons.more_vert,),
-            itemBuilder: (context) =>
-            [
-              PopupMenuItem(
-                value: 1,
-                child: Text("Datenschutz"),
-              ),
-              PopupMenuDivider(),
-              PopupMenuItem(
-                value: 2,
-                child: Text("Einstellungen",),
-              ),
-            ]
-        ),
-      ],
     );
   }
 

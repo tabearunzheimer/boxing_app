@@ -127,7 +127,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                     shape: CircleBorder(),
                     fillColor: Color.fromRGBO(255, 255, 255, 1),
                     child: Icon(Icons.arrow_forward),
-                    onPressed: null,
+                    onPressed: showChooseWorkoutTechniquesScreen,
                   ),
                 ],
               ),
@@ -195,7 +195,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                     shape: CircleBorder(),
                     fillColor: Color.fromRGBO(255, 255, 255, 1),
                     child: Icon(Icons.arrow_forward),
-                    onPressed: null,
+                    onPressed: showChooseWorkoutTechniquesScreen,
                   ),
                 ],
               ),
@@ -206,4 +206,9 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     );
   }
 
+
+  void showChooseWorkoutTechniquesScreen() {
+    print("Change to choose-Workout-Techniques-Screen");
+    Navigator.pushNamed(context, '/chooseWorkoutTechniques');
+  }
 }
