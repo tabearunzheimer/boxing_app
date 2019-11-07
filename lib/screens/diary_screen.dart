@@ -18,8 +18,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return new Scaffold(
       appBar: _reusableWidgets.getAppBar(),
       body: ListView.separated(
-        separatorBuilder: (context, index) => Divider(),
-        itemCount: 4,
+        separatorBuilder: (context, index) => Divider(
+          color: Color.fromRGBO(0, 0, 0, 0.8),
+        ),
+        itemCount: ll.length,
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {return _buildExpansionTile(ll, l, index);},
       ),
@@ -27,8 +29,26 @@ class _DiaryScreenState extends State<DiaryScreen> {
     );
   }
 
+  Widget _buildExpansionTile(List<Object> ll, List<String> l, int index) {
+    return ExpansionTile(
+      title: Text(ll[index]),
+      children: <Widget>[
+        ListView.separated(
+          separatorBuilder: (context, index) => Divider(
+            color: Color.fromRGBO(0, 0, 0, 0.2),
+          ),
+          itemCount: l.length,
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (BuildContext context, int index){
+            return _buildTechniqueListItems(l, index);
+          },
+        ),
+      ],
+    );
+  }
 
-  Widget _buildListItems(List<Object> l, int index) {
+  Widget _buildTechniqueListItems(List<Object> l, int index) {
     return ListTile(
       dense: true,
         leading: Icon(Icons.security,size: 30.0,),
@@ -50,22 +70,4 @@ class _DiaryScreenState extends State<DiaryScreen> {
       );
   }
 
-  Widget _buildExpansionTile(List<Object> ll, List<String> l, int index) {
-    return ExpansionTile(
-      title: Text(ll[index]),
-      children: <Widget>[
-        ListView.separated(
-          separatorBuilder: (context, index) => Divider(
-            color: Color.fromRGBO(0, 0, 0, 0.2),
-          ),
-          itemCount: l.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int index){
-            return _buildListItems(l, index);
-          },
-        ),
-      ],
-    );
-  }
 }

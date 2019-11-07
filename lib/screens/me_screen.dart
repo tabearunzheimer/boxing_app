@@ -18,7 +18,7 @@ class _MeScreenState extends State<MeScreen> {
       body:
       Column(
         mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Image(
@@ -26,6 +26,107 @@ class _MeScreenState extends State<MeScreen> {
             image: AssetImage("assets/img/female_fighter_punch.jpg"),
             fit: BoxFit.fitWidth,
           ),
+          Row(
+            children: <Widget>[
+              Text("Name", style: Theme.of(context).textTheme.body2,),
+              IconButton(
+                onPressed: null,
+                icon: Icon(Icons.edit),
+              ),
+            ],
+          ),
+          Text("Email", style: Theme.of(context).textTheme.body2,),
+          Divider(
+            color: Color.fromRGBO(0, 0, 0, 0.1),
+            thickness: 3.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              ButtonTheme(
+                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
+                minWidth: 140.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                child: RaisedButton(
+                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
+                  color: Color.fromRGBO(0, 0, 0, 0.1),
+                  child: Text("Geschlecht", style: Theme.of(context).textTheme.body2,),
+                  onPressed: null,
+                ),
+              ),
+              ButtonTheme(
+                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
+                minWidth: 140.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                child: RaisedButton(
+                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
+                  color: Color.fromRGBO(0, 0, 0, 0.1),
+                  child: Text("Alter", style: Theme.of(context).textTheme.body2,),
+                  onPressed: null,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              ButtonTheme(
+                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
+                minWidth: 140.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                child: RaisedButton(
+                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
+                  color: Color.fromRGBO(0, 0, 0, 0.1),
+                  child: Text("Gewicht", style: Theme.of(context).textTheme.body2,),
+                  onPressed: null,
+                ),
+              ),
+              ButtonTheme(
+                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
+                minWidth: 140.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                child: RaisedButton(
+                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
+                  color: Color.fromRGBO(0, 0, 0, 0.1),
+                  child: Text("Größe", style: Theme.of(context).textTheme.body2,),
+                  onPressed: null,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      backgroundColor: Color.fromRGBO(255, 255, 255, 0.9),
+      bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
+    );
+
+  }
+
+  void onTapNavigation(int value) {
+    setState( (){
+      selectedIndex = value;
+      switch(value){
+        case 0:
+          print("Back to home Screen");
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/home');
+          break;
+        case 1:
+          print("Change to Diary Screen");
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/diary');
+          break;
+        case 2:
+          print("Aktueller Screen");
+          break;
+      }
+    });
+  }
+}
+
+
+/*
+
           Expanded(
             flex: 1,
             child: Container(
@@ -141,32 +242,4 @@ class _MeScreenState extends State<MeScreen> {
               color: Color.fromRGBO(255, 255, 255, 1.0),
             ),
           ),
-        ],
-      ),
-      backgroundColor: Color.fromRGBO(255, 255, 255, 0.9),
-      bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
-    );
-
-  }
-
-  void onTapNavigation(int value) {
-    setState( (){
-      selectedIndex = value;
-      switch(value){
-        case 0:
-          print("Back to home Screen");
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/home');
-          break;
-        case 1:
-          print("Change to Diary Screen");
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/diary');
-          break;
-        case 2:
-          print("Aktueller Screen");
-          break;
-      }
-    });
-  }
-}
+ */

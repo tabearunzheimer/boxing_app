@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     "Start your workout",
                     style: TextStyle(
-                        fontSize: 30.0,
+                      fontSize: 30.0,
                     ),
                   ),
                   FloatingActionButton(

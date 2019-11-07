@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color.fromRGBO(255, 255, 255, 0.8),
         accentColor: Color.fromRGBO(200, 0, 0, 1),
         textTheme: TextTheme(
-          body1: TextStyle(color: Colors.white),
-          body2: TextStyle(color: Colors.black),
+          body1: TextStyle(color: Colors.white, fontFamily: 'Staatliches'),
+          body2: TextStyle(color: Colors.black, fontSize: 15.0),  //Theme.of(context).textTheme.body2
         ),
       ),
       initialRoute: '/',
