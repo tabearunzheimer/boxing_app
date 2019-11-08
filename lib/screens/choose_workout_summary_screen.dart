@@ -147,7 +147,10 @@ class _ChooseWorkoutSummaryScreenState
                             shape: CircleBorder(),
                             fillColor: Color.fromRGBO(255, 255, 255, 1),
                             child: Text("Start", style: Theme.of(context).textTheme.body2,),
-                            onPressed: null,
+                            onPressed: (){
+                              print("Change to Workout-Screen");
+                              Navigator.pushNamed(context, '/WorkoutScreen');
+                            },
                           ),
                         ),
                       ],

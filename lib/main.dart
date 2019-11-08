@@ -5,6 +5,7 @@ import 'package:uebung02/screens/choose_workout_techniques.dart';
 import 'package:uebung02/screens/diary_screen.dart';
 import 'package:uebung02/screens/home_screen.dart';
 import 'package:uebung02/screens/me_screen.dart';
+import 'package:uebung02/screens/workout_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/chooseWorkoutStyle' : (context) => ChooseWorkoutStyleScreen(),
         '/chooseWorkoutTechniques' : (context) => ChooseWorkoutTechniques(),
         '/ChooseWorkoutSummaryScreen' : (context) => ChooseWorkoutSummaryScreen(),
+        '/WorkoutScreen' : (context) => WorkoutScreen(),
       },
       home: HomeScreen(),
     );
