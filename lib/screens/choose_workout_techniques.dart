@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uebung02/screens/reusable_widgets.dart';
 
 class ChooseWorkoutTechniques extends StatefulWidget {
   @override
@@ -34,7 +33,9 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
         title: Text("Kickbox App",),
         actions: <Widget>[
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/ChooseWorkoutSummaryScreen');
+            },
             icon: Icon(Icons.check),
           ),
         ],
@@ -66,9 +67,9 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
       leading: Checkbox(
         value: _checkBoxVal[index],
         onChanged: (bool value) {
-          print(_checkBoxVal[index]);
+          //print(_checkBoxVal[index]);
           setState(() => _checkBoxVal[index] = value);
-          print(_checkBoxVal[index]);
+          //print(_checkBoxVal[index]);
         },
       ),
       title: Text(l[index], style: Theme.of(context).textTheme.display4,),
@@ -89,40 +90,11 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
         ],
       ),
       onTap: (){
-        print("onTap: $_checkBoxVal[index] ");
+        //print("onTap: $_checkBoxVal[index] ");
         setState(() => _checkBoxVal[index] = _checkBoxVal[index] ? false: true);
-        print("onTap: $_checkBoxVal[index] ");
+        //print("onTap: $_checkBoxVal[index] ");
       },
     );
   }
-
-  /*
-  dense: true,
-      leading: Checkbox(
-        onChanged: (bool value) {
-          setState(() => this._checkBoxVal = value);
-        },
-        value: this._checkBoxVal,
-      ),
-      title: Text(l[index], style: TextStyle(fontSize: 15.0),),
-      subtitle: Text("Datum: 06.11.2019"),
-      trailing: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.security, color: Colors.black,),
-            onPressed: null,
-          ),
-          IconButton(
-            icon: Icon(Icons.music_note, color: Colors.black,),
-            onPressed: null,
-          ),
-        ],
-      ),
-      //oeffne Infos zum Kick
-      onTap: null,
-   */
 
 }

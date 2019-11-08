@@ -11,7 +11,7 @@ class ReusableWidgets {
     selectedIndex = index;
   }
 
-  Widget getNormalAppBar(){
+  AppBar getSimpleAppBar(){
     return AppBar(
       title: Text("Kickbox App",),
     );

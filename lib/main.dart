@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/screens/choose_workout_style_screen.dart';
+import 'package:uebung02/screens/choose_workout_summary_screen.dart';
 import 'package:uebung02/screens/choose_workout_techniques.dart';
 import 'package:uebung02/screens/diary_screen.dart';
 import 'package:uebung02/screens/home_screen.dart';
@@ -25,9 +26,10 @@ class MyApp extends StatelessWidget {
           body1: TextStyle(color: Colors.white, fontFamily: 'Staatliches', fontSize: 20.0),
           body2: TextStyle(color: Colors.black, fontSize: 17.0),  //Theme.of(context).textTheme.body2
           display1: TextStyle(color: Colors.white, fontSize: 18.0),
-          display2: TextStyle(color: Colors.white, fontFamily: 'Staatliches', fontSize: 17.0),
+          display2: TextStyle(color: Colors.black, fontFamily: 'Staatliches', fontSize: 17.0),
           display3: TextStyle(color: Colors.grey, fontSize: 12.0),
           display4: TextStyle(color: Colors.black, fontFamily: 'Staatliches', fontSize: 17.0),
+          headline: TextStyle(color: Colors.white, fontFamily: 'Staatliches', fontSize: 60.0),
         ),
       ),
       initialRoute: '/',
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/me' : (context) => MeScreen(),
         '/chooseWorkoutStyle' : (context) => ChooseWorkoutStyleScreen(),
         '/chooseWorkoutTechniques' : (context) => ChooseWorkoutTechniques(),
+        '/ChooseWorkoutSummaryScreen' : (context) => ChooseWorkoutSummaryScreen(),
       },
       home: HomeScreen(),
     );
