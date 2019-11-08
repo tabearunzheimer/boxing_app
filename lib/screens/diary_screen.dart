@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
+import 'package:uebung02/screens/technique_details_screen.dart';
 
 class DiaryScreen extends StatefulWidget {
   @override
@@ -66,8 +67,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
           ],
         ),
       //oeffne Infos zum Kick
-      onTap: null,
-      );
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TechniqueDetailsScreen()));
+      },
+    );
   }
 
 }

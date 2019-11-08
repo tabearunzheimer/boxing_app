@@ -1,18 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MeScreen extends StatefulWidget {
   @override
   _MeScreenState createState() => new _MeScreenState();
 }
 
-int selectedIndex = 2;
-ReusableWidgets _reusableWidgets;
 
 class _MeScreenState extends State<MeScreen> {
+
+  SharedPreferences prefs;
+  int weight;
+  String userName;
+  String email;
+  DateTime age;
+  String gender;
+  int userSize;
+  int selectedIndex = 2;
+  ReusableWidgets _reusableWidgets;
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((sp){
+      this.prefs = sp;
+      loadUserWeight();
+      loadUserSize();
+      loadUserGender();
+      loadUserName();
+      loadUserEmail();
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     _reusableWidgets = new ReusableWidgets(context, selectedIndex);
+    age = new DateTime.utc(1999, DateTime.june, 28);
+    setUserSize(163);
+    setUserGender("Weiblich");
+    setUserName("Tabea");
+    setUserEmail("tabea.runzheimer@informatik.hs-fulda.de");
+
     return Scaffold(
       appBar: _reusableWidgets.getAppBar(),
       body:
@@ -21,84 +51,176 @@ class _MeScreenState extends State<MeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Image(
-            width: MediaQuery.of(context).size.width,
-            image: AssetImage("assets/img/female_fighter_punch.jpg"),
-            fit: BoxFit.fitWidth,
-          ),
-          Row(
-            children: <Widget>[
-              Text("Name", style: Theme.of(context).textTheme.body2,),
-              IconButton(
-                onPressed: null,
-                icon: Icon(Icons.edit),
-              ),
-            ],
-          ),
-          Text("Email", style: Theme.of(context).textTheme.body2,),
-          Divider(
-            color: Color.fromRGBO(0, 0, 0, 0.1),
-            thickness: 3.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              ButtonTheme(
-                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
-                minWidth: 140.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                child: RaisedButton(
-                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  child: Text("Geschlecht", style: Theme.of(context).textTheme.body2,),
-                  onPressed: null,
+          Container(
+            height: (MediaQuery.of(context).size.height / 3.5),
+            width: (MediaQuery.of(context).size.width),
+            child: Stack(
+              children: <Widget>[
+                Image(
+                  width: MediaQuery.of(context).size.width,
+                  image: AssetImage("assets/img/female_fighter_punch.jpg"),
+                  fit: BoxFit.fitWidth,
                 ),
-              ),
-              ButtonTheme(
-                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
-                minWidth: 140.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                child: RaisedButton(
-                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  child: Text("Alter", style: Theme.of(context).textTheme.body2,),
-                  onPressed: null,
+                Container(
+                  alignment: Alignment.bottomRight,
+                  margin: EdgeInsets.all(10),
+                  child: Container(
+                    height: 50.0,
+                    width: 50.0,
+                    child: RawMaterialButton(
+                      shape: CircleBorder(side: BorderSide(color: Colors.white, width: 1.5)),
+                      child: Icon(Icons.camera_alt, color: Colors.white),
+                      onPressed: null,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              ButtonTheme(
-                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
-                minWidth: 140.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                child: RaisedButton(
-                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  child: Text("Gewicht", style: Theme.of(context).textTheme.body2,),
-                  onPressed: null,
+          Container(
+            height: (MediaQuery.of(context).size.height / 2),
+            width: (MediaQuery.of(context).size.width),
+            padding: EdgeInsets.all(10),
+            //color: Colors.red,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text("$userName", style: Theme.of(context).textTheme.display4,),
+                    IconButton(
+                      onPressed: null,
+                      icon: Icon(Icons.edit),
+                    ),
+                  ],
                 ),
-              ),
-              ButtonTheme(
-                buttonColor: Color.fromRGBO(255, 255, 255, 0.8),
-                minWidth: 140.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                child: RaisedButton(
-                  disabledColor: Color.fromRGBO(0, 0, 0, 0.1),
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  child: Text("Größe", style: Theme.of(context).textTheme.body2,),
-                  onPressed: null,
+                Text("$email", style: Theme.of(context).textTheme.body2,),
+                Divider(
+                  color: Colors.grey,
                 ),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.all(10),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      width: 180.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        color: Color.fromRGBO(200, 0, 0, 1),
+                        disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                        child: Text("$gender", style: Theme.of(context).textTheme.body1,),
+                        onPressed: null,
+                      ),
+                    ),
+                    Container(
+                      width: 180.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        color: Color.fromRGBO(200, 0, 0, 1),
+                        disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                        child: Text("28. Oktober 1999", style: Theme.of(context).textTheme.body1,),
+                        onPressed: null,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      width: 180.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        color: Color.fromRGBO(200, 0, 0, 1),
+                        disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                        child: Text("$weight kg", style: Theme.of(context).textTheme.body1,),
+                        onPressed: null,
+                      ),
+                    ),
+                    Container(
+                      width: 180.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        color: Color.fromRGBO(200, 0, 0, 1),
+                        disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                        child: Text("$userSize cm", style: Theme.of(context).textTheme.body1,),
+                        onPressed: null,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.9),
       bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
     );
-
   }
+
+  Future <Null> setUserWeight(int w) async{
+    await this.prefs.setInt('userWeight', w);
+    print("Weight saved");
+  }
+
+  void loadUserWeight() async {
+    setState((){
+      this.weight = prefs.getInt('userWeight') ?? 0;
+    });
+  }
+
+  Future <Null> setUserGender(String g) async{
+    await this.prefs.setString('userGender', g);
+    print("Gender saved");
+  }
+
+  void loadUserGender() async {
+    setState((){
+      this.gender = prefs.get('userGender') ?? "No Data";
+    });
+  }
+
+  Future <Null> setUserSize(int g) async{
+    await this.prefs.setInt('userSize', g);
+    print("Usersize saved");
+  }
+
+  void loadUserSize() async {
+    setState((){
+      this.userSize = prefs.get('userSize') ?? 0;
+    });
+  }
+
+  Future <Null> setUserName(String g) async{
+    await this.prefs.setString('userName', g);
+    print("Name saved");
+  }
+
+  void loadUserName() async {
+    setState((){
+      this.userName = prefs.get('userName') ?? 0;
+    });
+  }
+
+  Future <Null> setUserEmail(String g) async{
+    await this.prefs.setString('userEmail', g);
+    print("Email saved");
+  }
+
+  void loadUserEmail() async {
+    setState((){
+      this.email = prefs.get('userEmail') ?? 0;
+    });
+  }
+
 }

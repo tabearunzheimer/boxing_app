@@ -72,7 +72,7 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
           //print(_checkBoxVal[index]);
         },
       ),
-      title: Text(l[index], style: Theme.of(context).textTheme.display4,),
+      title: Text(l[index], style: Theme.of(context).textTheme.display2,),
       subtitle: Text("Zuletzt: 06. November 2019", style: Theme.of(context).textTheme.display3,),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.end,
