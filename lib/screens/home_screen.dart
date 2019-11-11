@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -16,20 +15,16 @@ class _HomeScreenState extends State<HomeScreen> {
     _reusableWidgets = new ReusableWidgets(context, selectedIndex);
     return Scaffold(
       appBar: _reusableWidgets.getAppBar(),
-      body:
-      Stack(
+      body: Stack(
         children: <Widget>[
-          Center(
-            heightFactor: MediaQuery
-                .of(context)
-                .size
-                .height,
-            widthFactor: MediaQuery
-                .of(context)
-                .size
-                .width,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             child: new Image.asset(
-              'assets/img/female_boxer.jpg', fit: BoxFit.fill, height: 900.0,),
+              'assets/img/female_boxer.jpg',
+              fit: BoxFit.fitWidth,
+              height: 900.0,
+            ),
           ),
           Container(
             alignment: Alignment.center,
@@ -50,24 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: RawMaterialButton(
                       shape: CircleBorder(),
                       fillColor: Color.fromRGBO(255, 255, 255, 1),
-                      child: Text("Start", style: Theme.of(context).textTheme.body2,),
+                      child: Text(
+                        "Start",
+                        style: Theme.of(context).textTheme.body2,
+                      ),
                       onPressed: startChooseWorkout,
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(55, 0, 55, 0),
-                    child: Text("Versuche regelmäßig zu trainieren um einen optimalen Trainingserfolg zu erzielen.", style: Theme.of(context).textTheme.display1, textAlign: TextAlign.center,),
+                    child: Text(
+                      "Versuche regelmäßig zu trainieren um einen optimalen Trainingserfolg zu erzielen.",
+                      style: Theme.of(context).textTheme.display1,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ]
-            ),
+                ]),
           ),
         ],
       ),
       bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
     );
   }
-
-
 
   void startChooseWorkout() {
     print("Change to Choose-Workout-Style-Screen");
