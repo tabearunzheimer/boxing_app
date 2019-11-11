@@ -170,7 +170,7 @@ class _ChooseWorkoutSummaryScreenState
       title: Text(l[index], style: Theme
           .of(context)
           .textTheme
-          .display4,),
+          .display2,),
       subtitle: Text("Zuletzt: 06. November 2019", style: Theme
           .of(context)
           .textTheme
