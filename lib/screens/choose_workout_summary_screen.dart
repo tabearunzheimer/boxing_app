@@ -64,9 +64,9 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
   Widget _buildFirstListItem(){
     return Stack(
       children: <Widget>[
-        Image.asset('assets/img/female_boxer.jpg', height: 750.0, fit: BoxFit.fitHeight),
+        Image.asset('assets/img/female_boxer.jpg',fit: BoxFit.fill),
         Container(
-          height: MediaQuery.of(context).size.height - (_reusableWidgets.getSimpleAppBar().preferredSize.height) - 30,
+          height: MediaQuery.of(context).size.height - (_reusableWidgets.getSimpleAppBar().preferredSize.height),
           child: Column(
             children: <Widget>[
               Container(
