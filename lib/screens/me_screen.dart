@@ -18,16 +18,22 @@ class _MeScreenState extends State<MeScreen> {
   int selectedIndex = 2;
   ReusableWidgets _reusableWidgets;
 
+  static const String userWeightKey = 'userWeight';
+  static const String userGenderKey = 'userGender';
+  static const String userSizeKey = 'userSize';
+  static const String userNameKey = 'userName';
+  static const String userEmailKey = 'userEmail';
+
   @override
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((sp) {
       this.prefs = sp;
-      loadUserWeight();
-      loadUserSize();
-      loadUserGender();
-      loadUserName();
-      loadUserEmail();
+      loadString(userNameKey);
+      loadString(userEmailKey);
+      loadString(userGenderKey);
+      loadInt(userSizeKey);
+      loadInt(userWeightKey);
     });
   }
 
@@ -46,8 +52,9 @@ class _MeScreenState extends State<MeScreen> {
       resizeToAvoidBottomPadding: false,
       appBar: _reusableWidgets.getAppBar(),
       body: Container(
+        //margin: EdgeInsets.all(10),
+        //color: Colors.green,
         child: Column(
-          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -212,58 +219,38 @@ class _MeScreenState extends State<MeScreen> {
     );
   }
 
-  Future<Null> setUserWeight(int w) async {
-    await this.prefs.setInt('userWeight', w);
-    print("Weight saved");
+  Future<Null> setInt(String key, int w) async {
+    await this.prefs.setInt(key, w);
+    print("Int saved");
   }
 
-  void loadUserWeight() async {
+  void loadInt(String key) async {
     setState(() {
-      this.weight = prefs.getInt('userWeight') ?? 0;
+      switch(key){
+        case 'userWeight': this.weight = prefs.get(key) ?? "No Data";
+        break;
+        case 'userSize': this.userSize = prefs.get(key) ?? "No Data";
+        break;
+      }
     });
   }
 
-  Future<Null> setUserGender(String g) async {
-    await this.prefs.setString('userGender', g);
-    print("Gender saved");
+  Future<Null> setString(String key, String g) async {
+    await this.prefs.setString(key, g);
+    print("String saved");
   }
 
-  void loadUserGender() async {
+  void loadString(String key) async {
     setState(() {
-      this.gender = prefs.get('userGender') ?? "No Data";
-    });
-  }
-
-  Future<Null> setUserSize(int g) async {
-    await this.prefs.setInt('userSize', g);
-    print("Usersize saved");
-  }
-
-  void loadUserSize() async {
-    setState(() {
-      this.userSize = prefs.get('userSize') ?? 0;
-    });
-  }
-
-  Future<Null> setUserName(String g) async {
-    await this.prefs.setString('userName', g);
-    print("Name saved");
-  }
-
-  void loadUserName() async {
-    setState(() {
-      this.userName = prefs.get('userName') ?? 0;
-    });
-  }
-
-  Future<Null> setUserEmail(String g) async {
-    await this.prefs.setString('userEmail', g);
-    print("Email saved");
-  }
-
-  void loadUserEmail() async {
-    setState(() {
-      this.email = prefs.get('userEmail') ?? 0;
+      print("Get data");
+      switch(key){
+        case 'userName': this.userName = prefs.get(key) ?? "No Data";
+        break;
+        case 'userEmail': this.email = prefs.get(key) ?? "No Data";
+        break;
+        case 'userGender': this.gender = prefs.get(key) ?? "No Data";
+        break;
+      }
     });
   }
 }
