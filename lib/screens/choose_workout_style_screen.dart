@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uebung02/helper/current_workout_information.dart';
+import 'package:uebung02/screens/choose_workout_techniques.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
 class ChooseWorkoutStyleScreen extends StatefulWidget {
@@ -8,9 +10,8 @@ class ChooseWorkoutStyleScreen extends StatefulWidget {
       new _ChooseWorkoutStyleScreenState();
 }
 
-ReusableWidgets _reusableWidgets;
-
-class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> with SingleTickerProviderStateMixin {
+class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
+    with SingleTickerProviderStateMixin {
   List<Tab> l = [
     Tab(
       child: Text("Runden"),
@@ -23,23 +24,31 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
     )
   ];
   TabController _tabController;
+  TextEditingController breakTextController;
+  TextEditingController roundTextController;
+  TextEditingController timePerRoundTextController;
   bool breakBetweenRounds = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: l.length);
+    breakTextController = new TextEditingController();
+    roundTextController = new TextEditingController();
+    timePerRoundTextController = new TextEditingController();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    breakTextController.dispose();
+    roundTextController.dispose();
+    timePerRoundTextController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _reusableWidgets = new ReusableWidgets(context, -1);
     return new Scaffold(
       appBar: AppBar(
         title: Text(
@@ -60,6 +69,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
 
   Widget buildRundenAndReaktionElement(String imgPfad) {
     return Container(
+      margin: EdgeInsets.only(bottom: 10),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
@@ -96,26 +106,35 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                           ),
                           Switch(
                             value: breakBetweenRounds,
-                            onChanged: (value) {setState(() {
-                              breakBetweenRounds = value;
-                            });},
+                            onChanged: (value) {
+                              setState(() {
+                                breakBetweenRounds = value;
+                              });
+                            },
                           ),
                         ],
                       ),
                       Row(
                         children: <Widget>[
-                          Text("Dauer: ", style: Theme.of(context).textTheme.body2,),
+                          Text(
+                            "Dauer: ",
+                            style: Theme.of(context).textTheme.body2,
+                          ),
                           Container(
                             width: 40,
                             height: 40,
                             child: TextField(
                               enabled: breakBetweenRounds,
+                              controller: breakTextController,
                               decoration: new InputDecoration(),
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: false, signed: true),
                             ),
                           ),
-                          Text("min", style: Theme.of(context).textTheme.body2,),
+                          Text(
+                            "sek",
+                            style: Theme.of(context).textTheme.body2,
+                          ),
                         ],
                       ),
                     ],
@@ -147,6 +166,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                                 width: 40,
                                 height: 40,
                                 child: TextField(
+                                  controller: roundTextController,
                                   decoration: new InputDecoration(),
                                   keyboardType: TextInputType.numberWithOptions(
                                       decimal: false, signed: true),
@@ -167,12 +187,16 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                                 width: 50,
                                 height: 40,
                                 child: TextField(
+                                  controller: timePerRoundTextController,
                                   decoration: new InputDecoration(),
                                   keyboardType: TextInputType.numberWithOptions(
                                       decimal: false, signed: true),
                                 ),
                               ),
-                              Text("min", style: Theme.of(context).textTheme.body2,),
+                              Text(
+                                "sek",
+                                style: Theme.of(context).textTheme.body2,
+                              ),
                             ],
                           ),
                         ],
@@ -238,6 +262,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                             width: 50,
                             height: 40,
                             child: TextField(
+                              controller: timePerRoundTextController,
                               decoration: new InputDecoration(),
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: false, signed: true),
@@ -251,7 +276,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                       shape: CircleBorder(),
                       fillColor: Color.fromRGBO(255, 255, 255, 1),
                       child: Icon(Icons.arrow_forward),
-                      onPressed: showChooseWorkoutTechniquesScreen,
+                      onPressed: showChooseWorkoutTechniquesScreenFromOffen,
                     ),
                   ],
                 ),
@@ -263,8 +288,37 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
     );
   }
 
+  void showChooseWorkoutTechniquesScreenFromOffen() {
+    print("Change to choose-Workout-Techniques-Screen");
+    int timePerRound = 0;
+    try {
+      timePerRound = int.parse(timePerRoundTextController.text);
+      print("Rundenzeit: $timePerRound");
+      Navigator.pushNamed(context, '/chooseWorkoutTechniques');
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void showChooseWorkoutTechniquesScreen() {
     print("Change to choose-Workout-Techniques-Screen");
-    Navigator.pushNamed(context, '/chooseWorkoutTechniques');
+    int timePerRound = 0;
+    int breakTime = 0;
+    int roundTimes = 0;
+    try {
+      timePerRound = int.parse(timePerRoundTextController.text);
+      breakTime = int.parse(breakTextController.text);
+      roundTimes = int.parse(roundTextController.text);
+      CurrentWorkoutInformation c = new CurrentWorkoutInformation(breakTime, roundTimes, timePerRound);
+
+      //print("Rundenzeit: $timePerRound");
+      //Navigator.pushNamed(context, '/chooseWorkoutTechniques');
+      Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => ChooseWorkoutTechniques(c)),
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 }

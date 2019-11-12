@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
 class ChooseWorkoutSummaryScreen extends StatefulWidget {
+  CurrentWorkoutInformation workoutInformation;
+
+  ChooseWorkoutSummaryScreen(CurrentWorkoutInformation cOld) {
+    this.workoutInformation = cOld;
+  }
+
   @override
   _ChooseWorkoutSummaryScreenState createState() =>
       new _ChooseWorkoutSummaryScreenState();
@@ -9,8 +16,7 @@ class ChooseWorkoutSummaryScreen extends StatefulWidget {
 
 ReusableWidgets _reusableWidgets;
 
-class _ChooseWorkoutSummaryScreenState
-    extends State<ChooseWorkoutSummaryScreen> {
+class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen> {
   @override
   Widget build(BuildContext context) {
     _reusableWidgets = new ReusableWidgets(context, -1);
@@ -30,6 +36,10 @@ class _ChooseWorkoutSummaryScreenState
       "..."
     ];
 
+
+    for (int i = 0; i < widget.workoutInformation.getTechniques().length; i++) {
+      print("ListFile: ${widget.workoutInformation.getTechniques()[i]}");
+    }
 
     return Scaffold(
         appBar: _reusableWidgets.getSimpleAppBar(),
