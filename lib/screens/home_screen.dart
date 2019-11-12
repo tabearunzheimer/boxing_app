@@ -17,15 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _reusableWidgets.getAppBar(),
       body: Stack(
         children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: new Image.asset(
-              'assets/img/female_boxer.jpg',
-              fit: BoxFit.fitWidth,
-              height: 900.0,
-            ),
-          ),
+          buildBackgroundImage(),
           Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
@@ -66,6 +58,30 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
     );
+  }
+
+  Widget buildBackgroundImage(){
+    if (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height){
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: new Image.asset(
+          'assets/img/female_boxer.jpg',
+          fit: BoxFit.fitHeight,
+          //height: 900.0,
+        ),
+      );
+    } else {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: new Image.asset(
+          'assets/img/female_boxer.jpg',
+          fit: BoxFit.fitWidth,
+          //height: 900.0,
+        ),
+      );
+    }
   }
 
   void startChooseWorkout() {

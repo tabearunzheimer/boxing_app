@@ -89,7 +89,6 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                   child: Column(
                     children: <Widget>[
                       Row(
-
                         children: <Widget>[
                           Text(
                             "Pausen zwischen Runden: ",
@@ -105,9 +104,9 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                       ),
                       Row(
                         children: <Widget>[
-                          Text("Dauer (in Minuten): ", style: Theme.of(context).textTheme.body2,),
+                          Text("Dauer: ", style: Theme.of(context).textTheme.body2,),
                           Container(
-                            width: 50,
+                            width: 40,
                             height: 40,
                             child: TextField(
                               enabled: breakBetweenRounds,
@@ -116,6 +115,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                                   decimal: false, signed: true),
                             ),
                           ),
+                          Text("min", style: Theme.of(context).textTheme.body2,),
                         ],
                       ),
                     ],
@@ -144,7 +144,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                                 style: Theme.of(context).textTheme.body2,
                               ),
                               Container(
-                                width: 50,
+                                width: 40,
                                 height: 40,
                                 child: TextField(
                                   decoration: new InputDecoration(),
@@ -159,7 +159,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Text(
-                                "Dauer pro Runde (in Minuten): ",
+                                "Dauer pro Runde: ",
                                 style: Theme.of(context).textTheme.body2,
                               ),
                               //Text("min"),
@@ -172,6 +172,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen> wit
                                       decimal: false, signed: true),
                                 ),
                               ),
+                              Text("min", style: Theme.of(context).textTheme.body2,),
                             ],
                           ),
                         ],
