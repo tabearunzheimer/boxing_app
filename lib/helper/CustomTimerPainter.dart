@@ -24,7 +24,7 @@ class CustomTimerPainter extends CustomPainter {
     paint.color = color;
     double progress = (1.0 - animation.value) * 2 * math.pi;
     Size s = new Size(size.width, size.width);
-    Offset o = new Offset(0, -70);
+    Offset o = new Offset(0, size.width/-6.2);
     canvas.drawArc(o & s, math.pi * 1.5, -progress, false, paint);
   }
 
