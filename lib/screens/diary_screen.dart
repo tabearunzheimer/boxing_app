@@ -34,15 +34,18 @@ class _DiaryScreenState extends State<DiaryScreen> {
     List<String> l = ["Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "..."];
     return new Scaffold(
       appBar: this._reusableWidgets.getAppBar(),
-      body: ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-          color: Color.fromRGBO(0, 0, 0, 0.8),
+      body: WillPopScope(
+        onWillPop: backButtonOverride,
+        child: ListView.separated(
+          separatorBuilder: (context, index) => Divider(
+            color: Color.fromRGBO(0, 0, 0, 0.8),
+          ),
+          itemCount: ll.length,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            return _buildExpansionTile(ll, l, index);
+          },
         ),
-        itemCount: ll.length,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          return _buildExpansionTile(ll, l, index);
-        },
       ),
       bottomNavigationBar: this._reusableWidgets.getBottomNavigataionBar(),
     );
@@ -219,5 +222,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
             MaterialPageRoute(builder: (context) => TechniqueDetailsScreen()));
       },
     );
+  }
+
+  Future<bool> backButtonOverride() {
+    setState(() {
+      Navigator.pushReplacementNamed(context, '/home');
+    });
   }
 }

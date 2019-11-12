@@ -6,13 +6,16 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-int selectedIndex = 0;
-ReusableWidgets _reusableWidgets;
-
 class _HomeScreenState extends State<HomeScreen> {
+  DateTime currentBackPressTime;
+  BuildContext ctx;
+  int selectedIndex = 0;
+  ReusableWidgets _reusableWidgets;
+
   @override
   Widget build(BuildContext context) {
     _reusableWidgets = new ReusableWidgets(context, selectedIndex);
+    this.ctx = context;
     return Scaffold(
       appBar: _reusableWidgets.getAppBar(),
       body: Stack(
@@ -52,30 +55,51 @@ class _HomeScreenState extends State<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                ]
-            ),
+                ]),
           ),
+          WillPopScope(
+            onWillPop: backButtonOverride,
+            child: Container(),
+          )
         ],
       ),
       bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
     );
   }
 
-  Widget buildBackgroundImage(){
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: new Image.asset(
-          'assets/img/female_boxer.jpg',
-          fit: BoxFit.cover,
-          //height: 900.0,
-        ),
-      );
-    }
-
+  Widget buildBackgroundImage() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: new Image.asset(
+        'assets/img/female_boxer.jpg',
+        fit: BoxFit.cover,
+        //height: 900.0,
+      ),
+    );
+  }
 
   void startChooseWorkout() {
     print("Change to Choose-Workout-Style-Screen");
     Navigator.pushNamed(context, '/chooseWorkoutStyle');
+  }
+
+  Future<bool> backButtonOverride() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      //Fluttertoast.showToast(msg: exit_warning);
+      print("Show snackbar");
+      final scaffold = Scaffold.of(ctx);
+      //print(scaffold);
+      final snackBar = SnackBar(content: Text('Press two times to exit'), backgroundColor: Colors.red, duration: Duration(seconds: 1),);
+      //print(snackBar.content);
+      //print("2 mal druecken fuer schliessen");
+    return Future.value(true);
+    //Fluttertoast.showToast(msg: "Press two times to exit",);
+    scaffold.showSnackBar(snackBar);
+    return Future.value(false);
+  }
   }
 }
