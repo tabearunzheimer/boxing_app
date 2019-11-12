@@ -50,8 +50,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   Widget _buildExpansionTile(List<Object> ll, List<String> l, int index) {
     int anzahlListenElemente = 1;
+    bool addButton = false;
     if (index < 2) {
       anzahlListenElemente = l.length;
+    }
+    if (index == 1){
+      addButton = true;
     }
     return ExpansionTile(
       title: Text(ll[index]),
@@ -66,10 +70,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
           itemBuilder: (BuildContext context, int indexZwei) {
             switch (index) {
               case 0:
-                return _buildTechniqueListItems(l, indexZwei);
+                return _buildTechniqueListItems(l, indexZwei, addButton);
                 break;
               case 1:
-                return _buildTechniqueListItems(l, indexZwei);
+                return _buildTechniqueListItems(l, indexZwei, addButton);
                 break;
               case 2:
                 return buildWorkouts(); //vergangene Workout-Liste
@@ -171,22 +175,21 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return null;
   }
 
-  Widget _buildTechniqueListItems(List<Object> l, int index) {
-    Icon i;
-    if (l[index].toString().contains("i")) {
-      i = Icon(
+  Widget _buildTechniqueListItems(List<Object> l, int index, bool addButton) {
+    Icon iconLead = Icon(
         Icons.gps_fixed,
         size: 30.0,
       );
+    Icon iconBack;
+    if (addButton){
+      iconBack  = Icon(Icons.add, color: Colors.black,);
     } else {
-      i = Icon(
-        Icons.security,
-        size: 30.0,
-      );
+      iconBack  = Icon(Icons.remove, color: Colors.black,);
     }
+
     return ListTile(
       dense: true,
-      leading: i,
+      leading: iconLead,
       title: Text(
         l[index],
         style: TextStyle(fontSize: 15.0),
@@ -202,6 +205,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
               Icons.music_note,
               color: Colors.black,
             ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: iconBack,
             onPressed: null,
           ),
         ],
