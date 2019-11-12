@@ -8,10 +8,11 @@ class CurrentWorkoutInformation{
   String type;
   List <String> techniques;
 
-  CurrentWorkoutInformation(int bt, int ra, int rl){
+  CurrentWorkoutInformation(int bt, int ra, int rl, String t){
     this.breakTime = bt;
     this.roundAmount = ra;
     this.roundLength = rl;
+    this.type = t;
   }
 
   void addTechniques(List<String> l){
@@ -32,5 +33,9 @@ class CurrentWorkoutInformation{
 
   int getRoundLength(){
     return this.roundLength;
+  }
+
+  String getType(){
+    return this.type;
   }
 }

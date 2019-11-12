@@ -109,7 +109,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
                           Column(
                             children: <Widget>[
                               Text("Art", textAlign: TextAlign.end,),
-                              Text("Runden"),
+                              Text("${widget.workoutInformation.getType()}"),
                             ],
                           ),
                           Container(

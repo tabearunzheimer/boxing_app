@@ -60,14 +60,21 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
         ),
       ),
       body: TabBarView(controller: _tabController, children: <Widget>[
-        buildRundenAndReaktionElement('assets/img/man_boxer.jpg'),
-        buildRundenAndReaktionElement('assets/img/hill_fighter_meditate.jpg'),
+        buildRundenAndReaktionElement('assets/img/man_boxer.jpg', 0),
+        buildRundenAndReaktionElement('assets/img/hill_fighter_meditate.jpg', 1),
         buildOffenElement('assets/img/man_boxer.jpg'),
       ]),
     );
   }
 
-  Widget buildRundenAndReaktionElement(String imgPfad) {
+  Widget buildRundenAndReaktionElement(String imgPfad, int i) {
+    String type;
+    if (i == 0){
+      type = "Runden";
+    } else {
+      type = "Reaktion";
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       width: MediaQuery.of(context).size.width,
@@ -207,7 +214,8 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                       shape: CircleBorder(),
                       fillColor: Color.fromRGBO(255, 255, 255, 1),
                       child: Icon(Icons.arrow_forward),
-                      onPressed: showChooseWorkoutTechniquesScreen,
+                      onPressed: (){ showChooseWorkoutTechniquesScreenFromRound(type);
+                      },
                     ),
                   ],
                 ),
@@ -293,26 +301,28 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     int timePerRound = 0;
     try {
       timePerRound = int.parse(timePerRoundTextController.text);
-      print("Rundenzeit: $timePerRound");
-      Navigator.pushNamed(context, '/chooseWorkoutTechniques');
+      CurrentWorkoutInformation c = new CurrentWorkoutInformation(0, 0, timePerRound, "Offen");
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseWorkoutTechniques(c)),
+      );
+
     } catch (e) {
       print(e);
     }
   }
 
-  void showChooseWorkoutTechniquesScreen() {
+  void showChooseWorkoutTechniquesScreenFromRound(String type) {
     print("Change to choose-Workout-Techniques-Screen");
     int timePerRound = 0;
     int breakTime = 0;
     int roundTimes = 0;
+
     try {
       timePerRound = int.parse(timePerRoundTextController.text);
-      breakTime = int.parse(breakTextController.text);
+      if (this.breakBetweenRounds){
+        breakTime = int.parse(breakTextController.text);
+      }
       roundTimes = int.parse(roundTextController.text);
-      CurrentWorkoutInformation c = new CurrentWorkoutInformation(breakTime, roundTimes, timePerRound);
-
-      //print("Rundenzeit: $timePerRound");
-      //Navigator.pushNamed(context, '/chooseWorkoutTechniques');
+      CurrentWorkoutInformation c = new CurrentWorkoutInformation(breakTime, roundTimes, timePerRound, type);
       Navigator.push(context,
         MaterialPageRoute(
             builder: (context) => ChooseWorkoutTechniques(c)),
