@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
+import 'package:uebung02/screens/workout_screen.dart';
 
 class ChooseWorkoutSummaryScreen extends StatefulWidget {
   CurrentWorkoutInformation workoutInformation;
@@ -149,10 +150,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
                             shape: CircleBorder(),
                             fillColor: Color.fromRGBO(255, 255, 255, 1),
                             child: Text("Start", style: Theme.of(context).textTheme.body2,),
-                            onPressed: (){
-                              print("Change to Workout-Screen");
-                              Navigator.pushNamed(context, '/WorkoutScreen');
-                            },
+                            onPressed: sendToWorkoutScreen,
                           ),
                         ),
                       ],
@@ -192,4 +190,14 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
 
   }
 
+  /*
+
+   */
+
+
+  void sendToWorkoutScreen() {
+    print("Change to Workout-Screen");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutScreen(widget.workoutInformation)),
+  );
+  }
 }
