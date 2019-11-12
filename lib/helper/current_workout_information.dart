@@ -5,6 +5,7 @@ class CurrentWorkoutInformation{
   int breakTime;
   int roundAmount;
   int roundLength;
+  String type;
   List <String> techniques;
 
   CurrentWorkoutInformation(int bt, int ra, int rl){

@@ -168,10 +168,6 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
   void moveToChooseWorkoutSummaryScreen() {
     print("Change to choose-Workout-Summary-Screen");
     widget.workoutInformation.addTechniques(this.techniques);
-    for (int i = 0; i < this.techniques.length; i++) {
-      print("ListFile: ${this.techniques[i]}");
-    }
-    print("end");
     Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseWorkoutSummaryScreen(widget.workoutInformation)),);
   }
 }

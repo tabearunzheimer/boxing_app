@@ -17,30 +17,22 @@ class ChooseWorkoutSummaryScreen extends StatefulWidget {
 ReusableWidgets _reusableWidgets;
 
 class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen> {
+
+  List<String> list;
+
+
   @override
   Widget build(BuildContext context) {
     _reusableWidgets = new ReusableWidgets(context, -1);
-    List<String> list = [
-      "Eins",
-      "Zwei",
-      "Drei",
-      "Vier",
-      "Fünf",
-      "Sechs",
-      "...",
-      "...",
-      "...",
-      "...",
-      "...",
-      "...",
-      "..."
-    ];
+    this.list = widget.workoutInformation.getTechniques();
 
-
+    /*
     for (int i = 0; i < widget.workoutInformation.getTechniques().length; i++) {
       print("ListFile: ${widget.workoutInformation.getTechniques()[i]}");
     }
+     */
 
+    int listIndex = 0;
     return Scaffold(
         appBar: _reusableWidgets.getSimpleAppBar(),
         body: ListView.separated(
@@ -50,7 +42,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
               ),
           //padding: EdgeInsets.all(10.0),
           shrinkWrap: true,
-          itemCount: list.length,
+          itemCount: (this.list.length + 2),
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) {
             if (index == 0) {
@@ -63,7 +55,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
               );
             }
             index -= 2;
-            return _buildListItems(list, index);
+            return _buildListItems(index);
           },
         )
     );
@@ -129,7 +121,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
                           Column(
                             children: <Widget>[
                               Text("Runden"),
-                              Text("3"),
+                              Text("${widget.workoutInformation.getRoundAmount()}"),
                             ],
                           ),
                           Container(
@@ -141,7 +133,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
                           Column(
                             children: <Widget>[
                               Text("Dauer"),
-                              Text("3 min"),
+                              Text("${widget.workoutInformation.getRoundLength()}"),
                             ],
                           ),
                         ],
@@ -175,33 +167,29 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
     );
   }
 
-  Widget _buildListItems(List<Object> l, int index) {
-    return ListTile(
-      title: Text(l[index], style: Theme
-          .of(context)
-          .textTheme
-          .display2,),
-      subtitle: Text("Zuletzt: 06. November 2019", style: Theme
-          .of(context)
-          .textTheme
-          .display3,),
-      trailing: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.security, color: Colors.black,),
-            onPressed: null,
-          ),
-          IconButton(
-            icon: Icon(Icons.music_note, color: Colors.black,),
-            onPressed: null,
-          ),
-        ],
-      ),
-      onTap: () {},
-    );
+  Widget _buildListItems(int index) {
+      return new ListTile(
+        title: Text(this.list[index], style: Theme.of(context).textTheme.display2,),
+        subtitle: Text("Zuletzt: 06. November 2019", style: Theme.of(context).textTheme.display3,),
+        trailing: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.security, color: Colors.black,),
+              onPressed: null,
+            ),
+            IconButton(
+              icon: Icon(Icons.music_note, color: Colors.black,),
+              onPressed: null,
+            ),
+          ],
+        ),
+        onTap: () {},
+      );
+    print("Hah");
+
   }
 
 }
