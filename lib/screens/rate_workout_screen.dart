@@ -156,7 +156,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   void dragStart(BuildContext context, DragStartDetails details) {
-    print('Start: ${details.globalPosition}');
+    //print('Start: ${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
 
@@ -168,7 +168,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   dragDown(BuildContext context, DragDownDetails details) {
-    print('Ende: ${details.globalPosition}');
+    //print('Ende: ${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
 
@@ -180,7 +180,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   void dragUpdate(BuildContext context, DragUpdateDetails details) {
-    print('${details.globalPosition}');
+    //print('${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
 
@@ -236,5 +236,12 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
 
   void moveToDoneWorkoutScreen() {
     ///Uebergang zum naechsten screen
+    print("Move to Done-Workout-Screen");
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pushNamed(context, '/DoneWorkoutScreen');
   }
 }

@@ -21,7 +21,6 @@ class CustomRateWorkoutPainter extends CustomPainter{
       ..strokeWidth = 10.0
       ..strokeCap = StrokeCap.butt
       ..style = PaintingStyle.stroke;
-    // TODO: implement paint
 
     ///zeichnet den weißen Kasten
     Rect r = Rect.fromLTWH(0, size.height-140, size.width, 140);
@@ -60,8 +59,7 @@ class CustomRateWorkoutPainter extends CustomPainter{
 
   @override
   bool shouldRepaint(CustomRateWorkoutPainter old) {
-    // TODO: implement shouldRepaint
-    print("nue zeichnen: ${animation.value}");
+    //print("nue zeichnen: ${animation.value}");
     return animation.value != old.animation.value || color != old.color || backgroundColor != old.backgroundColor;
   }
 
