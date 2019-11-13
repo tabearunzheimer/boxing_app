@@ -195,7 +195,9 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         controller.reverse(from: 1.0);
       }
     } else {
-      //oeffne getaenes Workout screen
+      ///speichere Workout in Datenbank
+      ///oeffne getaenes Workout screen
+      Navigator.pushNamed(context, '/RateWorkoutScreen');
     }
   }
 
