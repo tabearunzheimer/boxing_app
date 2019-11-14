@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:uebung02/helper/techniques_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:uebung02/screens/technique_details_screen.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -21,6 +23,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
     this._currentDate = DateTime.now();
   }
 
+
+  final dbHelper = TechniquesDatabaseHelper.instance;
+
   @override
   Widget build(BuildContext context) {
     this._reusableWidgets = new ReusableWidgets(context, selectedIndex);
@@ -32,6 +37,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
       "Kalender"
     ];
     List<String> l = ["Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "..."];
+
+
+    //_insert();
+    //_update();
+    _query();
+    _delete();
+    //_query();
+
     return new Scaffold(
       appBar: this._reusableWidgets.getAppBar(),
       body: WillPopScope(
@@ -229,4 +242,47 @@ class _DiaryScreenState extends State<DiaryScreen> {
       Navigator.pushReplacementNamed(context, '/home');
     });
   }
+
+  void _insert() async{
+    Map<String, dynamic> row = {
+      TechniquesDatabaseHelper.columnName : 'Jab',
+      TechniquesDatabaseHelper.columnAudio : 'way',
+      TechniquesDatabaseHelper.columnExplaination :  'Lorem Ipsum dolor sit amet',
+      TechniquesDatabaseHelper.columnType : 'Offense',
+      TechniquesDatabaseHelper.columnLastTrainedDay : 04,
+      TechniquesDatabaseHelper.columnLastTrainedMonth : 11,
+      TechniquesDatabaseHelper.columnLastTrainedYear : 2019,
+    };
+    final id = await dbHelper.insert(row);
+    print('inserted row id: $id');
+  }
+
+  void _query() async {
+    final allRows = await dbHelper.queryAllRows();
+    print('query all rows:');
+    allRows.forEach((row) => print(row));
+  }
+
+  void _update() async {
+    // row to update
+    Map<String, dynamic> row = {
+      TechniquesDatabaseHelper.columnName : 'Jab',
+      TechniquesDatabaseHelper.columnAudio : 'way',
+      TechniquesDatabaseHelper.columnExplaination :  'Lorem Ipsum dolor sit amet',
+      TechniquesDatabaseHelper.columnType : 'Offense',
+      TechniquesDatabaseHelper.columnLastTrainedDay : 04,
+      TechniquesDatabaseHelper.columnLastTrainedMonth : 11,
+      TechniquesDatabaseHelper.columnLastTrainedYear : 2019,
+    };
+    final rowsAffected = await dbHelper.update(row);
+    print('updated $rowsAffected row(s)');
+  }
+
+  void _delete() async {
+    // Assuming that the number of rows is the id for the last row.
+    final id = await dbHelper.queryRowCount();
+    final rowsDeleted = await dbHelper.delete(id);
+    print('deleted $rowsDeleted row(s): row $id');
+  }
 }
+
