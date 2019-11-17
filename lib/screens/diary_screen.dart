@@ -17,7 +17,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
   int selectedIndex = 1;
   ReusableWidgets _reusableWidgets;
   DateTime _currentDate;
-  List<Technique> techniques;
+  List<Technique> learnedTechniques;
+  List<Technique> notLearnedTechniques;
+  int learnedTechniquesCounter;
 
   final dbHelper = TechniquesDatabaseHelper.instance;
 
@@ -26,6 +28,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     super.initState();
     this._currentDate = DateTime.now();
     createList();
+    learnedTechniquesCounter = 0;
     try {
       dbHelper.insertList();
     } catch (e) {
@@ -81,9 +84,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
     List<Technique> learned;
     List<Technique> notlearned;
     try {
-      if (index < 2) {
-        anzahlListenElemente = this.techniques.length;
-        print("Laenge: ${this.techniques.length}");
+      if (index == 0) {
+        anzahlListenElemente = this.learnedTechniquesCounter;
+        anzahlListenElemente = (this.learnedTechniquesCounter == 0) ? 1 : this.learnedTechniquesCounter;
+        //print("Laenge: ${this.techniques.length}");
+      }
+      if (index == 1) {
+        anzahlListenElemente = this.notLearnedTechniques.length;
       }
     } catch (e) {
       print(e);
@@ -99,10 +106,17 @@ class _DiaryScreenState extends State<DiaryScreen> {
               //return _buildTechniqueListItems(indexZwei);
               switch (index) {
                 case 0:
-                  return _buildTechniqueListItems(indexZwei);
+                  if (this.learnedTechniquesCounter == 0){
+                    return Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text("Keine erlernten Techniken", style: Theme.of(context).textTheme.body2,),
+                    );
+                  } else {
+                    return _buildLearnedTechniqueListItems(indexZwei);
+                  }
                   break;
                 case 1:
-                  return _buildTechniqueListItems(indexZwei);
+                  return _buildNotLearnedTechniqueListItems(indexZwei);
                   break;
                 case 2:
                   return buildWorkouts(); //vergangene Workout-Liste
@@ -204,15 +218,15 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return null;
   }
 
-  Widget _buildTechniqueListItems(int index) {
+  Widget _buildLearnedTechniqueListItems(int index) {
     return ListTile(
       dense: true,
-      leading: this.techniques[index].getTypeIcon(),
+      leading: this.learnedTechniques[index].getTypeIcon(),
       title: Text(
-        this.techniques[index].name,
+        this.learnedTechniques[index].name,
         style: TextStyle(fontSize: 15.0),
       ),
-      subtitle: Text("Datum: ${this.techniques[index].getLastTrained()}"),
+      subtitle: Text("Datum: ${this.learnedTechniques[index].getLastTrained()}"),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -226,7 +240,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             onPressed: null,
           ),
           IconButton(
-            icon: this.techniques[index].getLearnedIcon(),
+            icon: this.learnedTechniques[index].getLearnedIcon(),
             onPressed: null,
           ),
         ],
@@ -234,7 +248,44 @@ class _DiaryScreenState extends State<DiaryScreen> {
       //oeffne Infos zum Kick
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => TechniqueDetailsScreen()));
+            MaterialPageRoute(builder: (context) => TechniqueDetailsScreen(this.learnedTechniques[index])));
+      },
+    );
+  }
+
+  Widget _buildNotLearnedTechniqueListItems(int index) {
+    return ListTile(
+      dense: true,
+      leading: this.notLearnedTechniques[index].getTypeIcon(),
+      title: Text(
+        this.notLearnedTechniques[index].name,
+        style: TextStyle(fontSize: 15.0),
+      ),
+      subtitle: Text("Datum: ${this.notLearnedTechniques[index].getLastTrained()}"),
+      trailing: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.music_note,
+              color: Colors.black,
+            ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: this.notLearnedTechniques[index].getLearnedIcon(),
+            onPressed: null,
+          ),
+        ],
+      ),
+      //oeffne Infos zum Kick
+      onTap: () {
+        Technique t = this.notLearnedTechniques[index];
+        print(t.getName());
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TechniqueDetailsScreen(t)));
       },
     );
   }
@@ -278,34 +329,25 @@ class _DiaryScreenState extends State<DiaryScreen> {
     l = allRows.toList();
     //print("Liste: ${l.length}");
     //print("TechniqueListLength: ${techniqueListLength}");
-    List<Technique> list = new List();
+    List<Technique> learned = new List();
+    List<Technique> notlearned = new List();
     for (int i = 0; i < techniqueListLength; i++) {
       //print("Remove ${l[0]}");
       Technique t = new Technique.fromJson(l.removeAt(0));
-      list.add(t);
+      if (t.learned){
+        learned.add(t);
+        learnedTechniquesCounter++;
+      } else {
+        notlearned.add(t);
+      }
     }
     //print(list[2].name);
     setState(() {
-      this.techniques = list;
-      print("Liste uebergeben, laenge: ${techniques.length}");
+      this.learnedTechniques = learned;
+      this.notLearnedTechniques = notlearned;
+      print("Liste uebergeben, laenge: ${learnedTechniques.length}");
     });
     return Future.value(0);
-  }
-
-  List<List<Technique>> differentiateList(){
-    List<Technique> learned;
-    List<Technique> notlearned;
-    for (int i = 0; i < this.techniques.length; i++){
-      if (this.techniques[i].learned){
-        learned.add(this.techniques[i]);
-      } else {
-        notlearned.add(this.techniques[i]);
-      }
-    }
-    List<List> l;
-    l.add(learned);
-    l.add(notlearned);
-    return l;
   }
 
 }

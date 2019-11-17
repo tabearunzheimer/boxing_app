@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
-class TechniqueDetailsScreen extends StatelessWidget {
+class TechniqueDetailsScreen extends StatefulWidget {
+
+  Technique tech;
+
+  TechniqueDetailsScreen(Technique t) {
+    this.tech = t;
+  }
+
+  @override
+  _TechniqueDetailsScreenState createState() =>
+      new _TechniqueDetailsScreenState();
+
+}
+
+class _TechniqueDetailsScreenState extends State<TechniqueDetailsScreen> {
+
 
   ReusableWidgets _reusableWidgets;
 
   @override
   Widget build(BuildContext context) {
     _reusableWidgets = new ReusableWidgets(context, -1);
+      print("Name: ${widget.tech.getName()}");
 
     return Scaffold(
       appBar: _reusableWidgets.getSimpleAppBar(),
@@ -19,7 +36,7 @@ class TechniqueDetailsScreen extends StatelessWidget {
                 margin: EdgeInsets.all(10),
                 child: Container(
                   padding: EdgeInsets.all(10),
-                  child: Text("Name der Technik", style: Theme.of(context).textTheme.display4),
+                  child: Text("${widget.tech.getName()}", style: Theme.of(context).textTheme.display4),
                 ),
               ),
               Container(
@@ -28,7 +45,13 @@ class TechniqueDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("Info", style: Theme.of(context).textTheme.body2),
-                    Text("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                    Text("${widget.tech.getErklaerung()}",
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                    Divider(
+                      color: Colors.black54,
+                    ),
+                    Text("${widget.tech.getLink()}",
                       style: Theme.of(context).textTheme.body2,
                     ),
                   ],

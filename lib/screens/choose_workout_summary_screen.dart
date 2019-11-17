@@ -15,12 +15,12 @@ class ChooseWorkoutSummaryScreen extends StatefulWidget {
       new _ChooseWorkoutSummaryScreenState();
 }
 
-ReusableWidgets _reusableWidgets;
+
 
 class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen> {
 
   List<String> list;
-
+  ReusableWidgets _reusableWidgets;
 
   @override
   Widget build(BuildContext context) {
