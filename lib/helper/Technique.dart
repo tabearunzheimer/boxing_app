@@ -14,8 +14,12 @@ class Technique {
     this.erklaerung = e;
     this.link = l;
     this.type = t;
-    this.lastTrained = DateTime(year, month, day);
-    this.learned = learned=='false' ? false : true;
+    if (year == 0 && month == 0 && day == 0){
+      this.lastTrained = DateTime(1000);
+    } else {
+      this.lastTrained = DateTime(year, month, day);
+    }
+    this.learned = (learned=='false') ? false : true;
   }
 
   String getName() {
@@ -35,6 +39,7 @@ class Technique {
   }
 
   String getLastTrained(){
+    if (this.lastTrained.year == 1000) return "Noch nie trainiert";
     return "${this.lastTrained.day}.${this.lastTrained.month}.${this.lastTrained.year}";
   }
 

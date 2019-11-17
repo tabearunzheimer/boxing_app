@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TechniqueDetailsScreen extends StatefulWidget {
 
@@ -51,8 +52,11 @@ class _TechniqueDetailsScreenState extends State<TechniqueDetailsScreen> {
                     Divider(
                       color: Colors.black54,
                     ),
-                    Text("${widget.tech.getLink()}",
-                      style: Theme.of(context).textTheme.body2,
+                    InkWell(
+                      child: Text("${widget.tech.getLink()}",
+                          style: Theme.of(context).textTheme.body2
+                      ),
+                      onTap: () => launch('${widget.tech.getLink()}'),
                     ),
                   ],
                 ),

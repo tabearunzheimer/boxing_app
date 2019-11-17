@@ -86,8 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<bool> backButtonOverride() {
     DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+    if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
       //Fluttertoast.showToast(msg: exit_warning);
       print("Show snackbar");
@@ -97,9 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
       //print(snackBar.content);
       //print("2 mal druecken fuer schliessen");
     return Future.value(true);
-    //Fluttertoast.showToast(msg: "Press two times to exit",);
-    scaffold.showSnackBar(snackBar);
-    return Future.value(false);
   }
   }
 }

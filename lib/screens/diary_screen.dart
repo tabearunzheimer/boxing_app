@@ -46,9 +46,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
       "Statistiken",
       "Kalender"
     ];
-    //List<String> techniques = ["Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "..."];
-
-    //query();
 
     return new Scaffold(
       appBar: this._reusableWidgets.getAppBar(),
@@ -308,7 +305,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
   Future<bool> backButtonOverride() {
     setState(() {
       Navigator.pushReplacementNamed(context, '/home');
-      return true;
     });
   }
 
