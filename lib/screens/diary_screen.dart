@@ -241,7 +241,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
           ),
           IconButton(
             icon: this.learnedTechniques[index].getLearnedIcon(),
-            onPressed: null,
+            onPressed: (){
+              setState(() {
+                this.learnedTechniquesCounter--;
+                this.notLearnedTechniques[index].learned = false;
+                this.notLearnedTechniques.add(this.learnedTechniques[index]);
+                this.notLearnedTechniques.removeAt(index);
+              });
+            },
           ),
         ],
       ),
@@ -276,7 +283,15 @@ class _DiaryScreenState extends State<DiaryScreen> {
           ),
           IconButton(
             icon: this.notLearnedTechniques[index].getLearnedIcon(),
-            onPressed: null,
+            onPressed: (){
+              print("Pressed");
+              setState(() {
+                this.notLearnedTechniques[index].learned = true;
+                this.learnedTechniques.add(this.notLearnedTechniques[index]);
+                this.learnedTechniquesCounter++;
+                this.notLearnedTechniques.removeAt(index);
+              });
+            },
           ),
         ],
       ),

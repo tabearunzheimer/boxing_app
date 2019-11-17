@@ -56,9 +56,12 @@ class Technique {
 
   Icon getLearnedIcon() {
     if (this.learned){
-      return Icon(Icons.remove);
+      return Icon(Icons.remove,
+        color: Colors.black);
     } else {
-      return Icon(Icons.add);
+      return Icon(Icons.add,
+          color: Colors.black
+      );
     }
   }
 
