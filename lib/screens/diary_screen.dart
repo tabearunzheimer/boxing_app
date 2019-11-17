@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/techniques_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:uebung02/screens/technique_details_screen.dart';
@@ -16,15 +17,21 @@ class _DiaryScreenState extends State<DiaryScreen> {
   int selectedIndex = 1;
   ReusableWidgets _reusableWidgets;
   DateTime _currentDate;
+  List<Technique> techniques;
+
+  final dbHelper = TechniquesDatabaseHelper.instance;
 
   @override
   void initState() {
     super.initState();
     this._currentDate = DateTime.now();
+    createList();
+    try {
+      dbHelper.insertList();
+    } catch (e) {
+      print("Fehler: $e");
+    }
   }
-
-
-  final dbHelper = TechniquesDatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +43,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
       "Statistiken",
       "Kalender"
     ];
-    List<String> l = ["Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "..."];
+    //List<String> techniques = ["Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "..."];
 
-
-    //_insert();
-    //_update();
-    _query();
-    _delete();
-    //_query();
+    //query();
 
     return new Scaffold(
       appBar: this._reusableWidgets.getAppBar(),
@@ -54,9 +56,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
             color: Color.fromRGBO(0, 0, 0, 0.8),
           ),
           itemCount: ll.length,
+          shrinkWrap: true,
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) {
-            return _buildExpansionTile(ll, l, index);
+            return _buildExpansionTile(ll, index);
           },
         ),
       ),
@@ -64,54 +67,64 @@ class _DiaryScreenState extends State<DiaryScreen> {
     );
   }
 
-  Widget _buildExpansionTile(List<Object> ll, List<String> l, int index) {
-    int anzahlListenElemente = 1;
-    bool addButton = false;
-    if (index < 2) {
-      anzahlListenElemente = l.length;
-    }
-    if (index == 1){
-      addButton = true;
-    }
+  Widget _buildExpansionTile(List<Object> ll, int index) {
     return ExpansionTile(
       title: Text(ll[index]),
       children: <Widget>[
-        ListView.separated(
-          separatorBuilder: (context, index) => Divider(
-            color: Color.fromRGBO(0, 0, 0, 0.2),
-          ),
-          itemCount: anzahlListenElemente,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int indexZwei) {
-            switch (index) {
-              case 0:
-                return _buildTechniqueListItems(l, indexZwei, addButton);
-                break;
-              case 1:
-                return _buildTechniqueListItems(l, indexZwei, addButton);
-                break;
-              case 2:
-                return buildWorkouts(); //vergangene Workout-Liste
-                break;
-              case 3:
-                return buildStatistics(); //Statistiken
-                break;
-              case 4:
-                return buildCalender(); //Kalender
-                break;
-              default:
-                return Container(
-                  child: Text(
-                    "Fehler",
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                );
-            }
-          },
-        ),
+        _buildContainerForTechniques(index),
       ],
     );
+  }
+
+  Widget _buildContainerForTechniques(int index) {
+    int anzahlListenElemente = 1;
+    List<Technique> learned;
+    List<Technique> notlearned;
+    try {
+      if (index < 2) {
+        anzahlListenElemente = this.techniques.length;
+        print("Laenge: ${this.techniques.length}");
+      }
+    } catch (e) {
+      print(e);
+    }
+    Container c = new Container(
+        height: 500,
+        child: ListView.builder(
+            itemCount: anzahlListenElemente,
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int indexZwei) {
+              //return _buildTechniqueListItems(indexZwei);
+              switch (index) {
+                case 0:
+                  return _buildTechniqueListItems(indexZwei);
+                  break;
+                case 1:
+                  return _buildTechniqueListItems(indexZwei);
+                  break;
+                case 2:
+                  return buildWorkouts(); //vergangene Workout-Liste
+                  break;
+                case 3:
+                  return buildStatistics(); //Statistiken
+                  break;
+                case 4:
+                  return buildCalender(); //Kalender
+                  break;
+                default:
+                  return Container(
+                    child: Text(
+                      "Fehler",
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  );
+              }
+            }
+            )
+    );
+    return c;
   }
 
   Widget buildCalender() {
@@ -191,26 +204,15 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return null;
   }
 
-  Widget _buildTechniqueListItems(List<Object> l, int index, bool addButton) {
-    Icon iconLead = Icon(
-        Icons.gps_fixed,
-        size: 30.0,
-      );
-    Icon iconBack;
-    if (addButton){
-      iconBack  = Icon(Icons.add, color: Colors.black,);
-    } else {
-      iconBack  = Icon(Icons.remove, color: Colors.black,);
-    }
-
+  Widget _buildTechniqueListItems(int index) {
     return ListTile(
       dense: true,
-      leading: iconLead,
+      leading: this.techniques[index].getTypeIcon(),
       title: Text(
-        l[index],
+        this.techniques[index].name,
         style: TextStyle(fontSize: 15.0),
       ),
-      subtitle: Text("Datum: 06.11.2019"),
+      subtitle: Text("Datum: ${this.techniques[index].getLastTrained()}"),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -224,7 +226,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             onPressed: null,
           ),
           IconButton(
-            icon: iconBack,
+            icon: this.techniques[index].getLearnedIcon(),
             onPressed: null,
           ),
         ],
@@ -240,49 +242,70 @@ class _DiaryScreenState extends State<DiaryScreen> {
   Future<bool> backButtonOverride() {
     setState(() {
       Navigator.pushReplacementNamed(context, '/home');
+      return true;
     });
   }
 
-  void _insert() async{
-    Map<String, dynamic> row = {
-      TechniquesDatabaseHelper.columnName : 'Jab',
-      TechniquesDatabaseHelper.columnAudio : 'way',
-      TechniquesDatabaseHelper.columnExplaination :  'Lorem Ipsum dolor sit amet',
-      TechniquesDatabaseHelper.columnType : 'Offense',
-      TechniquesDatabaseHelper.columnLastTrainedDay : 04,
-      TechniquesDatabaseHelper.columnLastTrainedMonth : 11,
-      TechniquesDatabaseHelper.columnLastTrainedYear : 2019,
-    };
+  void insertDatabaseEntry(Map<String, dynamic> row) async {
     final id = await dbHelper.insert(row);
     print('inserted row id: $id');
   }
 
-  void _query() async {
+  void query() async {
     final allRows = await dbHelper.queryAllRows();
     print('query all rows:');
     allRows.forEach((row) => print(row));
   }
 
-  void _update() async {
+  void updateDatabaseEntry(Map<String, dynamic> row) async {
     // row to update
-    Map<String, dynamic> row = {
-      TechniquesDatabaseHelper.columnName : 'Jab',
-      TechniquesDatabaseHelper.columnAudio : 'way',
-      TechniquesDatabaseHelper.columnExplaination :  'Lorem Ipsum dolor sit amet',
-      TechniquesDatabaseHelper.columnType : 'Offense',
-      TechniquesDatabaseHelper.columnLastTrainedDay : 04,
-      TechniquesDatabaseHelper.columnLastTrainedMonth : 11,
-      TechniquesDatabaseHelper.columnLastTrainedYear : 2019,
-    };
     final rowsAffected = await dbHelper.update(row);
     print('updated $rowsAffected row(s)');
   }
 
-  void _delete() async {
+  void deleteDatabaseEntry(String name) async {
     // Assuming that the number of rows is the id for the last row.
-    final id = await dbHelper.queryRowCount();
-    final rowsDeleted = await dbHelper.delete(id);
-    print('deleted $rowsDeleted row(s): row $id');
+    //final id = await dbHelper.queryRowCount();
+    final rowsDeleted = await dbHelper.delete(name);
+    print('deleted $rowsDeleted row(s): row $name');
   }
-}
 
+  Future<int> createList() async {
+    List l;
+    final allRows = await dbHelper.queryAllRows();
+    final techniqueListLength = await dbHelper.queryRowCount();
+    //final allRows = await dbHelper.queryAllRows();
+    l = allRows.toList();
+    //print("Liste: ${l.length}");
+    //print("TechniqueListLength: ${techniqueListLength}");
+    List<Technique> list = new List();
+    for (int i = 0; i < techniqueListLength; i++) {
+      //print("Remove ${l[0]}");
+      Technique t = new Technique.fromJson(l.removeAt(0));
+      list.add(t);
+    }
+    //print(list[2].name);
+    setState(() {
+      this.techniques = list;
+      print("Liste uebergeben, laenge: ${techniques.length}");
+    });
+    return Future.value(0);
+  }
+
+  List<List<Technique>> differentiateList(){
+    List<Technique> learned;
+    List<Technique> notlearned;
+    for (int i = 0; i < this.techniques.length; i++){
+      if (this.techniques[i].learned){
+        learned.add(this.techniques[i]);
+      } else {
+        notlearned.add(this.techniques[i]);
+      }
+    }
+    List<List> l;
+    l.add(learned);
+    l.add(notlearned);
+    return l;
+  }
+
+}
