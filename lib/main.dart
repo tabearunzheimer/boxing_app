@@ -5,6 +5,7 @@ import 'package:uebung02/screens/choose_workout_summary_screen.dart';
 import 'package:uebung02/screens/choose_workout_techniques.dart';
 import 'package:uebung02/screens/diary_screen.dart';
 import 'package:uebung02/screens/done_workout_screen.dart';
+import 'package:uebung02/screens/first_launch_one_screen.dart';
 import 'package:uebung02/screens/home_screen.dart';
 import 'package:uebung02/screens/me_screen.dart';
 import 'package:uebung02/screens/rate_workout_screen.dart';
@@ -24,11 +25,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final dbHelper = TechniquesDatabaseHelper.instance;
+    //final dbHelper = TechniquesDatabaseHelper.instance;
 
-
-
-    SharedPreferences.getInstance().then((sp) {
+    //MaterialPageRoute mpr = new MaterialPageRoute(builder: null);
+    /*
+      SharedPreferences.getInstance().then((sp) {
       this.prefs = sp;
       loadBool(launchkey);
       if (this.firstLaunch){
@@ -42,6 +43,8 @@ class MyApp extends StatelessWidget {
         }
       }
     });
+     */
+
 
 
     return MaterialApp(
@@ -76,7 +79,7 @@ class MyApp extends StatelessWidget {
         '/RateWorkoutScreen' : (context) => RateWorkoutScreen(),
         '/DoneWorkoutScreen' : (context) => DoneWorkoutScreen(),
       },
-      home: HomeScreen(),
+      home: FirstLaunchScreenOne(),
     );
   }
 
