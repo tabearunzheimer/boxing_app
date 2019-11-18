@@ -25,10 +25,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    //final dbHelper = TechniquesDatabaseHelper.instance;
+    final dbHelper = TechniquesDatabaseHelper.instance;
 
-    //MaterialPageRoute mpr = new MaterialPageRoute(builder: null);
-    /*
       SharedPreferences.getInstance().then((sp) {
       this.prefs = sp;
       loadBool(launchkey);
@@ -43,7 +41,7 @@ class MyApp extends StatelessWidget {
         }
       }
     });
-     */
+     //TODO: Bei first launch starte mit firstlaunchscreen, sonst homescreen
 
 
 

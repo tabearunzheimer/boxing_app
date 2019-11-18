@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
+import 'first_launch_three_screen.dart';
+
 class FirstLaunchScreenTwo extends StatefulWidget {
   @override
   _FirstLaunchScreenTwoState createState() => _FirstLaunchScreenTwoState();
@@ -14,6 +16,7 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
   TextEditingController dayTextController;
   TextEditingController monthTextController;
   TextEditingController yearTextController;
+  TextEditingController nameTextController;
 
   @override
   void initState() {
@@ -22,6 +25,7 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
     dayTextController = new TextEditingController();
     monthTextController = new TextEditingController();
     yearTextController = new TextEditingController();
+    nameTextController = new TextEditingController();
   }
 
   @override
@@ -40,7 +44,7 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
                 width: 250,
                 height: 30,
                 child: TextField(
-                  //controller: dayTextController,
+                  controller: nameTextController,
                   decoration: new InputDecoration(),
                   keyboardType: TextInputType.text,
                 ),
@@ -144,7 +148,7 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
                   //controller: dayTextController,
                   decoration: new InputDecoration(),
                   keyboardType: TextInputType.numberWithOptions(
-                      decimal: false, signed: true),
+                      decimal: true, signed: true),
                 ),
               ),
               Text("kg", style: Theme.of(context).textTheme.body2),
@@ -178,7 +182,7 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
               ),
               onPressed: (){
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => FirstLaunchScreenTwo()));
+                    MaterialPageRoute(builder: (context) => FirstLaunchScreenThree()));
               },
             ),
           ),
@@ -192,4 +196,6 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
       this.radioButtonValue = value;
     });
   }
+
+  //TODO: Shared Prefs
 }
