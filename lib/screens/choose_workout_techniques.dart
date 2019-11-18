@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
+import 'package:uebung02/helper/techniques_database_helper.dart';
 
 import 'choose_workout_summary_screen.dart';
 
@@ -15,51 +17,25 @@ class ChooseWorkoutTechniques extends StatefulWidget {
       new _ChooseWorkoutTechniquesState();
 }
 
-List<bool> _checkBoxVal = [
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false
-];
 
 class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
-  List<String> techniques;
-  List<String> list;
+  List<Technique> techniques;
+  List<Technique> list;
+  List<bool> _checkBoxVal;
+  final dbHelper = TechniquesDatabaseHelper.instance;
 
   @override
   void initState() {
     super.initState();
     this.techniques = new List();
+    this.list = new List();
+    this._checkBoxVal = new List();
+    createList();
   }
 
   @override
   Widget build(BuildContext context) {
     //print(widget.workoutInformation.getBreakTime());
-
-    this.list = [
-      "Eins",
-      "Zwei",
-      "Drei",
-      "Vier",
-      "Fünf",
-      "Sechs",
-      "Sieben",
-      "Acht",
-      "Neun",
-      "Zehn",
-      "Elf",
-      "Zwölf",
-      "Dreizehn"
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -90,29 +66,27 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
             );
           }
           index -= 1;
-          return _buildTechniqueListItems(list, index, _checkBoxVal);
+          return _buildTechniqueListItems(index);
         },
       ),
     );
   }
 
-  Widget _buildTechniqueListItems(
-      List<Object> l, int index, List<bool> _checkBoxVal) {
+  Widget _buildTechniqueListItems(int index) {
     return ListTile(
       leading: Checkbox(
         value: _checkBoxVal[index],
         onChanged: (bool value) {
           //print(_checkBoxVal[index]);
-          setState(() => _checkBoxVal[index] = value);
+          setState(() => this._checkBoxVal[index] = value);
           //print(_checkBoxVal[index]);
         },
       ),
       title: Text(
-        l[index],
+        this.list[index].name,
         style: Theme.of(context).textTheme.display2,
       ),
-      subtitle: Text(
-        "Zuletzt: 06. November 2019",
+      subtitle: Text("Datum: ${this.list[index].getLastTrained()}",
         style: Theme.of(context).textTheme.display3,
       ),
       trailing: Row(
@@ -120,13 +94,7 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.security,
-              color: Colors.black,
-            ),
-            onPressed: null,
-          ),
+          this.list[index].getTypeIcon(),
           IconButton(
             icon: Icon(
               Icons.music_note,
@@ -159,7 +127,7 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
 
   void removeFromTechniquesList(int index) {
     for (int i = 0; i < this.techniques.length; i++) {
-      if (this.techniques[i].contains(this.list[index])) {
+      if (this.techniques.remove((this.list[index]))) {
         this.techniques.removeAt(i);
       }
     }
@@ -169,5 +137,28 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
     print("Change to choose-Workout-Summary-Screen");
     widget.workoutInformation.addTechniques(this.techniques);
     Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseWorkoutSummaryScreen(widget.workoutInformation)),);
+  }
+
+  void createList() async {
+    List l;
+    final allRows = await dbHelper.queryAllRows();
+    final techniqueListLength = await dbHelper.queryRowCount();
+    l = allRows.toList();
+    List<Technique> alle = new List();
+    for (int i = 0; i < techniqueListLength; i++) {
+      Technique t = new Technique.fromJson(l.removeAt(0));
+      alle.add(t);
+    }
+
+    Technique t = new Technique("", "", "", "", "", 0, 0, 0);
+    alle = t.sortForLearned(alle);
+
+    setState(() {
+      this.list = alle;
+      for(int i = 0; i < alle.length; i++){
+        this._checkBoxVal.add(false);
+      }
+      print("Liste uebergeben, laenge: ${list.length}");
+    });
   }
 }

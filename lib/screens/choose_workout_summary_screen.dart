@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:uebung02/screens/workout_screen.dart';
@@ -19,7 +20,7 @@ class ChooseWorkoutSummaryScreen extends StatefulWidget {
 
 class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen> {
 
-  List<String> list;
+  List<Technique> list;
   ReusableWidgets _reusableWidgets;
 
   @override
@@ -27,13 +28,6 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
     _reusableWidgets = new ReusableWidgets(context, -1);
     this.list = widget.workoutInformation.getTechniques();
 
-    /*
-    for (int i = 0; i < widget.workoutInformation.getTechniques().length; i++) {
-      print("ListFile: ${widget.workoutInformation.getTechniques()[i]}");
-    }
-     */
-
-    int listIndex = 0;
     return Scaffold(
         appBar: _reusableWidgets.getSimpleAppBar(),
         body: ListView.separated(
@@ -171,7 +165,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
 
   Widget _buildListItems(int index) {
       return new ListTile(
-        title: Text(this.list[index], style: Theme.of(context).textTheme.display2,),
+        title: Text(this.list[index].name, style: Theme.of(context).textTheme.display2,),
         subtitle: Text("Zuletzt: 06. November 2019", style: Theme.of(context).textTheme.display3,),
         trailing: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -190,7 +184,6 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
         ),
         onTap: () {},
       );
-    print("Hah");
 
   }
 

@@ -83,4 +83,19 @@ class Technique {
     );
     return t;
   }
+
+  List<Technique> sortForLearned(List<Technique> l){
+    List<Technique> list = new List();
+    List<Technique> unlearned = new List();
+    for (int i = 0; i < l.length; i++){
+      if (l[i].learned == true){
+        list.add(l[i]);
+      } else {
+        unlearned.add(l[i]);
+      }
+    }
+    list.addAll(unlearned);
+    return list;
+  }
+
 }

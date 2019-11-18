@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/techniques_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
@@ -29,11 +28,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     this._currentDate = DateTime.now();
     createList();
     learnedTechniquesCounter = 0;
-    try {
-      dbHelper.insertList();
-    } catch (e) {
-      print("Fehler: $e");
-    }
   }
 
   @override
@@ -78,8 +72,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   Widget _buildContainerForTechniques(int index) {
     int anzahlListenElemente = 1;
-    List<Technique> learned;
-    List<Technique> notlearned;
     try {
       if (index == 0) {
         anzahlListenElemente = this.learnedTechniquesCounter;
@@ -306,6 +298,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     setState(() {
       Navigator.pushReplacementNamed(context, '/home');
     });
+    return Future.value(true);
   }
 
   void insertDatabaseEntry(Map<String, dynamic> row) async {
@@ -332,7 +325,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     print('deleted $rowsDeleted row(s): row $name');
   }
 
-  Future<int> createList() async {
+  void createList() async {
     List l;
     final allRows = await dbHelper.queryAllRows();
     final techniqueListLength = await dbHelper.queryRowCount();
@@ -358,7 +351,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
       this.notLearnedTechniques = notlearned;
       print("Liste uebergeben, laenge: ${learnedTechniques.length}");
     });
-    return Future.value(0);
   }
 
 }

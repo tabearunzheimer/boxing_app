@@ -1,12 +1,14 @@
 
 
+import 'Technique.dart';
+
 class CurrentWorkoutInformation{
 
   int breakTime;
   int roundAmount;
   int roundLength;
   String type;
-  List <String> techniques;
+  List <Technique> techniques;
 
   CurrentWorkoutInformation(int bt, int ra, int rl, String t){
     this.breakTime = bt;
@@ -15,11 +17,11 @@ class CurrentWorkoutInformation{
     this.type = t;
   }
 
-  void addTechniques(List<String> l){
+  void addTechniques(List<Technique> l){
     this.techniques = l;
   }
 
-  List<String> getTechniques(){
+  List<Technique> getTechniques(){
     return this.techniques;
   }
 
