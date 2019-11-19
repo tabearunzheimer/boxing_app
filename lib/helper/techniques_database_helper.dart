@@ -48,7 +48,7 @@ class TechniquesDatabaseHelper {
   //erstellt die Tabelle
   Future _onCreate(Database db, int version) async {
     await db.execute(
-        '''CREATE TABLE $table($columnId INTEGER PRIMARY KEY, $columnName STRING, $columnType STRING NOT NULL, $columnAudio STRING, $columnLink STRING, $columnLearned STRING, $columnExplanation STRING, $columnLastTrainedDay INTEGER, $columnLastTrainedMonth INTEGER, $columnLastTrainedYear INTEGER)''');
+        '''CREATE TABLE $table($columnId INTEGER PRIMARY KEY, $columnName STRING, $columnType STRING NOT NULL, $columnAudio STRING, $columnLink STRING, $columnExplanation STRING, $columnLearned STRING, $columnLastTrainedDay INTEGER, $columnLastTrainedMonth INTEGER, $columnLastTrainedYear INTEGER)''');
   }
 
   // fuegt eine Spalte hinzu, rueckgabe-wert ist der wert der eingefuegten Spalte

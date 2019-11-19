@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/helper/techniques_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +12,13 @@ class _HomeScreenState extends State<HomeScreen> {
   BuildContext ctx;
   int selectedIndex = 0;
   ReusableWidgets _reusableWidgets;
+  
+  final dbHelper = TechniquesDatabaseHelper.instance;
+  
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ]),
           ),
-          WillPopScope(
+          /*
+           WillPopScope(
             onWillPop: backButtonOverride,
             child: Container(),
-          )
+          ),
+           */
+
         ],
       ),
       bottomNavigationBar: _reusableWidgets.getBottomNavigataionBar(),
@@ -90,9 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
       currentBackPressTime = now;
       //Fluttertoast.showToast(msg: exit_warning);
       print("Show snackbar");
-      final scaffold = Scaffold.of(ctx);
+      //final scaffold = Scaffold.of(ctx);
       //print(scaffold);
-      final snackBar = SnackBar(content: Text('Press two times to exit'), backgroundColor: Colors.red, duration: Duration(seconds: 1),);
+      //final snackBar = SnackBar(content: Text('Press two times to exit'), backgroundColor: Colors.red, duration: Duration(seconds: 1),);
       //print(snackBar.content);
       //print("2 mal druecken fuer schliessen");
     return Future.value(true);

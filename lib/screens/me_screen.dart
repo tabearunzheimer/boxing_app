@@ -165,7 +165,7 @@ class _MeScreenState extends State<MeScreen> {
                   Container(
                     margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
                     height: 50.0,
-                    width: MediaQuery.of(context).size.width/1.1,
+                    width: MediaQuery.of(context).size.width / 1.1,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
@@ -190,6 +190,10 @@ class _MeScreenState extends State<MeScreen> {
                   ),
                 ],
               ),
+            ),
+            WillPopScope(
+              onWillPop: backButtonOverride,
+              child: Container(),
             ),
           ],
         ),

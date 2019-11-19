@@ -26,8 +26,15 @@ class _DiaryScreenState extends State<DiaryScreen> {
   void initState() {
     super.initState();
     this._currentDate = DateTime.now();
+    print("init");
     createList();
     learnedTechniquesCounter = 0;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
   }
 
   @override
@@ -190,9 +197,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
             onPressed: (){
               setState(() {
                 this.learnedTechniquesCounter--;
-                this.notLearnedTechniques[index].learned = false;
+                this.learnedTechniques[index].learned = false;
+                updateDatabaseEntry(this.learnedTechniques[index]);
                 this.notLearnedTechniques.add(this.learnedTechniques[index]);
-                this.notLearnedTechniques.removeAt(index);
+                this.learnedTechniques.removeAt(index);
               });
             },
           ),
@@ -233,6 +241,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
               print("Pressed");
               setState(() {
                 this.notLearnedTechniques[index].learned = true;
+                print("learned: ${this.notLearnedTechniques[index].id} ${this.notLearnedTechniques[index].name}");
+                updateDatabaseEntry(this.notLearnedTechniques[index]);
                 this.learnedTechniques.add(this.notLearnedTechniques[index]);
                 this.learnedTechniquesCounter++;
                 this.notLearnedTechniques.removeAt(index);
@@ -269,8 +279,19 @@ class _DiaryScreenState extends State<DiaryScreen> {
     allRows.forEach((row) => print(row));
   }
 
-  void updateDatabaseEntry(Map<String, dynamic> row) async {
-    // row to update
+  void updateDatabaseEntry(Technique t) async {
+    Map<String, dynamic> row = {
+      TechniquesDatabaseHelper.columnId: t.id,
+      TechniquesDatabaseHelper.columnName: t.name,
+      TechniquesDatabaseHelper.columnAudio: 'weg',
+      TechniquesDatabaseHelper.columnLink: t.getLink(),
+      TechniquesDatabaseHelper.columnExplanation: t.getErklaerung(),
+      TechniquesDatabaseHelper.columnType: t.getType(),
+      TechniquesDatabaseHelper.columnLearned: t.getLearned(),
+      TechniquesDatabaseHelper.columnLastTrainedDay: t.getDay(),
+      TechniquesDatabaseHelper.columnLastTrainedMonth: t.getMonth(),
+      TechniquesDatabaseHelper.columnLastTrainedYear: t.getYear(),
+    };
     final rowsAffected = await dbHelper.update(row);
     print('updated $rowsAffected row(s)');
   }
@@ -284,17 +305,19 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   void createList() async {
     List l;
+    print("Create List");
     final allRows = await dbHelper.queryAllRows();
     final techniqueListLength = await dbHelper.queryRowCount();
     //final allRows = await dbHelper.queryAllRows();
     l = allRows.toList();
-    //print("Liste: ${l.length}");
-    //print("TechniqueListLength: ${techniqueListLength}");
+    print("Liste: ${l.length}");
+    print("TechniqueListLength: ${techniqueListLength}");
     List<Technique> learned = new List();
     List<Technique> notlearned = new List();
     for (int i = 0; i < techniqueListLength; i++) {
-      //print("Remove ${l[0]}");
+      //print("ID ${l[i]}");
       Technique t = new Technique.fromJson(l.removeAt(0));
+      print("ID: ${t.id}");
       if (t.learned){
         learned.add(t);
         learnedTechniquesCounter++;
@@ -306,7 +329,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     setState(() {
       this.learnedTechniques = learned;
       this.notLearnedTechniques = notlearned;
-      print("Liste uebergeben, laenge: ${learnedTechniques.length}");
+      print("Liste uebergeben, laenge: ${notLearnedTechniques.length}");
     });
   }
 

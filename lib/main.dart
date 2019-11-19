@@ -1,49 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/screens/choose_workout_style_screen.dart';
-import 'package:uebung02/screens/choose_workout_summary_screen.dart';
-import 'package:uebung02/screens/choose_workout_techniques.dart';
 import 'package:uebung02/screens/diary_screen.dart';
 import 'package:uebung02/screens/done_workout_screen.dart';
 import 'package:uebung02/screens/first_launch_one_screen.dart';
 import 'package:uebung02/screens/home_screen.dart';
 import 'package:uebung02/screens/me_screen.dart';
 import 'package:uebung02/screens/rate_workout_screen.dart';
-import 'package:uebung02/screens/technique_details_screen.dart';
-import 'package:uebung02/screens/workout_screen.dart';
-
-import 'helper/techniques_database_helper.dart';
+import 'package:uebung02/screens/splash_screen.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  SharedPreferences prefs;
-  bool firstLaunch;
-  String launchkey = 'firstLaunKey';
-
 
   @override
   Widget build(BuildContext context) {
-
-    final dbHelper = TechniquesDatabaseHelper.instance;
-
-      SharedPreferences.getInstance().then((sp) {
-      this.prefs = sp;
-      loadBool(launchkey);
-      if (this.firstLaunch){
-        dbHelper.insertList();
-        setBool(launchkey, false);
-        try {
-          dbHelper.insertList();
-        } catch (e) {
-          print("Fehler: $e");
-          setBool(launchkey, true);
-        }
-      }
-    });
-     //TODO: Bei first launch starte mit firstlaunchscreen, sonst homescreen
-
-
 
     return MaterialApp(
       title: 'Basis App',
@@ -73,21 +43,11 @@ class MyApp extends StatelessWidget {
         '/diary' : (context) => DiaryScreen(),
         '/me' : (context) => MeScreen(),
         '/chooseWorkoutStyle' : (context) => ChooseWorkoutStyleScreen(),
-        //'/TechniqueDetailsScreen' : (context) => TechniqueDetailsScreen(),
         '/RateWorkoutScreen' : (context) => RateWorkoutScreen(),
         '/DoneWorkoutScreen' : (context) => DoneWorkoutScreen(),
+        '/FirstLaunchScreen' : (context) => FirstLaunchScreenOne(),
       },
-      home: FirstLaunchScreenOne(),
+      home: SplashScreen(),
     );
-  }
-
-  Future<Null> setBool(String key, bool b) async {
-    await this.prefs.setBool(key, b);
-    print("Bool saved");
-  }
-
-  void loadBool(String key) async {
-      print("Get data");
-      this.firstLaunch = prefs.get(key) ?? true;
   }
 }
