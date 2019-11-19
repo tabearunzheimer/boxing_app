@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/helper/date_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,20 +10,24 @@ class MeScreen extends StatefulWidget {
 
 class _MeScreenState extends State<MeScreen> {
   SharedPreferences prefs;
-  int weight;
+  double weight;
   String userName;
   String email;
   DateTime age;
   String gender;
   int userSize;
+  int userTrainingDays;
   int selectedIndex = 2;
   ReusableWidgets _reusableWidgets;
+  DateHelper datehelper = new DateHelper();
 
   static const String userWeightKey = 'userWeight';
   static const String userGenderKey = 'userGender';
   static const String userSizeKey = 'userSize';
   static const String userNameKey = 'userName';
   static const String userEmailKey = 'userEmail';
+  static const String userBirthdayKey = 'userBirthday';
+  static const String trainingDaysKey = 'userTrainingDays';
 
   @override
   void initState() {
@@ -33,14 +38,15 @@ class _MeScreenState extends State<MeScreen> {
       loadString(userEmailKey);
       loadString(userGenderKey);
       loadInt(userSizeKey);
-      loadInt(userWeightKey);
+      loadInt(userBirthdayKey);
+      loadInt(trainingDaysKey);
+      loadDouble(userWeightKey);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     _reusableWidgets = new ReusableWidgets(context, selectedIndex);
-    age = new DateTime.utc(1999, DateTime.june, 28);
     /*
     setUserSize(163);
     setUserGender("Weiblich");
@@ -51,140 +57,141 @@ class _MeScreenState extends State<MeScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: _reusableWidgets.getAppBar(),
-      body: WillPopScope(
-        onWillPop: backButtonOverride,
-        child: Container(
-          //margin: EdgeInsets.all(10),
-          //color: Colors.green,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              buildUserPicture(),
-              Container(
-                height: (MediaQuery.of(context).size.height / 2),
-                width: (MediaQuery.of(context).size.width),
-                padding: EdgeInsets.all(10),
-                //color: Colors.red,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            buildUserPicture(),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            "$userName",
-                            style: Theme.of(context).textTheme.display4,
-                          ),
-                          IconButton(
-                            onPressed: null,
-                            icon: Icon(Icons.edit),
-                          ),
-                        ],
-                      ),
                       Text(
-                        "$email",
-                        style: Theme.of(context).textTheme.body2,
+                        "$userName",
+                        style: Theme.of(context).textTheme.display4,
                       ),
-                      Divider(
-                        color: Colors.grey,
+                      IconButton(
+                        onPressed: null,
+                        icon: Icon(Icons.edit),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "$email",
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        width: 180.0,
+                        height: 50.0,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          color: Color.fromRGBO(200, 0, 0, 1),
+                          disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                          child: Text(
+                            "$gender",
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          onPressed: null,
+                        ),
                       ),
                       Container(
-                        margin: EdgeInsets.all(10),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                            width: 180.0,
-                            height: 50.0,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              color: Color.fromRGBO(200, 0, 0, 1),
-                              disabledColor: Color.fromRGBO(200, 0, 0, 1),
-                              child: Text(
-                                "$gender",
-                                style: Theme.of(context).textTheme.body1,
-                              ),
-                              onPressed: null,
-                            ),
+                        width: 180.0,
+                        height: 50.0,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          color: Color.fromRGBO(200, 0, 0, 1),
+                          disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                          child: Text(
+                            "${this.age.day}\. ${datehelper.getMonthName(this.age.month)} ${this.age.year}",
+                            style: Theme.of(context).textTheme.body1,
                           ),
-                          Container(
-                            width: 180.0,
-                            height: 50.0,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              color: Color.fromRGBO(200, 0, 0, 1),
-                              disabledColor: Color.fromRGBO(200, 0, 0, 1),
-                              child: Text(
-                                "28. Oktober 1999",
-                                style: Theme.of(context).textTheme.body1,
-                              ),
-                              onPressed: null,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(10),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                            width: 180.0,
-                            height: 50.0,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              color: Color.fromRGBO(200, 0, 0, 1),
-                              disabledColor: Color.fromRGBO(200, 0, 0, 1),
-                              child: Text(
-                                "$weight kg",
-                                style: Theme.of(context).textTheme.body1,
-                              ),
-                              onPressed: null,
-                            ),
-                          ),
-                          Container(
-                            width: 180.0,
-                            height: 50.0,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              color: Color.fromRGBO(200, 0, 0, 1),
-                              disabledColor: Color.fromRGBO(200, 0, 0, 1),
-                              child: Text(
-                                "$userSize cm",
-                                style: Theme.of(context).textTheme.body1,
-                              ),
-                              onPressed: null,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(10),
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                          "Zitat des Tages\nAll sounds and vibrations emanate from that Word. Your voice is a very powerful weapon. When you are in tune with the cosmic breath of heaven and earth, your voice produces true sounds. Unify body, mind and speech, and real techniques will emerge. ~ Morihei Ueshiba (The Art of Peace)",
-                          style: Theme.of(context).textTheme.body2,
+                          onPressed: null,
                         ),
                       ),
                     ],
                   ),
-                ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        width: 180.0,
+                        height: 50.0,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          color: Color.fromRGBO(200, 0, 0, 1),
+                          disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                          child: Text(
+                            "$weight kg",
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          onPressed: null,
+                        ),
+                      ),
+                      Container(
+                        width: 180.0,
+                        height: 50.0,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          color: Color.fromRGBO(200, 0, 0, 1),
+                          disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                          child: Text(
+                            "$userSize cm",
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          onPressed: null,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                    height: 50.0,
+                    width: MediaQuery.of(context).size.width/1.1,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: Color.fromRGBO(200, 0, 0, 1),
+                      disabledColor: Color.fromRGBO(200, 0, 0, 1),
+                      child: Text(
+                        "Trainingstage pro Woche: ${this.userTrainingDays}",
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                      onPressed: null,
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      "Zitat des Tages\nAll sounds and vibrations emanate from that Word. Your voice is a very powerful weapon. When you are in tune with the cosmic breath of heaven and earth, your voice produces true sounds. Unify body, mind and speech, and real techniques will emerge.\nMorihei Ueshiba (The Art of Peace)",
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.9),
@@ -230,13 +237,33 @@ class _MeScreenState extends State<MeScreen> {
   void loadInt(String key) async {
     setState(() {
       switch (key) {
-        case 'userWeight':
-          this.weight = prefs.get(key) ?? "No Data";
+        case 'userBirthday':
+          int x = prefs.get(key) ?? 0;
+          int day = (x % 100);
+          x = (x / 100).round();
+          int month = (x % 100);
+          x = (x / 100).round();
+          this.age = new DateTime(x, month, day);
+          print(this.age);
           break;
         case 'userSize':
           this.userSize = prefs.get(key) ?? "No Data";
           break;
+        case 'userTrainingDays':
+          this.userTrainingDays = prefs.get(key) ?? 0;
+          break;
       }
+    });
+  }
+
+  Future<Null> setDouble(String key, double w) async {
+    await this.prefs.setDouble(key, w);
+    print("Double saved");
+  }
+
+  void loadDouble(String key) async {
+    setState(() {
+      this.weight = prefs.get(key) ?? "No Data";
     });
   }
 
@@ -267,4 +294,13 @@ class _MeScreenState extends State<MeScreen> {
       Navigator.pushReplacementNamed(context, '/home');
     });
   }
+
+/*
+  WillPopScope(
+        onWillPop: backButtonOverride,
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          color: Colors.green,
+          child:
+   */
 }

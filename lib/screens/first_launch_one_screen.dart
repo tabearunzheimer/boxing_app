@@ -52,7 +52,7 @@ class _FirstLaunchScreenOneState extends State<FirstLaunchScreenOne> {
               Container(
                 padding: EdgeInsets.all(50),
                 child: Text(
-                  "Um dein Training zu optimieren bitten wir dich in den folgenden Screens ein paar Angaben zu machen. Diese werden nicht an Dritte weitergereicht sondern dienen lediglich zur besseren Nutzung der App. Du musst die Angaben nicht machen, aber es wäre gut.\n Viel Spaß mit der App.",
+                  "Um dein Training zu optimieren bitten wir dich im folgenden ein paar Angaben zu machen. Diese werden nicht an Dritte weitergegeben sondern dienen lediglich zur besseren Nutzung der App. Du musst die Angaben nicht machen, aber es wäre gut.\n Viel Spaß mit der App.",
                   textAlign: TextAlign.center,
                 ),
               ),

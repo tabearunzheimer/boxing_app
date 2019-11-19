@@ -156,49 +156,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     );
   }
 
-  String getMonthName() {
-    String erg = "";
-    switch (this._currentDate.month) {
-      case 0:
-        erg = "Januar";
-        break;
-      case 1:
-        erg = "Februar";
-        break;
-      case 2:
-        erg = "März";
-        break;
-      case 3:
-        erg = "April";
-        break;
-      case 4:
-        erg = "Mai";
-        break;
-      case 5:
-        erg = "Juni";
-        break;
-      case 6:
-        erg = "Juli";
-        break;
-      case 7:
-        erg = "August";
-        break;
-      case 8:
-        erg = "September";
-        break;
-      case 9:
-        erg = "Oktober";
-        break;
-      case 11:
-        erg = "November";
-        break;
-      case 12:
-        erg = "Dezemeber";
-        break;
-    }
-    return erg;
-  }
-
   Widget buildStatistics() {
     return null;
   }
