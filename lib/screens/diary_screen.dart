@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:uebung02/helper/Technique.dart';
+import 'package:uebung02/helper/date_helper.dart';
 import 'package:uebung02/helper/techniques_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:uebung02/screens/technique_details_screen.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+
     show CalendarCarousel;
 
 class DiaryScreen extends StatefulWidget {
@@ -16,9 +19,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
   int selectedIndex = 1;
   ReusableWidgets _reusableWidgets;
   DateTime _currentDate;
+  DateTime _showedMonth;
   List<Technique> learnedTechniques;
   List<Technique> notLearnedTechniques;
   int learnedTechniquesCounter;
+  DateHelper datehelper;
+
 
   final dbHelper = TechniquesDatabaseHelper.instance;
 
@@ -26,8 +32,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
   void initState() {
     super.initState();
     this._currentDate = DateTime.now();
+    this._showedMonth = DateTime.now();
     print("init");
     createList();
+    datehelper = new DateHelper();
     learnedTechniquesCounter = 0;
   }
 
@@ -148,6 +156,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
         /// null for not rendering any border, true for circular border, false for rectangular border
         headerTextStyle: Theme.of(context).textTheme.display2,
         firstDayOfWeek: DateTime.monday,
+        //headerText: "${datehelper.getMonthName(this._showedMonth.month)} ${this._showedMonth.year}",
         iconColor: Color.fromRGBO(0, 0, 0, 1),
         selectedDayButtonColor: Color.fromRGBO(200, 0, 0, 1),
         selectedDayTextStyle: Theme.of(context).textTheme.display1,
@@ -190,7 +199,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
               Icons.music_note,
               color: Colors.black,
             ),
-            onPressed: null,
+            onPressed: (){
+                this.learnedTechniques[index].speak();
+            },
           ),
           IconButton(
             icon: this.learnedTechniques[index].getLearnedIcon(),
@@ -233,7 +244,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
               Icons.music_note,
               color: Colors.black,
             ),
-            onPressed: null,
+            onPressed: (){
+              this.notLearnedTechniques[index].speak();
+            },
           ),
           IconButton(
             icon: this.notLearnedTechniques[index].getLearnedIcon(),
@@ -268,11 +281,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return Future.value(true);
   }
 
-  void insertDatabaseEntry(Map<String, dynamic> row) async {
-    final id = await dbHelper.insert(row);
-    print('inserted row id: $id');
-  }
-
   void query() async {
     final allRows = await dbHelper.queryAllRows();
     print('query all rows:');
@@ -283,7 +291,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     Map<String, dynamic> row = {
       TechniquesDatabaseHelper.columnId: t.id,
       TechniquesDatabaseHelper.columnName: t.name,
-      TechniquesDatabaseHelper.columnAudio: 'weg',
       TechniquesDatabaseHelper.columnLink: t.getLink(),
       TechniquesDatabaseHelper.columnExplanation: t.getErklaerung(),
       TechniquesDatabaseHelper.columnType: t.getType(),
@@ -294,13 +301,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     };
     final rowsAffected = await dbHelper.update(row);
     print('updated $rowsAffected row(s)');
-  }
-
-  void deleteDatabaseEntry(String name) async {
-    // Assuming that the number of rows is the id for the last row.
-    //final id = await dbHelper.queryRowCount();
-    final rowsDeleted = await dbHelper.delete(name);
-    print('deleted $rowsDeleted row(s): row $name');
   }
 
   void createList() async {
@@ -333,4 +333,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
     });
   }
 
+
+
+
+
+  void talk(Technique t) {
+
+  }
 }

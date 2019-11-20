@@ -5,8 +5,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'Technique.dart';
-
 class TechniquesDatabaseHelper {
   static final _databaseName = "Techniken";
   static final _databaseVersion = 1;
@@ -16,7 +14,6 @@ class TechniquesDatabaseHelper {
   static final columnId = '_id';
   static final columnName = 'name';
   static final columnType = 'type';
-  static final columnAudio = 'audio';
   static final columnLink = 'link';
   static final columnLearned = 'learned';
   static final columnExplanation = 'explaination';
@@ -48,7 +45,7 @@ class TechniquesDatabaseHelper {
   //erstellt die Tabelle
   Future _onCreate(Database db, int version) async {
     await db.execute(
-        '''CREATE TABLE $table($columnId INTEGER PRIMARY KEY, $columnName STRING, $columnType STRING NOT NULL, $columnAudio STRING, $columnLink STRING, $columnExplanation STRING, $columnLearned STRING, $columnLastTrainedDay INTEGER, $columnLastTrainedMonth INTEGER, $columnLastTrainedYear INTEGER)''');
+        '''CREATE TABLE $table($columnId INTEGER PRIMARY KEY, $columnName STRING, $columnType STRING NOT NULL, $columnLink STRING, $columnExplanation STRING, $columnLearned STRING, $columnLastTrainedDay INTEGER, $columnLastTrainedMonth INTEGER, $columnLastTrainedYear INTEGER)''');
   }
 
   // fuegt eine Spalte hinzu, rueckgabe-wert ist der wert der eingefuegten Spalte
@@ -107,7 +104,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 1,
         TechniquesDatabaseHelper.columnName: 'Jab',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=CxyFoWIjltw',
         TechniquesDatabaseHelper.columnExplanation:
@@ -121,7 +117,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 2,
         TechniquesDatabaseHelper.columnName: 'Cross',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=YI0uAx1QPvI',
         TechniquesDatabaseHelper.columnExplanation:
@@ -135,7 +130,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 3,
         TechniquesDatabaseHelper.columnName: 'Hook',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=x7PRrk8QGQ4',
         TechniquesDatabaseHelper.columnExplanation:
@@ -149,7 +143,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 4,
         TechniquesDatabaseHelper.columnName: 'Uppercut',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=ZmxyguvPwlo',
         TechniquesDatabaseHelper.columnExplanation:
@@ -163,7 +156,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 5,
         TechniquesDatabaseHelper.columnName: 'Liver-Hook',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=VD4D5RzeqjA',
         TechniquesDatabaseHelper.columnExplanation:
@@ -177,7 +169,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 6,
         TechniquesDatabaseHelper.columnName: 'Overhand',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/results?search_query=overhand+tutorial',
         TechniquesDatabaseHelper.columnExplanation:
@@ -191,7 +182,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 7,
         TechniquesDatabaseHelper.columnName: 'Spinning Backfist',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=7Vn2NycQDJw',
         TechniquesDatabaseHelper.columnExplanation:
@@ -205,7 +195,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 8,
         TechniquesDatabaseHelper.columnName: 'Elbow',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=1QLgwAHaQlM',
         TechniquesDatabaseHelper.columnExplanation:
@@ -219,7 +208,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 9,
         TechniquesDatabaseHelper.columnName: 'Uppercut Elbow',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=bzbPaglKW4o',
         TechniquesDatabaseHelper.columnExplanation:
@@ -233,7 +221,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 10,
         TechniquesDatabaseHelper.columnName: 'Spinning Elbow',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=BX5DkOpS154',
         TechniquesDatabaseHelper.columnExplanation:
@@ -247,7 +234,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 11,
         TechniquesDatabaseHelper.columnName: 'Front Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=kGp3ZnJcS5s',
         TechniquesDatabaseHelper.columnExplanation:
@@ -261,7 +247,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 12,
         TechniquesDatabaseHelper.columnName: 'Low Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=Rm_6-TQHiu0',
         TechniquesDatabaseHelper.columnExplanation:
@@ -275,7 +260,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 13,
         TechniquesDatabaseHelper.columnName: 'Round House Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=HlL-wf1ec0M',
         TechniquesDatabaseHelper.columnExplanation:
@@ -289,7 +273,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 14,
         TechniquesDatabaseHelper.columnName: 'Round House Kick High',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=ZsljR6pD5oI',
         TechniquesDatabaseHelper.columnExplanation:
@@ -303,7 +286,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 15,
         TechniquesDatabaseHelper.columnName: 'Knee',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=tvhePDsYSXA',
         TechniquesDatabaseHelper.columnExplanation:
@@ -317,7 +299,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 16,
         TechniquesDatabaseHelper.columnName: 'Switch Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=Hl4xhjTzT08',
         TechniquesDatabaseHelper.columnExplanation:
@@ -331,7 +312,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 17,
         TechniquesDatabaseHelper.columnName: 'Axe Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=Xg9W4bIXOr0',
         TechniquesDatabaseHelper.columnExplanation:
@@ -345,7 +325,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 18,
         TechniquesDatabaseHelper.columnName: 'Side Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=Ojd0j2CIaGU',
         TechniquesDatabaseHelper.columnExplanation:
@@ -359,7 +338,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 19,
         TechniquesDatabaseHelper.columnName: 'Front Round House Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=BtnwY-j091A',
         TechniquesDatabaseHelper.columnExplanation:
@@ -373,7 +351,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 20,
         TechniquesDatabaseHelper.columnName: 'Hook Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=opaFWJAxRq0',
         TechniquesDatabaseHelper.columnExplanation:
@@ -387,7 +364,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 21,
         TechniquesDatabaseHelper.columnName: 'Side Hook Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=opaFWJAxRq0',
         TechniquesDatabaseHelper.columnExplanation:
@@ -401,7 +377,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 22,
         TechniquesDatabaseHelper.columnName: 'Back Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=QjdZK27kfU4',
         TechniquesDatabaseHelper.columnExplanation:
@@ -415,7 +390,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 23,
         TechniquesDatabaseHelper.columnName: 'Spinning Hook Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=dl-C3ExAk8Y',
         TechniquesDatabaseHelper.columnExplanation:
@@ -429,7 +403,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 24,
         TechniquesDatabaseHelper.columnName: 'Tornado Kick',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=1n5sR5m7OF0',
         TechniquesDatabaseHelper.columnExplanation:
@@ -443,7 +416,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 25,
         TechniquesDatabaseHelper.columnName: 'Superman Punch',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=SrxEe0Hxtyc',
         TechniquesDatabaseHelper.columnExplanation:
@@ -457,7 +429,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 26,
         TechniquesDatabaseHelper.columnName: 'Elbow Blitz',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=6qRDsPNaSoc',
         TechniquesDatabaseHelper.columnExplanation:
@@ -471,7 +442,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 27,
         TechniquesDatabaseHelper.columnName: 'Straight Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=WEcv_JI85D8',
         TechniquesDatabaseHelper.columnExplanation:
@@ -485,7 +455,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 28,
         TechniquesDatabaseHelper.columnName: 'Hook Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=8ngdo-q2WiA',
         TechniquesDatabaseHelper.columnExplanation:
@@ -499,7 +468,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 29,
         TechniquesDatabaseHelper.columnName: 'Uppercut Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=oOhhjhbAS-o',
         TechniquesDatabaseHelper.columnExplanation:
@@ -513,7 +481,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 30,
         TechniquesDatabaseHelper.columnName: 'Bodyshot Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=8ngdo-q2WiA',
         TechniquesDatabaseHelper.columnExplanation:
@@ -527,7 +494,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 31,
         TechniquesDatabaseHelper.columnName: 'Front Kick Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=kfmO67CN7fY',
         TechniquesDatabaseHelper.columnExplanation:
@@ -541,7 +507,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 32,
         TechniquesDatabaseHelper.columnName: 'Low Kick Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=YSRmPDWYXKU',
         TechniquesDatabaseHelper.columnExplanation:
@@ -555,7 +520,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 33,
         TechniquesDatabaseHelper.columnName: 'Knee Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=JfftU5-zRNw',
         TechniquesDatabaseHelper.columnExplanation:
@@ -569,7 +533,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 34,
         TechniquesDatabaseHelper.columnName: 'Side Kick Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=Y7--ERM-gpA',
         TechniquesDatabaseHelper.columnExplanation:
@@ -583,7 +546,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 35,
         TechniquesDatabaseHelper.columnName: 'High Kick Block',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=Nv5AVzL_JGI',
         TechniquesDatabaseHelper.columnExplanation:
@@ -597,7 +559,6 @@ class TechniquesDatabaseHelper {
       {
         TechniquesDatabaseHelper.columnId: 36,
         TechniquesDatabaseHelper.columnName: 'Duck Under',
-        TechniquesDatabaseHelper.columnAudio: 'way',
         TechniquesDatabaseHelper.columnLink:
             'https://www.youtube.com/watch?v=tkbqpTD2aHs',
         TechniquesDatabaseHelper.columnExplanation:

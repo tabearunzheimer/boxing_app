@@ -150,7 +150,7 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
       alle.add(t);
     }
 
-    Technique t = new Technique(0, "", "", "", "", "", "", 0, 0, 0);
+    Technique t = new Technique(0, "", "", "", "", "", 0, 0, 0);
     alle = t.sortByLearned(alle);
 
     setState(() {
