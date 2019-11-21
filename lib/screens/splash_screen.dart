@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/techniques_database_helper.dart';
+import 'package:uebung02/helper/workout_database_helper.dart';
 
 import 'first_launch_one_screen.dart';
 import 'home_screen.dart';
@@ -14,7 +15,8 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends State<SplashScreen> {
 
-  final dbHelper = TechniquesDatabaseHelper.instance;
+  final dbHelperTechniques = TechniquesDatabaseHelper.instance;
+  final dbHelperWorkout = WorkoutDatabaseHelper.instance;
 
   @override
   void initState() {
@@ -42,7 +44,9 @@ class SplashScreenState extends State<SplashScreen> {
           new MaterialPageRoute(builder: (context) => HomeScreen()));
     } else {
       prefs.setBool('seen', true);
-      dbHelper.insertList();
+      dbHelperTechniques.insertList();
+      Map<String, dynamic> row = {};
+      dbHelperWorkout.insert(row);
       Navigator.of(context).pushReplacement(
           new MaterialPageRoute(builder: (context) => FirstLaunchScreenOne()));
     }

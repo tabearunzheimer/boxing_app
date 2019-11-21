@@ -9,7 +9,7 @@ class TechniquesDatabaseHelper {
   static final _databaseName = "Techniken";
   static final _databaseVersion = 1;
 
-  static final table = 'my_table';
+  static final table = 'techniques_table';
 
   static final columnId = '_id';
   static final columnName = 'name';

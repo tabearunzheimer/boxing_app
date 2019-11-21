@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:uebung02/helper/Technique.dart';
+import 'package:uebung02/helper/Workout.dart';
 import 'package:uebung02/helper/date_helper.dart';
 import 'package:uebung02/helper/techniques_database_helper.dart';
+import 'package:uebung02/helper/workout_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:uebung02/screens/technique_details_screen.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -22,11 +23,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
   DateTime _showedMonth;
   List<Technique> learnedTechniques;
   List<Technique> notLearnedTechniques;
+  List<Workout> workoutList;
   int learnedTechniquesCounter;
+  int workoutCounter;
   DateHelper datehelper;
 
+  final dbHelperTechniques = TechniquesDatabaseHelper.instance;
+  final dbHelperWorkouts = WorkoutDatabaseHelper.instance;
 
-  final dbHelper = TechniquesDatabaseHelper.instance;
 
   @override
   void initState() {
@@ -34,9 +38,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
     this._currentDate = DateTime.now();
     this._showedMonth = DateTime.now();
     print("init");
-    createList();
     datehelper = new DateHelper();
     learnedTechniquesCounter = 0;
+    workoutCounter = 0;
+    createTechniquesList();
+    createWorkoutsList();
   }
 
   @override
@@ -80,21 +86,24 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return ExpansionTile(
       title: Text(ll[index]),
       children: <Widget>[
-        _buildContainerForTechniques(index),
+        _buildContainer(index),
       ],
     );
   }
 
-  Widget _buildContainerForTechniques(int index) {
+  Widget _buildContainer(int index) {
     int anzahlListenElemente = 1;
     try {
-      if (index == 0) {
-        anzahlListenElemente = this.learnedTechniquesCounter;
-        anzahlListenElemente = (this.learnedTechniquesCounter == 0) ? 1 : this.learnedTechniquesCounter;
-        //print("Laenge: ${this.techniques.length}");
-      }
-      if (index == 1) {
-        anzahlListenElemente = this.notLearnedTechniques.length;
+      switch(index){
+        case 0:
+          anzahlListenElemente = this.learnedTechniquesCounter;
+          anzahlListenElemente = (this.learnedTechniquesCounter == 0) ? 1 : this.learnedTechniquesCounter;
+          break;
+        case 1:
+          anzahlListenElemente = this.notLearnedTechniques.length;
+          break;
+        case 2:
+          anzahlListenElemente = (this.workoutCounter == 0) ? 1 : this.workoutCounter;
       }
     } catch (e) {
       print(e);
@@ -123,7 +132,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
                   return _buildNotLearnedTechniqueListItems(indexZwei);
                   break;
                 case 2:
-                  return buildWorkouts(); //vergangene Workout-Liste
+                  if (this.workoutCounter == 0){
+                    return Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text("Keine gespeicherten Workouts", style: Theme.of(context).textTheme.body2,),
+                    );
+                  } else {
+                    return _buildWorkoutListItems(indexZwei);
+                  }
                   break;
                 case 3:
                   return buildStatistics(); //Statistiken
@@ -176,8 +192,20 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return null;
   }
 
-  Widget buildWorkouts() {
-    return null;
+  /*
+  ${this.workoutList[index].getType()}
+  Datum: ${this.workoutList[index].getDateTime()}
+  ${this.workoutList[index].getDuration()}
+   */
+
+  Widget _buildWorkoutListItems(int index){
+    print("index ${index}");
+    return ListTile(
+      title: Text("${this.workoutList[index].getType()}"),
+      subtitle: Text("Datum: ${this.workoutList[index].getDateTimeString()}", style: TextStyle(fontSize: 15.0),),
+      trailing: Text("${this.workoutList[index].getDuration()} min", style: Theme.of(context).textTheme.body2,),
+      onTap: null,
+    );
   }
 
   Widget _buildLearnedTechniqueListItems(int index) {
@@ -209,7 +237,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
               setState(() {
                 this.learnedTechniquesCounter--;
                 this.learnedTechniques[index].learned = false;
-                updateDatabaseEntry(this.learnedTechniques[index]);
+                updateTechniquesDatabaseEntry(this.learnedTechniques[index]);
                 this.notLearnedTechniques.add(this.learnedTechniques[index]);
                 this.learnedTechniques.removeAt(index);
               });
@@ -255,7 +283,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
               setState(() {
                 this.notLearnedTechniques[index].learned = true;
                 print("learned: ${this.notLearnedTechniques[index].id} ${this.notLearnedTechniques[index].name}");
-                updateDatabaseEntry(this.notLearnedTechniques[index]);
+                updateTechniquesDatabaseEntry(this.notLearnedTechniques[index]);
                 this.learnedTechniques.add(this.notLearnedTechniques[index]);
                 this.learnedTechniquesCounter++;
                 this.notLearnedTechniques.removeAt(index);
@@ -282,12 +310,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   void query() async {
-    final allRows = await dbHelper.queryAllRows();
+    final allRows = await dbHelperTechniques.queryAllRows();
     print('query all rows:');
     allRows.forEach((row) => print(row));
   }
 
-  void updateDatabaseEntry(Technique t) async {
+  void updateTechniquesDatabaseEntry(Technique t) async {
     Map<String, dynamic> row = {
       TechniquesDatabaseHelper.columnId: t.id,
       TechniquesDatabaseHelper.columnName: t.name,
@@ -299,23 +327,24 @@ class _DiaryScreenState extends State<DiaryScreen> {
       TechniquesDatabaseHelper.columnLastTrainedMonth: t.getMonth(),
       TechniquesDatabaseHelper.columnLastTrainedYear: t.getYear(),
     };
-    final rowsAffected = await dbHelper.update(row);
+    final rowsAffected = await dbHelperTechniques.update(row);
     print('updated $rowsAffected row(s)');
   }
 
-  void createList() async {
+  void createTechniquesList() async {
     List l;
     print("Create List");
-    final allRows = await dbHelper.queryAllRows();
-    final techniqueListLength = await dbHelper.queryRowCount();
+    final allRows = await dbHelperTechniques.queryAllRows();
+    final techniqueListLength = await dbHelperTechniques.queryRowCount();
     //final allRows = await dbHelper.queryAllRows();
     l = allRows.toList();
     print("Liste: ${l.length}");
     print("TechniqueListLength: ${techniqueListLength}");
     List<Technique> learned = new List();
     List<Technique> notlearned = new List();
+
     for (int i = 0; i < techniqueListLength; i++) {
-      //print("ID ${l[i]}");
+      //print("${l[0]}");
       Technique t = new Technique.fromJson(l.removeAt(0));
       print("ID: ${t.id}");
       if (t.learned){
@@ -333,11 +362,26 @@ class _DiaryScreenState extends State<DiaryScreen> {
     });
   }
 
+  void createWorkoutsList() async{
+    List l;
+    print("Create Workout List");
+    final allRows = await dbHelperWorkouts.queryAllRows();
+    l = allRows.toList();
+    List<Workout> erg = new List();
+    print("Workout Liste: ${l.length}");
+    int x = l.length;
+    for (int i = 0; i < x; i++) {
+      print(l[i].toString());
+      Workout w = new Workout.fromJson(l[0]);
+      erg.add(w);
+    }
 
 
-
-
-  void talk(Technique t) {
-
+    setState(() {
+      this.workoutList = erg;
+      this.workoutCounter = x;
+      print("Workout-Liste uebergeben, laenge: ${this.workoutList.length}");
+    });
   }
+
 }

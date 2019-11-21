@@ -75,21 +75,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
       subtitle: Text("Datum: ${this.learnedTechniques[index].getLastTrained()}",
         style: Theme.of(context).textTheme.display3,
       ),
-      trailing: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          this.learnedTechniques[index].getTypeIcon(),
-          IconButton(
-            icon: Icon(
-              Icons.music_note,
-              color: Colors.black,
-            ),
-            onPressed: null,
-          ),
-        ],
-      ),
+      trailing: this.learnedTechniques[index].getTypeIcon(),
       onTap: () {
         if (_checkBoxVal[index]) {
           print("entfernen");

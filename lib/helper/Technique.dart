@@ -48,19 +48,19 @@ class Technique {
     return "${this.lastTrained.day}.${this.lastTrained.month}.${this.lastTrained.year}";
   }
 
-  Icon getTypeIcon() {
+  IconButton getTypeIcon() {
     switch (this.type) {
       case 'Offense':
-        return Icon(Icons.gps_fixed, color: Colors.black);
+        return IconButton(icon: Icon(Icons.gps_fixed, color: Colors.black,), onPressed: null,);
         break;
       case 'Defense':
-        return Icon(Icons.security, color: Colors.black);
+        return IconButton(icon: Icon(Icons.security, color: Colors.black), onPressed: null,);
         break;
       case 'Combo':
-        return Icon(Icons.merge_type, color: Colors.black);
+        return IconButton(icon: Icon(Icons.merge_type, color: Colors.black), onPressed: null,);
         break;
       default:
-        return Icon(Icons.help_outline, color: Colors.black);
+        return IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: null,);
     }
   }
 
@@ -100,7 +100,7 @@ class Technique {
     list.addAll(unlearned);
     return list;
   }
-
+  
   //Quicksort
   void sortById(List<Technique> list, int left, int right) {
     int i = left;
@@ -156,6 +156,6 @@ class Technique {
     flutterTts.setSpeechRate(1.5);
     flutterTts.setVolume(1.0);
     flutterTts.setPitch(1.0);
-    var result = await flutterTts.speak(text.toLowerCase());
+    await flutterTts.speak(text.toLowerCase());
   }
 }

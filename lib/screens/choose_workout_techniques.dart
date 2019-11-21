@@ -94,14 +94,13 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          this.list[index].getTypeIcon(),
           IconButton(
-            icon: Icon(
-              Icons.music_note,
-              color: Colors.black,
-            ),
-            onPressed: null,
+            icon: Icon(Icons.music_note, color: Colors.black,),
+            onPressed: (){
+              this.list[index].speak();
+            },
           ),
+          this.list[index].getTypeIcon(),
         ],
       ),
       onTap: () {
