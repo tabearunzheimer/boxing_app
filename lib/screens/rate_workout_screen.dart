@@ -98,6 +98,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                       return Text(
                         getRatingDefinition(),
                         style: Theme.of(context).textTheme.subtitle,
+                        textAlign: TextAlign.center,
                       );
                     }),
 
@@ -127,7 +128,6 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-
             ///Animation zum bewerten
             child: GestureDetector(
               onHorizontalDragStart: (DragStartDetails details) =>
@@ -212,7 +212,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
       if (this.posx <= i && this.posx >= alt) {
-        return " Wertung: $index";
+        return ratingDefinition(index);
       }
       alt = i;
       index++;
@@ -226,7 +226,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
       if (this.posx <= i && this.posx >= alt) {
-        return "Bewertungstext $index\n Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam";
+        return ratingText(index);
       }
       alt = i;
       index++;
@@ -243,5 +243,59 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pushNamed(context, '/DoneWorkoutScreen');
+  }
+  
+  String ratingText(int i){
+    String erg = "";
+    switch (i){
+      case 1: erg = "Normale Atmung. Das war keine Anstrengung.";
+        break;
+      case 2: erg = "Leicht erhöhte Atmung. Das war keine besonders große Anstrengung.";
+        break;
+      case 3: erg = "Erhöhte Atmung. Das war etwas anstrengend.";
+        break;
+      case 4: erg = "Erhöhte Atmung und etwas erhöhter Puls. Es war etwas anstrengend aber keine Herausforderung.";
+        break;
+      case 5: erg = "Erhöhte Atmung und erhöhter Puls. Das war anstrengend.";
+        break;
+      case 6: erg = "Sprechen fällt schwerer. Das war anstrengend.";
+        break;
+      case 7: erg = "Sprechen nur schwer möglich. Das war ziemlich anstrengend.";
+        break;
+      case 8: erg = "Sprechen nur sehr schwer möglich. Das war echt anstrengend.";
+        break;
+      case 9: erg = "Sprechen sehr schwer möglich. Das war anstrengend.";
+        break;
+      case 10: erg = "Sprechen nicht möglich. Das war extrem anstrengend.";
+        break;
+    }
+    return erg;
+  }
+
+  String ratingDefinition(int i){
+    String erg = "";
+    switch (i){
+      case 1: erg = "Super Einfach";
+      break;
+      case 2: erg = "Sehr Einfach";
+      break;
+      case 3: erg = "Leicht";
+      break;
+      case 4: erg = "Etwas Anstrengend";
+      break;
+      case 5: erg = "Anstrengend";
+      break;
+      case 6: erg = "Sehr Anstrengend.";
+      break;
+      case 7: erg = "Etwas Schwer";
+      break;
+      case 8: erg = "Schwer";
+      break;
+      case 9: erg = "Ziemlich Schwer";
+      break;
+      case 10: erg = "Extreme Herausforderung";
+      break;
+    }
+    return erg;
   }
 }
