@@ -8,6 +8,7 @@ class Technique {
   String link;
   String type;
   bool learned;
+  bool speaking;
   DateTime lastTrained;
   FlutterTts flutterTts;
 
@@ -19,6 +20,15 @@ class Technique {
     this.link = l;
     this.type = t;
     flutterTts = new FlutterTts();
+    this.speaking = false;
+
+
+    flutterTts.setStartHandler((){
+      this.speaking = true;
+    });
+
+
+
     if (year == 0 && month == 0 && day == 0) {
       this.lastTrained = DateTime(1000);
     } else {
@@ -51,16 +61,31 @@ class Technique {
   IconButton getTypeIcon() {
     switch (this.type) {
       case 'Offense':
-        return IconButton(icon: Icon(Icons.gps_fixed, color: Colors.black,), onPressed: null,);
+        return IconButton(
+          icon: Icon(
+            Icons.gps_fixed,
+            color: Colors.black,
+          ),
+          onPressed: null,
+        );
         break;
       case 'Defense':
-        return IconButton(icon: Icon(Icons.security, color: Colors.black), onPressed: null,);
+        return IconButton(
+          icon: Icon(Icons.security, color: Colors.black),
+          onPressed: null,
+        );
         break;
       case 'Combo':
-        return IconButton(icon: Icon(Icons.merge_type, color: Colors.black), onPressed: null,);
+        return IconButton(
+          icon: Icon(Icons.merge_type, color: Colors.black),
+          onPressed: null,
+        );
         break;
       default:
-        return IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: null,);
+        return IconButton(
+          icon: Icon(Icons.help_outline, color: Colors.black),
+          onPressed: null,
+        );
     }
   }
 
@@ -100,7 +125,7 @@ class Technique {
     list.addAll(unlearned);
     return list;
   }
-  
+
   //Quicksort
   void sortById(List<Technique> list, int left, int right) {
     int i = left;
@@ -149,7 +174,7 @@ class Technique {
     return this.learned ? 'true' : 'false';
   }
 
-  Future speak() async {
+  Future<bool> speak() async {
     String text = this.name;
     await flutterTts.setLanguage("en-US");
     //flutterTts.setLanguage('de-DE');
@@ -157,5 +182,6 @@ class Technique {
     flutterTts.setVolume(1.0);
     flutterTts.setPitch(1.0);
     await flutterTts.speak(text.toLowerCase());
+    Future.value(false);
   }
 }

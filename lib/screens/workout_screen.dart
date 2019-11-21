@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:uebung02/helper/CustomTimerPainter.dart';
+import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
+import 'dart:math';
 
 class WorkoutScreen extends StatefulWidget {
   CurrentWorkoutInformation workoutInformation;
@@ -19,19 +24,34 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   AnimationController controller;
   int doneRounds;
   bool breakDone;
+  bool speaking = false;
+  List<Technique> list;
+  FlutterTts tts = new FlutterTts();
+  String speakinglist;
+  int listIndex;
 
   @override
   void initState() {
     super.initState();
+    this.list = widget.workoutInformation.getTechniques();
     doneRounds = 1;
+    this.speakinglist = createRandomItem();
+    listIndex = 0;
     breakDone = false;
-
+    tts.setStartHandler((){
+      this.speaking = true;
+    });
+    tts.setCompletionHandler((){
+      this.speaking = false;
+    });
+    tts.setLanguage("en-US");
     controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: widget.workoutInformation.getRoundLength()),
     );
     controller.addListener(() {
-      this.setState(() {});
+      this.setState(() {
+      });
     });
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -40,6 +60,10 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         controller.reverse();
         print("StatusController - restart");
         startNewTimer();
+      } else if (controller.isAnimating){
+        sayText();
+      } else if (!controller.isAnimating){
+        stopText();
       }
     });
   }
@@ -118,13 +142,16 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                   return FloatingActionButton.extended(
                     onPressed: () {
                       setState(() {
-                        if (controller.isAnimating)
+                        if (controller.isAnimating) {
                           controller.stop();
-                        else {
+                          stopText();
+                        } else {
                           controller.reverse(
                               from: controller.value == 0.0
                                   ? 1.0
                                   : controller.value);
+                          this.speakinglist = createRandomItem();
+                          sayText();
                         }
                       });
                     },
@@ -155,6 +182,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       ),
     );
   }
+
 
   String getTimerString() {
     Duration duration = controller.duration * controller.value;
@@ -193,10 +221,12 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         controller.reset();
         controller.duration = Duration(seconds: widget.workoutInformation.getRoundLength());
         controller.reverse(from: 1.0);
+
       }
     } else {
       ///speichere Workout in Datenbank
       ///oeffne getaenes Workout screen
+      stopText();
       Navigator.pushNamed(context, '/RateWorkoutScreen');
     }
   }
@@ -243,4 +273,35 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       ),
     );
   }
+
+  String createRandomItem() {
+    var rng = new Random();
+    String erg = "";
+    int x = ((widget.workoutInformation.getRoundLength()* widget.workoutInformation.getRoundAmount())*5);
+    for (int i = 0; i < x; i++){
+      erg += "${this.list[(rng.nextInt(this.list.length))].name} ";
+    }
+    return erg;
+  }
+
+  void sayText(){
+    //print("redet? $speaking");
+    tts.setSpeechRate(0.1);
+    tts.setVolume(1.0);
+    tts.setPitch(1.0);
+    if (!this.speaking){
+      setState(() {
+        this.speaking = true;
+        tts.speak(this.speakinglist.toLowerCase());
+      });
+    }
+  }
+
+  void stopText(){
+    setState(() {
+      this.speaking = false;
+      tts.stop();
+    });
+  }
+
 }

@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 
+
 class CustomTimerPainter extends CustomPainter {
   CustomTimerPainter({
     this.animation,
@@ -11,6 +12,7 @@ class CustomTimerPainter extends CustomPainter {
 
   final Animation<double> animation;
   final Color backgroundColor, color;
+
 
   @override
   void paint(Canvas canvas, Size size) {
