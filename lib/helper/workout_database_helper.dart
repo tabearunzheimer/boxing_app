@@ -52,6 +52,7 @@ class WorkoutDatabaseHelper {
   //Map<String, dynamic> row
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
+    /*
     Map<String, dynamic> r = {
       columnId: 1,
       columnType: "Offen",
@@ -63,9 +64,8 @@ class WorkoutDatabaseHelper {
       columnTechniques: 'Jab, Cross, Hook',
       columnWeekDay: 'Freitag',
     };
-
-
-    return await db.insert(table, r);
+     */
+    return await db.insert(table, row);
   }
 
   Future<List> getList(int id)async{

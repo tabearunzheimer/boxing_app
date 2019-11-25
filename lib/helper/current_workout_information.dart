@@ -4,16 +4,22 @@ import 'Technique.dart';
 
 class CurrentWorkoutInformation{
 
-  int breakTime;
+  int breakTimeMin;
+  int breakTimeSec;
   int roundAmount;
-  int roundLength;
+  int roundLengthMin;
+  int roundLengthSec;
+  double kcal;
   String type;
   List <Technique> techniques;
+  int rating;
 
-  CurrentWorkoutInformation(int bt, int ra, int rl, String t){
-    this.breakTime = bt;
+  CurrentWorkoutInformation(int bt1, int bt2, int ra, int rl, int r2, String t){
+    this.breakTimeMin = bt1;
+    this.breakTimeSec = bt2;
     this.roundAmount = ra;
-    this.roundLength = rl;
+    this.roundLengthMin = rl;
+    this.roundLengthSec = r2;
     this.type = t;
   }
 
@@ -25,16 +31,24 @@ class CurrentWorkoutInformation{
     return this.techniques;
   }
 
-  int getBreakTime(){
-    return this.breakTime;
+  int getBreakTimeMin(){
+    return this.breakTimeMin;
+  }
+
+  int getBreakTimeSec(){
+    return this.breakTimeSec;
   }
 
   int getRoundAmount(){
     return this.roundAmount;
   }
 
-  int getRoundLength(){
-    return this.roundLength;
+  int getRoundLengthMin(){
+    return this.roundLengthMin;
+  }
+
+  int getRoundLengthSec(){
+    return this.roundLengthSec;
   }
 
   String getType(){

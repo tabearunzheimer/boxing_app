@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:uebung02/helper/current_workout_information.dart';
 
 class DoneWorkoutScreen extends StatefulWidget {
+  CurrentWorkoutInformation workoutInformation;
+
+  DoneWorkoutScreen(CurrentWorkoutInformation cOld) {
+    this.workoutInformation = cOld;
+  }
   @override
   _DoneWorkoutScreenState createState() => _DoneWorkoutScreenState();
 }
@@ -65,7 +71,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width/3.5,
-                    child: Text("kcal\n180",textAlign: TextAlign.center,),
+                    child: Text("kcal\n${widget.workoutInformation.kcal}",textAlign: TextAlign.center,),
                   ),
                   VerticalDivider(
                     indent: 20,
@@ -75,7 +81,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width/3.5,
-                    child:  Text("Zeit\n180 sek",textAlign: TextAlign.center,),
+                    child:  Text("Rundenzeit\n${widget.workoutInformation.getRoundLengthMin()}:${widget.workoutInformation.getRoundLengthSec()}",textAlign: TextAlign.center,),
                   ),
                   VerticalDivider(
                     indent: 20,
@@ -85,7 +91,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width/3.5,
-                    child: Text("Bewertung\n 4",textAlign: TextAlign.center,),
+                    child: Text("Bewertung\n ${widget.workoutInformation.rating}",textAlign: TextAlign.center,),
                   ),
                 ],
               ),

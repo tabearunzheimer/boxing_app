@@ -33,7 +33,7 @@ class Workout {
   }
 
   factory Workout.fromJson(Map<String, dynamic> parsedJson) {
-    print(" ID: ${parsedJson['trainingDay']}");
+    //print(" ID: ${parsedJson['trainingDay']}");
     Workout w = new Workout(
       parsedJson['_id'],
       parsedJson['type'],
@@ -45,7 +45,7 @@ class Workout {
       parsedJson['trainingMonth'],
       parsedJson['trainingDay'],
     );
-    print(" YEAR: ${parsedJson['lastTrainedYear']}");
+    print(" TYPE: ${w.getType()}");
     return w;
   }
 

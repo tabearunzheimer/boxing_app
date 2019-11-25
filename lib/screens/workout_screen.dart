@@ -5,6 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:uebung02/helper/CustomTimerPainter.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
+import 'package:uebung02/screens/rate_workout_screen.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'dart:math';
 
@@ -47,7 +48,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     tts.setLanguage("en-US");
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: widget.workoutInformation.getRoundLength()),
+      duration: Duration(seconds: widget.workoutInformation.getRoundLengthSec(), minutes:  widget.workoutInformation.getRoundLengthMin()),
     );
     controller.addListener(() {
       this.setState(() {
@@ -212,22 +213,29 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         //starte Timer mit neuer Zeit fuer Pause
         this.breakDone = true;
         controller.reset();
-        controller.duration = Duration(seconds: widget.workoutInformation.getBreakTime());
+        Duration d = new Duration(minutes: widget.workoutInformation.getBreakTimeMin(), seconds: widget.workoutInformation.getBreakTimeSec());
+        controller.duration = d;
         controller.reverse(from: 1.0);
       } else {
         print("Runde war true");
         this.doneRounds++;
         this.breakDone = false;
         controller.reset();
-        controller.duration = Duration(seconds: widget.workoutInformation.getRoundLength());
+        Duration d = new Duration(minutes:  widget.workoutInformation.getRoundLengthMin(), seconds:  widget.workoutInformation.getRoundLengthSec());
+        controller.duration = d;
         controller.reverse(from: 1.0);
 
       }
     } else {
-      ///speichere Workout in Datenbank
-      ///oeffne getaenes Workout screen
       stopText();
-      Navigator.pushNamed(context, '/RateWorkoutScreen');
+      //Navigator.pushNamed(context, '/RateWorkoutScreen');
+      CurrentWorkoutInformation c = widget.workoutInformation;
+      Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => RateWorkoutScreen(c)),
+      );
+
+
     }
   }
 
@@ -241,7 +249,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   }
 
   bool checkForBreak() {
-    int breakTime = widget.workoutInformation.getBreakTime();
+    int breakTime = widget.workoutInformation.getBreakTimeMin() + widget.workoutInformation.getBreakTimeSec();
     if (breakTime == 0) {
       return false;
     } else {
@@ -251,7 +259,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
 
   Future<bool> backButtonAlert() {
     showDialog(
-        context: context,
+      context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text("Vorsicht!"),
         content: Text("Wenn Sie zurück klicken wird das Workout abgebrochen."),
@@ -259,6 +267,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
           FlatButton(
             child: Text("Verlassen"),
             onPressed: (){
+              stopText();
               Navigator.pop(context);
               Navigator.pop(context);
             },
@@ -277,9 +286,12 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   String createRandomItem() {
     var rng = new Random();
     String erg = "";
-    int x = ((widget.workoutInformation.getRoundLength()* widget.workoutInformation.getRoundAmount())*5);
+    print(widget.workoutInformation.getRoundLengthMin());
+    int x = (1 + widget.workoutInformation.getRoundLengthMin() * widget.workoutInformation.getRoundAmount() * 5);
     for (int i = 0; i < x; i++){
-      erg += "${this.list[(rng.nextInt(this.list.length))].name} ";
+      if(this.list.length != 0) {
+        erg += "${this.list[(rng.nextInt(this.list.length))].name} ";
+      }
     }
     return erg;
   }

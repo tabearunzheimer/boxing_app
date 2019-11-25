@@ -132,7 +132,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
                           Column(
                             children: <Widget>[
                               Text("Dauer"),
-                              Text("${widget.workoutInformation.getRoundLength()}"),
+                              Text("${widget.workoutInformation.getRoundLengthMin()}:${widget.workoutInformation.getRoundLengthSec()}"),
                             ],
                           ),
                         ],

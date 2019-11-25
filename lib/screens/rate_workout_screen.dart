@@ -1,23 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/CustomRateWorkoutPainter.dart';
-import 'package:uebung02/screens/reusable_widgets.dart';
+import 'package:uebung02/helper/current_workout_information.dart';
+import 'package:uebung02/helper/workout_database_helper.dart';
+import 'package:uebung02/screens/done_workout_screen.dart';
 
 class RateWorkoutScreen extends StatefulWidget {
+  CurrentWorkoutInformation workoutInformation;
+
+  RateWorkoutScreen(CurrentWorkoutInformation cOld) {
+    this.workoutInformation = cOld;
+  }
+
   @override
   _RateWorkoutScreenState createState() => _RateWorkoutScreenState();
 }
 
 class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     with TickerProviderStateMixin {
+  SharedPreferences prefs;
+  double weight;
   AnimationController controller;
   bool tapInProgress;
+  int rating = 0;
   double posx = 100.0;
   double posy = 100.0;
+  static const String userWeightKey = 'userWeight';
+
+  final dbHelperWorkouts = WorkoutDatabaseHelper.instance;
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((sp) {
+      this.prefs = sp;
+      loadDouble(userWeightKey);
+    });
     this.controller = AnimationController(
       vsync: this,
     );
@@ -41,6 +60,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
       body: Stack(
         children: <Widget>[
           Container(
+
             ///Hintergrundbild
             child: new Image.asset(
               'assets/img/female_boxer.jpg',
@@ -48,28 +68,21 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
               height: 900.0,
             ),
           ),
-          /*
-          Container(
-            margin: EdgeInsets.only(
-                top: (MediaQuery.of(context).size.height) / 16),
-            height: (MediaQuery.of(context).size.height / 8),
-            width: (MediaQuery.of(context).size.width),
-            padding: EdgeInsets.fromLTRB(60, 10, 60, 0),
-            //color: Colors.green,
-            alignment: Alignment.center,
-            child: Text(
-              "Wie fühlst du dich?",
-              style: TextStyle(color: Colors.white, fontFamily: 'Staatliches', fontSize: 30),
-              textAlign: TextAlign.center,
-            ),
-          ),
-           */
 
           Container(
             margin:
-                EdgeInsets.only(top: (MediaQuery.of(context).size.height) / 5),
-            height: (MediaQuery.of(context).size.height / 7),
-            width: (MediaQuery.of(context).size.width),
+            EdgeInsets.only(top: (MediaQuery
+                .of(context)
+                .size
+                .height) / 5),
+            height: (MediaQuery
+                .of(context)
+                .size
+                .height / 7),
+            width: (MediaQuery
+                .of(context)
+                .size
+                .width),
             //color: Colors.green,
             alignment: Alignment.center,
             child: AnimatedBuilder(
@@ -84,9 +97,18 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
           Container(),
           Container(
             margin: EdgeInsets.only(
-                top: (MediaQuery.of(context).size.height) / 2.5),
-            height: (MediaQuery.of(context).size.height / 3.5),
-            width: (MediaQuery.of(context).size.width),
+                top: (MediaQuery
+                    .of(context)
+                    .size
+                    .height) / 2.5),
+            height: (MediaQuery
+                .of(context)
+                .size
+                .height / 3.5),
+            width: (MediaQuery
+                .of(context)
+                .size
+                .width),
             //color: Colors.green,
             alignment: Alignment.center,
             child: Column(
@@ -97,7 +119,10 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                     builder: (BuildContext context, Widget child) {
                       return Text(
                         getRatingDefinition(),
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .subtitle,
                         textAlign: TextAlign.center,
                       );
                     }),
@@ -117,7 +142,10 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                         return Text(
                           getRatingText(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.display1,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .display1,
                         );
                       }),
 
@@ -126,8 +154,15 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
+
             ///Animation zum bewerten
             child: GestureDetector(
               onHorizontalDragStart: (DragStartDetails details) =>
@@ -141,11 +176,13 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                 builder: (BuildContext context, Widget child) {
                   return CustomPaint(
                       painter: CustomRateWorkoutPainter(
-                    animation: this.controller,
-                    backgroundColor: Colors.white,
-                    color: Theme.of(context).accentColor,
-                    posX: this.posx,
-                  ));
+                        animation: this.controller,
+                        backgroundColor: Colors.white,
+                        color: Theme
+                            .of(context)
+                            .accentColor,
+                        posX: this.posx,
+                      ));
                 },
               ),
             ),
@@ -193,7 +230,10 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   String getCurrentRating(BuildContext context) {
-    double size = MediaQuery.of(context).size.width;
+    double size = MediaQuery
+        .of(context)
+        .size
+        .width;
     double alt = 0;
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
@@ -207,11 +247,15 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   String getRatingDefinition() {
-    double size = MediaQuery.of(context).size.width;
+    double size = MediaQuery
+        .of(context)
+        .size
+        .width;
     double alt = 0;
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
       if (this.posx <= i && this.posx >= alt) {
+        this.rating = index;
         return ratingDefinition(index);
       }
       alt = i;
@@ -221,7 +265,10 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   String getRatingText() {
-    double size = MediaQuery.of(context).size.width;
+    double size = MediaQuery
+        .of(context)
+        .size
+        .width;
     double alt = 0;
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
@@ -235,67 +282,128 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   void moveToDoneWorkoutScreen() {
-    ///Uebergang zum naechsten screen
-    print("Move to Done-Workout-Screen");
-    Navigator.pop(context);
-    Navigator.pop(context);
-    Navigator.pop(context);
-    Navigator.pop(context);
-    Navigator.pop(context);
-    Navigator.pushNamed(context, '/DoneWorkoutScreen');
+    widget.workoutInformation.rating = this.rating;
+    saveNewWorkout();
   }
-  
-  String ratingText(int i){
+
+  String ratingText(int i) {
     String erg = "";
-    switch (i){
-      case 1: erg = "Normale Atmung. Das war keine Anstrengung.";
+    switch (i) {
+      case 1:
+        erg = "Normale Atmung. Das war keine Anstrengung.";
         break;
-      case 2: erg = "Leicht erhöhte Atmung. Das war keine besonders große Anstrengung.";
+      case 2:
+        erg =
+        "Leicht erhöhte Atmung. Das war keine besonders große Anstrengung.";
         break;
-      case 3: erg = "Erhöhte Atmung. Das war etwas anstrengend.";
+      case 3:
+        erg = "Erhöhte Atmung. Das war etwas anstrengend.";
         break;
-      case 4: erg = "Erhöhte Atmung und etwas erhöhter Puls. Es war etwas anstrengend aber keine Herausforderung.";
+      case 4:
+        erg =
+        "Erhöhte Atmung und etwas erhöhter Puls. Es war etwas anstrengend aber keine Herausforderung.";
         break;
-      case 5: erg = "Erhöhte Atmung und erhöhter Puls. Das war anstrengend.";
+      case 5:
+        erg = "Erhöhte Atmung und erhöhter Puls. Das war anstrengend.";
         break;
-      case 6: erg = "Sprechen fällt schwerer. Das war anstrengend.";
+      case 6:
+        erg = "Sprechen fällt schwerer. Das war anstrengend.";
         break;
-      case 7: erg = "Sprechen nur schwer möglich. Das war ziemlich anstrengend.";
+      case 7:
+        erg = "Sprechen nur schwer möglich. Das war ziemlich anstrengend.";
         break;
-      case 8: erg = "Sprechen nur sehr schwer möglich. Das war echt anstrengend.";
+      case 8:
+        erg = "Sprechen nur sehr schwer möglich. Das war echt anstrengend.";
         break;
-      case 9: erg = "Sprechen sehr schwer möglich. Das war anstrengend.";
+      case 9:
+        erg = "Sprechen sehr schwer möglich. Das war anstrengend.";
         break;
-      case 10: erg = "Sprechen nicht möglich. Das war extrem anstrengend.";
+      case 10:
+        erg = "Sprechen nicht möglich. Das war extrem anstrengend.";
         break;
     }
     return erg;
   }
 
-  String ratingDefinition(int i){
+  String ratingDefinition(int i) {
     String erg = "";
-    switch (i){
-      case 1: erg = "Super Einfach";
-      break;
-      case 2: erg = "Sehr Einfach";
-      break;
-      case 3: erg = "Leicht";
-      break;
-      case 4: erg = "Etwas Anstrengend";
-      break;
-      case 5: erg = "Anstrengend";
-      break;
-      case 6: erg = "Sehr Anstrengend.";
-      break;
-      case 7: erg = "Etwas Schwer";
-      break;
-      case 8: erg = "Schwer";
-      break;
-      case 9: erg = "Ziemlich Schwer";
-      break;
-      case 10: erg = "Extreme Herausforderung";
-      break;
+    switch (i) {
+      case 1:
+        erg = "Super Einfach";
+        break;
+      case 2:
+        erg = "Sehr Einfach";
+        break;
+      case 3:
+        erg = "Leicht";
+        break;
+      case 4:
+        erg = "Etwas Anstrengend";
+        break;
+      case 5:
+        erg = "Anstrengend";
+        break;
+      case 6:
+        erg = "Sehr Anstrengend.";
+        break;
+      case 7:
+        erg = "Etwas Schwer";
+        break;
+      case 8:
+        erg = "Schwer";
+        break;
+      case 9:
+        erg = "Ziemlich Schwer";
+        break;
+      case 10:
+        erg = "Extreme Herausforderung";
+        break;
     }
     return erg;
   }
+
+  Future saveNewWorkout() async {
+    int x = await dbHelperWorkouts.queryRowCount();
+        double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 60) );
+    double burnedkcal = this.weight/5 * duration;
+    print("weight ${this.weight}");
+    widget.workoutInformation.kcal = burnedkcal;
+    DateTime dt = new DateTime.now();
+
+    Map<String, dynamic> row = {
+      WorkoutDatabaseHelper.columnId: x+1,
+      WorkoutDatabaseHelper.columnType: widget.workoutInformation.type,
+      WorkoutDatabaseHelper.columnBurnedCalories: burnedkcal,
+      WorkoutDatabaseHelper.columnDuration: duration,
+      WorkoutDatabaseHelper.columnTrainingYear: dt.year,
+      WorkoutDatabaseHelper.columnTrainingMonth: dt.month,
+      WorkoutDatabaseHelper.columnTrainingDay: dt.day,
+      WorkoutDatabaseHelper.columnTechniques: widget.workoutInformation.techniques.toString(),
+      WorkoutDatabaseHelper.columnWeekDay: 'Freitag',
+    };
+    //print("row: $row");
+    dbHelperWorkouts.insert(row);
+
+
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    print("Change to Done-Workout-Screen");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DoneWorkoutScreen(widget.workoutInformation)),);
+
+  }
+
+  Future<Null> setDouble(String key, double w) async {
+    await this.prefs.setDouble(key, w);
+    print("Double saved");
+  }
+
+  void loadDouble(String key) async {
+    setState(() {
+      this.weight = prefs.get(key) ?? 0;
+    });
+  }
+
 }
