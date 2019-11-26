@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:uebung02/helper/CustomStatisticsPainter.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/Workout.dart';
 import 'package:uebung02/helper/date_helper.dart';
@@ -16,7 +18,8 @@ class DiaryScreen extends StatefulWidget {
   _DiaryScreenState createState() => new _DiaryScreenState();
 }
 
-class _DiaryScreenState extends State<DiaryScreen> {
+class _DiaryScreenState extends State<DiaryScreen>
+    with TickerProviderStateMixin {
   int selectedIndex = 1;
   ReusableWidgets _reusableWidgets;
   DateTime _currentDate;
@@ -27,10 +30,15 @@ class _DiaryScreenState extends State<DiaryScreen> {
   int learnedTechniquesCounter;
   int workoutCounter;
   DateHelper datehelper;
+  AnimationController controller;
+  double posx = 100.0;
+  bool tapInProgress;
 
   final dbHelperTechniques = TechniquesDatabaseHelper.instance;
   final dbHelperWorkouts = WorkoutDatabaseHelper.instance;
 
+  List<int> testwerte = [1,5,7,2,11,9,4,3,14,10,0,6];
+  List<String> testWerteX = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 
   @override
   void initState() {
@@ -43,6 +51,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
     workoutCounter = 0;
     createTechniquesList();
     createWorkoutsList();
+    this.controller = AnimationController(
+      vsync: this,
+    );
+    this.tapInProgress = false;
   }
 
   @override
@@ -189,14 +201,109 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   Widget buildStatistics() {
-    return null;
-  }
+    //TODO
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text("Zuletzt trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
+              ],
+            ),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text("Lange nicht trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
+              ],
+            ),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text("Trainings pro Monat", style: TextStyle(fontSize: 20, color: Colors.black),),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            //color: Colors.blue,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                //TODO ANIMATION
+                Container(
+                  height: 320,
+                  //margin: EdgeInsets.only(top: 500, bottom: 0),
+                  width: MediaQuery.of(context).size.width,
+                  child: GestureDetector(
+                    onHorizontalDragStart: (DragStartDetails details) =>
+                        dragStart(context, details),
+                    onHorizontalDragUpdate: (DragUpdateDetails details) =>
+                        dragUpdate(context, details),
+                    onHorizontalDragDown: (DragDownDetails details) =>
+                        dragDown(context, details),
+                    child: AnimatedBuilder(
+                      animation: this.controller,
+                      builder: (BuildContext context, Widget child) {
+                        return CustomPaint(
+                          painter: CustomStatisticPainter(
+                            animation: this.controller,
+                            backgroundColor: Colors.white,
+                            color: Theme.of(context).accentColor,
+                            posX: this.posx,
+                            anzahlWerteX: this.testWerteX.length,
+                            werteY: testwerte,
+                            werteX: this.testWerteX
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Text("Dynamisch", style: Theme.of(context).textTheme.body2,),
+              ],
+            ),
+          ),
 
-  /*
-  ${this.workoutList[index].getType()}
-  Datum: ${this.workoutList[index].getDateTime()}
-  ${this.workoutList[index].getDuration()}
-   */
+        ],
+      ),
+    );
+  }
 
   Widget _buildWorkoutListItems(int index){
     print("index ${index}");
@@ -384,4 +491,98 @@ class _DiaryScreenState extends State<DiaryScreen> {
     });
   }
 
+
+  void dragStart(BuildContext context, DragStartDetails details) {
+    //print('Start: ${details.globalPosition}');
+    final RenderBox box = context.findRenderObject();
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+
+    setState(() {
+      posx = localOffset.dx;
+      this.tapInProgress = true;
+    });
+  }
+
+  dragDown(BuildContext context, DragDownDetails details) {
+    //print('Ende: ${details.globalPosition}');
+    final RenderBox box = context.findRenderObject();
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+
+    setState(() {
+      posx = localOffset.dx;
+      this.tapInProgress = true;
+    });
+  }
+
+  void dragUpdate(BuildContext context, DragUpdateDetails details) {
+    //print('${details.globalPosition}');
+    final RenderBox box = context.findRenderObject();
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+
+    setState(() {
+      posx = localOffset.dx;
+      this.controller.value = localOffset.dx;
+      this.tapInProgress = true;
+    });
+  }
+
+
 }
+
+
+/*
+Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text("Zuletzt trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
+              ],
+            ),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text("Lange nicht trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
+                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
+              ],
+            ),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text("Trainings pro Monat", style: TextStyle(fontSize: 20, color: Colors.black),),
+          ),
+          Divider(
+            color: Colors.black54,
+          ),
+
+ */
