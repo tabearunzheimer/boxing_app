@@ -295,7 +295,18 @@ class _DiaryScreenState extends State<DiaryScreen>
                     ),
                   ),
                 ),
-                Text("Dynamisch", style: Theme.of(context).textTheme.body2,),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, Widget child) {
+                      return Text(
+                        getCurrentInput(),
+                        style: Theme.of(context).textTheme.body2,
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -524,6 +535,18 @@ class _DiaryScreenState extends State<DiaryScreen>
       this.controller.value = localOffset.dx;
       this.tapInProgress = true;
     });
+  }
+
+  String getCurrentInput() {
+    int index = 0;
+    double alt = 0;
+    for (double i = 30; i < MediaQuery.of(context).size.width - 30 && index <= this.testWerteX.length; i = i + (MediaQuery.of(context).size.width - 60) / this.testWerteX.length) {
+      if (this.posx <= i && this.posx >= alt) {
+        return "$index";
+      }
+      alt = i;
+      index++;
+    }
   }
 
 
