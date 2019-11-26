@@ -372,7 +372,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     int x = l.length;
     for (int i = 0; i < x; i++) {
       print(l[i].toString());
-      Workout w = new Workout.fromJson(l[0]);
+      Workout w = new Workout.fromJson(l[i]);
       erg.add(w);
     }
 

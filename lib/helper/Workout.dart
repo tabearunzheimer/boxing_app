@@ -25,6 +25,7 @@ class Workout {
     this._id  = id;
     this._type = type;
     this._burnedCalories = burnedCalories;
+    duration = duration.roundToDouble();
     this._duration = duration;
     this._weekDay = weekDay;
    this._techniques = techniques;
