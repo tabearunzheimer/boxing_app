@@ -537,6 +537,7 @@ class _DiaryScreenState extends State<DiaryScreen>
     });
   }
 
+  //TODO Werte anzeigen
   String getCurrentInput() {
     int index = 0;
     double alt = 0;
@@ -551,61 +552,3 @@ class _DiaryScreenState extends State<DiaryScreen>
 
 
 }
-
-
-/*
-Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text("Zuletzt trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
-              ],
-            ),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text("Lange nicht trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
-              ],
-            ),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text("Trainings pro Monat", style: TextStyle(fontSize: 20, color: Colors.black),),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-
- */
