@@ -79,13 +79,13 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
       onTap: () {
         if (_checkBoxVal[index]) {
           print("entfernen");
+          this.learnedTechniques[index].learned = this.learnedTechniques[index].learned ? false : true;
+          updateTechniquesDatabaseEntry(this.learnedTechniques[index]);
           setState(() {
-            //TODO: Entferne aus Datenbank
             _checkBoxVal[index] = false;
           });
         } else {
           setState(() {
-            //TODO: Speichere in Datenbank
             _checkBoxVal[index] = true;
           });
         }
@@ -140,4 +140,21 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
       ),
     );
   }
+
+  void updateTechniquesDatabaseEntry(Technique t) async {
+    Map<String, dynamic> row = {
+      TechniquesDatabaseHelper.columnId: t.id,
+      TechniquesDatabaseHelper.columnName: t.name,
+      TechniquesDatabaseHelper.columnLink: t.getLink(),
+      TechniquesDatabaseHelper.columnExplanation: t.getErklaerung(),
+      TechniquesDatabaseHelper.columnType: t.getType(),
+      TechniquesDatabaseHelper.columnLearned: t.getLearned(),
+      TechniquesDatabaseHelper.columnLastTrainedDay: t.getDay(),
+      TechniquesDatabaseHelper.columnLastTrainedMonth: t.getMonth(),
+      TechniquesDatabaseHelper.columnLastTrainedYear: t.getYear(),
+    };
+    final rowsAffected = await dbHelper.update(row);
+    print('updated $rowsAffected row(s)');
+  }
+
 }
