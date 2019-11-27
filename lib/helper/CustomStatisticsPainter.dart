@@ -57,8 +57,8 @@ class CustomStatisticPainter extends CustomPainter {
 
     //pruefe ob der Wert über den Rand geht
     double posXNew;
-    if(posX > size.width-30){
-      posXNew = size.width-30;
+    if(posX > size.width-51){
+      posXNew = size.width-51;
     } else if (posX < 30){
       posXNew = 30;
     } else {

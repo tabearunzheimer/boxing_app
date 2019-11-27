@@ -11,7 +11,7 @@ import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:uebung02/screens/technique_details_screen.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 
-    show CalendarCarousel;
+    show CalendarCarousel, EventList;
 
 class DiaryScreen extends StatefulWidget {
   @override
@@ -23,9 +23,9 @@ class _DiaryScreenState extends State<DiaryScreen>
   int selectedIndex = 1;
   ReusableWidgets _reusableWidgets;
   DateTime _currentDate;
-  DateTime _showedMonth;
   List<Technique> learnedTechniques;
   List<Technique> notLearnedTechniques;
+  EventList<Event> trainingDays;
   List<Workout> workoutList;
   int learnedTechniquesCounter;
   int workoutCounter;
@@ -44,11 +44,11 @@ class _DiaryScreenState extends State<DiaryScreen>
   void initState() {
     super.initState();
     this._currentDate = DateTime.now();
-    this._showedMonth = DateTime.now();
     print("init");
     datehelper = new DateHelper();
     learnedTechniquesCounter = 0;
     workoutCounter = 0;
+    this.trainingDays = new EventList();
     createTechniquesList();
     createWorkoutsList();
     this.controller = AnimationController(
@@ -184,24 +184,24 @@ class _DiaryScreenState extends State<DiaryScreen>
         /// null for not rendering any border, true for circular border, false for rectangular border
         headerTextStyle: Theme.of(context).textTheme.display2,
         firstDayOfWeek: DateTime.monday,
-        //headerText: "${datehelper.getMonthName(this._showedMonth.month)} ${this._showedMonth.year}",
         iconColor: Color.fromRGBO(0, 0, 0, 1),
         selectedDayButtonColor: Color.fromRGBO(200, 0, 0, 1),
         selectedDayTextStyle: Theme.of(context).textTheme.display1,
         todayButtonColor: Color.fromRGBO(255, 255, 255, 0),
         todayTextStyle: TextStyle(color: Colors.black, fontSize: 18),
-        //headerText: getMonthName(),
+        weekendTextStyle: TextStyle(color: Color.fromRGBO(200, 0, 0, 1),),
         selectedDateTime: this._currentDate,
         onDayPressed: (DateTime date, List<Event> events) {
           this.setState(() => this._currentDate = date);
         },
-        //markedDatesMap: ,  //gibt die Trainingstage an
+        markedDatesMap: trainingDays,  //gibt die Trainingstage an
+        markedDateWidget: Container(color: Colors.black, height: 4.0, width: 4.0, margin: EdgeInsets.only(right: 1),),
       ),
     );
   }
 
+  //TODO Platzhalter entfernen
   Widget buildStatistics() {
-    //TODO
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -486,18 +486,21 @@ class _DiaryScreenState extends State<DiaryScreen>
     final allRows = await dbHelperWorkouts.queryAllRows();
     l = allRows.toList();
     List<Workout> erg = new List();
+    EventList<Event> ev = new EventList();
     print("Workout Liste: ${l.length}");
     int x = l.length;
     for (int i = 0; i < x; i++) {
       print(l[i].toString());
       Workout w = new Workout.fromJson(l[i]);
       erg.add(w);
+      ev.add(w.getDateTime(), Event(date: w.getDateTime(), title: w.getType()));
     }
 
 
     setState(() {
       this.workoutList = erg;
       this.workoutCounter = x;
+      this.trainingDays = ev;
       print("Workout-Liste uebergeben, laenge: ${this.workoutList.length}");
     });
   }
@@ -537,16 +540,16 @@ class _DiaryScreenState extends State<DiaryScreen>
     });
   }
 
-  //TODO Werte anzeigen
   String getCurrentInput() {
     int index = 0;
     double alt = 0;
-    for (double i = 30; i < MediaQuery.of(context).size.width - 30 && index <= this.testWerteX.length; i = i + (MediaQuery.of(context).size.width - 60) / this.testWerteX.length) {
+    for (double i = 50; i < MediaQuery.of(context).size.width && index < this.testWerteX.length; i = i + (MediaQuery.of(context).size.width - 60) / this.testWerteX.length) {
       if (this.posx <= i && this.posx >= alt) {
-        return "$index";
+        return "${this.testWerteX[index]}: ${this.testwerte[index]} Trainings";
       }
       alt = i;
       index++;
+      index = index > 11 ? 11 : index;
     }
   }
 

@@ -381,7 +381,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
       WorkoutDatabaseHelper.columnTechniques: widget.workoutInformation.techniques.toString(),
       WorkoutDatabaseHelper.columnWeekDay: 'Freitag',
     };
-    //print("row: $row");
+    print("row: $row");
     dbHelperWorkouts.insert(row);
 
 
