@@ -319,10 +319,56 @@ class _DiaryScreenState extends State<DiaryScreen>
   Widget _buildWorkoutListItems(int index){
     print("index ${index}");
     return ListTile(
-      title: Text("${this.workoutList[index].getType()}"),
-      subtitle: Text("Datum: ${this.workoutList[index].getDateTimeString()}", style: TextStyle(fontSize: 15.0),),
-      trailing: Text("${this.workoutList[index].getDuration()} min", style: Theme.of(context).textTheme.body2,),
-      onTap: null,
+      title: Text("${this.workoutList[index].getType()}: ${this.workoutList[index].getDuration()} min"),
+      subtitle: Text("Datum: ${this.workoutList[index].getDateTimeString()}", style: TextStyle(fontSize: 12.0),),
+      trailing: IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: (){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text("Vorsicht!"),
+            content: Text("Möchten Sie dieses Workout wirklich löschen?"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Löschen"),
+                onPressed: (){
+                  Navigator.pop(context);
+                  dbHelperWorkouts.delete(this.workoutList[index].getId());
+                  setState(() {
+                    this.workoutList.removeAt(index);
+                    this.workoutCounter--;
+                  });
+                },
+              ),
+              FlatButton(
+                child: Text("Behalten"),
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+      ),
+      onTap: (){
+        showDialog<String> (
+          context: context,
+          builder: (BuildContext context) => SimpleDialog(
+            title: Text("Workout"),
+            elevation: 1,
+            contentPadding: EdgeInsets.all(10),
+            children: <Widget>[
+              Text("Trainingstyp: ${this.workoutList[index].getType()}"),
+              Text("Datum: ${this.workoutList[index].getDateTime()}"),
+              Text("Dauer: ${this.workoutList[index].getDuration()}"),
+              Text("Kcal: ${this.workoutList[index].getBurnedCalories()}"),
+              Text("Techniken: ${this.workoutList[index].getTechniques()}"),
+            ],
+          ),
+        );
+      },
     );
   }
 

@@ -97,7 +97,7 @@ class WorkoutDatabaseHelper {
   }
 
   //loescht die Spalte anhand des Namens
-  Future<int> delete(String id) async {
+  Future<int> delete(int id) async {
     Database db = await instance.database;
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
