@@ -68,7 +68,7 @@ class WorkoutDatabaseHelper {
     return await db.insert(table, row);
   }
 
-  Future<List> getList(int id)async{
+  Future<List> getList(int id) async{
     Database db = await instance.database;
     final Future<List<Map<String, dynamic>>> map =  db.query(table, where: 'id = ?', whereArgs: [id]);
     var m = await map;
@@ -100,6 +100,22 @@ class WorkoutDatabaseHelper {
   Future<int> delete(int id) async {
     Database db = await instance.database;
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
+  }
+
+  //TODO Update Row Ids
+  Future<int> updateRowsAfterDelete(int id) async{
+    Map<String, dynamic> r = {
+      columnId: 1,
+      columnType: "Offen",
+      columnBurnedCalories: 100.5,
+      columnDuration: 20.0,
+      columnTrainingYear: 1999,
+      columnTrainingMonth: 12,
+      columnTrainingDay: 24,
+      columnTechniques: 'Jab, Cross, Hook',
+      columnWeekDay: 'Freitag',
+    };
+
   }
 
 }

@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:uebung02/helper/date_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MeScreen extends StatefulWidget {
   @override
@@ -20,6 +22,7 @@ class _MeScreenState extends State<MeScreen> {
   int selectedIndex = 2;
   ReusableWidgets _reusableWidgets;
   DateHelper datehelper = new DateHelper();
+  File _imageFile;
 
   static const String userWeightKey = 'userWeight';
   static const String userGenderKey = 'userGender';
@@ -209,10 +212,9 @@ class _MeScreenState extends State<MeScreen> {
       width: (MediaQuery.of(context).size.width),
       child: Stack(
         children: <Widget>[
-          Image(
+          Container(
             width: MediaQuery.of(context).size.width,
-            image: AssetImage("assets/img/female_fighter_punch.jpg"),
-            fit: BoxFit.fitWidth,
+            child: _imageFile == null ? Image.asset("assets/img/female_fighter_punch.jpg", fit: BoxFit.fitWidth,) : Image.file(this._imageFile, fit: BoxFit.fitWidth,),
           ),
           Container(
             alignment: Alignment.bottomRight,
@@ -224,13 +226,24 @@ class _MeScreenState extends State<MeScreen> {
                 shape: CircleBorder(
                     side: BorderSide(color: Colors.white, width: 1.5)),
                 child: Icon(Icons.camera_alt, color: Colors.white),
-                onPressed: null,
+                onPressed: getImage,
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = image;
+    });
+
+    //TODO save image
+    _imageFile.copy("assets/img/");
   }
 
   Future<Null> setInt(String key, int w) async {
@@ -251,7 +264,7 @@ class _MeScreenState extends State<MeScreen> {
           print(this.age);
           break;
         case 'userSize':
-          this.userSize = prefs.get(key) ?? "No Data";
+          this.userSize = prefs.get(key) ?? 0;
           break;
         case 'userTrainingDays':
           this.userTrainingDays = prefs.get(key) ?? 0;
@@ -267,7 +280,7 @@ class _MeScreenState extends State<MeScreen> {
 
   void loadDouble(String key) async {
     setState(() {
-      this.weight = prefs.get(key) ?? "No Data";
+      this.weight = prefs.get(key) ?? 0;
     });
   }
 

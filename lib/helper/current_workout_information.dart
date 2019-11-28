@@ -54,4 +54,12 @@ class CurrentWorkoutInformation{
   String getType(){
     return this.type;
   }
+
+  String getTechniquesAsString(){
+    String erg = "";
+    for (int i = 0; i < this.techniques.length; i++){
+      erg += this.techniques[i].getName();
+    }
+    return erg;
+  }
 }

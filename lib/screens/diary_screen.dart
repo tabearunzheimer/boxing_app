@@ -335,6 +335,7 @@ class _DiaryScreenState extends State<DiaryScreen>
                 onPressed: (){
                   Navigator.pop(context);
                   dbHelperWorkouts.delete(this.workoutList[index].getId());
+
                   setState(() {
                     this.workoutList.removeAt(index);
                     this.workoutCounter--;

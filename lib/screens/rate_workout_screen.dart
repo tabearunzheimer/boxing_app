@@ -378,7 +378,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
       WorkoutDatabaseHelper.columnTrainingYear: dt.year,
       WorkoutDatabaseHelper.columnTrainingMonth: dt.month,
       WorkoutDatabaseHelper.columnTrainingDay: dt.day,
-      WorkoutDatabaseHelper.columnTechniques: widget.workoutInformation.techniques.toString(),
+      WorkoutDatabaseHelper.columnTechniques: widget.workoutInformation.getTechniquesAsString,
       WorkoutDatabaseHelper.columnWeekDay: 'Freitag',
     };
     print("row: $row");
