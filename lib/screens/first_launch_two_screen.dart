@@ -371,8 +371,6 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
         trainingdays = 0;
       }
 
-      //28061999
-      //28.000.000
       int birthday = year*10000 + month*100 + day;
       print("birthday: $birthday");
 

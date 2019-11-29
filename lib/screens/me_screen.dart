@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uebung02/helper/date_helper.dart';
@@ -28,6 +29,9 @@ class _MeScreenState extends State<MeScreen> {
   TextEditingController _weightTextController =  new TextEditingController();
   TextEditingController _sizeTextController =  new TextEditingController();
   TextEditingController _dayPerWeekTextController =  new TextEditingController();
+  TextEditingController _yearTextController =  new TextEditingController();
+  TextEditingController _monthTextController =  new TextEditingController();
+  TextEditingController _dayTextController =  new TextEditingController();
   int radioButtonValue = 0;
 
   static const String userWeightKey = 'userWeight';
@@ -206,10 +210,88 @@ class _MeScreenState extends State<MeScreen> {
                           color: Color.fromRGBO(200, 0, 0, 1),
                           disabledColor: Color.fromRGBO(200, 0, 0, 1),
                           child: Text(
-                            this.age.day == null ? "${this.age.day}\. ${datehelper.getMonthName(this.age.month)} ${this.age.year}" : "Keine Daten" ,
+                            this.age.day == null ? "Keine Daten" : "${this.age.day}\. ${datehelper.getMonthName(this.age.month)} ${this.age.year}",
                             style: Theme.of(context).textTheme.body1,
                           ),
-                          onPressed: null,
+                          onPressed: (){
+                            showDialog<String>(
+                                context: context,
+                              builder: (BuildContext context) => SimpleDialog(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          Text("Tag", style: Theme.of(context).textTheme.body2),
+                                          Container(
+                                            width: 50,
+                                            height: 30,
+                                            child: TextField(
+                                              controller: _dayTextController,
+                                              decoration: new InputDecoration(),
+                                              keyboardType: TextInputType.numberWithOptions(
+                                                  decimal: false, signed: true),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                            "Monat",
+                                            style: Theme.of(context).textTheme.body2,
+                                          ),
+                                          Container(
+                                            width: 50,
+                                            height: 30,
+                                            child: TextField(
+                                              controller: _monthTextController,
+                                              decoration: new InputDecoration(),
+                                              keyboardType: TextInputType.numberWithOptions(
+                                                  decimal: false, signed: true),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                            "Jahr",
+                                            style: Theme.of(context).textTheme.body2,
+                                          ),
+                                          Container(
+                                            width: 50,
+                                            height: 30,
+                                            child: TextField(
+                                              controller: _yearTextController,
+                                              decoration: new InputDecoration(),
+                                              keyboardType: TextInputType.numberWithOptions(
+                                                  decimal: false, signed: true),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  FlatButton(
+                                      child: Text("Speichern"),
+                                      onPressed: (){
+                                        setState(() {
+                                          int year = int.parse(_yearTextController.text);
+                                          int month = int.parse(_monthTextController.text);
+                                          int day = int.parse(_dayTextController.text);
+                                          int birthday = year*10000 + month*100 + day;
+                                          setInt(userBirthdayKey, birthday);
+                                          this.age = new DateTime(year, month, day);
+                                        });
+                                        Navigator.pop(context);
+                                      }
+                                  ),
+                                ],
+                              )
+                            );
+                          },
                         ),
                       ),
                     ],
