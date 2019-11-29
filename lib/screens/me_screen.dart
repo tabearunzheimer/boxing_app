@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:uebung02/helper/date_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,11 @@ class _MeScreenState extends State<MeScreen> {
   ReusableWidgets _reusableWidgets;
   DateHelper datehelper = new DateHelper();
   File _imageFile;
+  TextEditingController _nametext =  new TextEditingController();
+  TextEditingController _weightTextController =  new TextEditingController();
+  TextEditingController _sizeTextController =  new TextEditingController();
+  TextEditingController _dayPerWeekTextController =  new TextEditingController();
+  int radioButtonValue = 0;
 
   static const String userWeightKey = 'userWeight';
   static const String userGenderKey = 'userGender';
@@ -31,6 +37,7 @@ class _MeScreenState extends State<MeScreen> {
   static const String userEmailKey = 'userEmail';
   static const String userBirthdayKey = 'userBirthday';
   static const String trainingDaysKey = 'userTrainingDays';
+  static const String userProfilePicKey = 'userProfilePic';
 
   @override
   void initState() {
@@ -44,6 +51,7 @@ class _MeScreenState extends State<MeScreen> {
       loadInt(userBirthdayKey);
       loadInt(trainingDaysKey);
       loadDouble(userWeightKey);
+      loadString(userProfilePicKey);
     });
   }
 
@@ -77,7 +85,31 @@ class _MeScreenState extends State<MeScreen> {
                         style: Theme.of(context).textTheme.display4,
                       ),
                       IconButton(
-                        onPressed: null,
+                        onPressed: (){
+                          showDialog<String> (
+                            context: context,
+                            builder: (BuildContext context) => SimpleDialog(
+                              title: Text("Gib deinen Namen ein"),
+                              elevation: 1,
+                              contentPadding: EdgeInsets.all(10),
+                              children: <Widget>[
+                                TextField(
+                                  controller: _nametext,
+                                ),
+                                FlatButton(
+                                    child: Text("Speichern"),
+                                  onPressed: (){
+                                    setString(userNameKey, _nametext.text);
+                                    setState(() {
+                                      this.userName = _nametext.text;
+                                    });
+                                      Navigator.pop(context);
+                                  }
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.edit),
                       ),
                     ],
@@ -107,7 +139,62 @@ class _MeScreenState extends State<MeScreen> {
                             "$gender",
                             style: Theme.of(context).textTheme.body1,
                           ),
-                          onPressed: null,
+                          onPressed: (){
+                            showDialog<String> (
+                              context: context,
+                              builder: (BuildContext context) => SimpleDialog(
+                                title: Text("Wähle dein Geschlecht"),
+                                elevation: 1,
+                                contentPadding: EdgeInsets.all(10),
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          Text("Weiblich",
+                                              style: Theme.of(context).textTheme.body2),
+                                          Radio(
+                                            value: 0,
+                                            groupValue: radioButtonValue,
+                                            onChanged: (value){
+                                              this.radioButtonValue = value;
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                            "Männlich",
+                                            style: Theme.of(context).textTheme.body2,
+                                          ),
+                                          Radio(
+                                            value: 1,
+                                            groupValue: radioButtonValue,
+                                            onChanged: (value){
+                                              this.radioButtonValue = value;
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  FlatButton(
+                                      child: Text("Speichern"),
+                                      onPressed: (){
+                                        setState(() {
+                                          String erg = (this.radioButtonValue == 1) ? "Weiblich" : "Männlich";
+                                          setString(userGenderKey, erg);
+                                          this.gender = erg;
+                                        });
+                                        Navigator.pop(context);
+                                      }
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
                       Container(
@@ -119,7 +206,7 @@ class _MeScreenState extends State<MeScreen> {
                           color: Color.fromRGBO(200, 0, 0, 1),
                           disabledColor: Color.fromRGBO(200, 0, 0, 1),
                           child: Text(
-                            "${this.age.day}\. ${datehelper.getMonthName(this.age.month)} ${this.age.year}",
+                            this.age.day == null ? "${this.age.day}\. ${datehelper.getMonthName(this.age.month)} ${this.age.year}" : "Keine Daten" ,
                             style: Theme.of(context).textTheme.body1,
                           ),
                           onPressed: null,
@@ -145,7 +232,37 @@ class _MeScreenState extends State<MeScreen> {
                             "$weight kg",
                             style: Theme.of(context).textTheme.body1,
                           ),
-                          onPressed: null,
+                          onPressed: (){
+                            showDialog<String> (
+                              context: context,
+                              builder: (BuildContext context) => SimpleDialog(
+                                title: Text("Gib dein Gewicht ein"),
+                                elevation: 1,
+                                contentPadding: EdgeInsets.all(10),
+                                children: <Widget>[
+                                Container(
+                                  width: 50,
+                                  child: TextField(
+                                    controller: _weightTextController,
+                                    decoration: new InputDecoration(),
+                                    keyboardType: TextInputType.numberWithOptions(
+                                        decimal: true, signed: true),
+                                  ),
+                                ),
+                                  FlatButton(
+                                      child: Text("Speichern"),
+                                      onPressed: (){
+                                        setState(() {
+                                          setDouble(userWeightKey, double.parse( _weightTextController.text));
+                                          this.weight = double.parse( _weightTextController.text);
+                                        });
+                                        Navigator.pop(context);
+                                      }
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
                       Container(
@@ -160,7 +277,34 @@ class _MeScreenState extends State<MeScreen> {
                             "$userSize cm",
                             style: Theme.of(context).textTheme.body1,
                           ),
-                          onPressed: null,
+                          onPressed: (){
+                            showDialog<String> (
+                              context: context,
+                              builder: (BuildContext context) => SimpleDialog(
+                                title: Text("Gib deine Größe ein"),
+                                elevation: 1,
+                                contentPadding: EdgeInsets.all(10),
+                                children: <Widget>[
+                                  TextField(
+                                    controller: _sizeTextController,
+                                    decoration: new InputDecoration(),
+                                    keyboardType: TextInputType.numberWithOptions(
+                                        decimal: false, signed: true),
+                                  ),
+                                  FlatButton(
+                                      child: Text("Speichern"),
+                                      onPressed: (){
+                                        setState(() {
+                                          setInt(userSizeKey, int.parse( _sizeTextController.text));
+                                          this.userSize = int.parse( _sizeTextController.text);
+                                        });
+                                        Navigator.pop(context);
+                                      }
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -178,7 +322,34 @@ class _MeScreenState extends State<MeScreen> {
                         "Trainingstage pro Woche: ${this.userTrainingDays}",
                         style: Theme.of(context).textTheme.body1,
                       ),
-                      onPressed: null,
+                      onPressed: (){
+                        showDialog<String> (
+                          context: context,
+                          builder: (BuildContext context) => SimpleDialog(
+                            title: Text("Gib die Anzahl der Tage ein, an denen du trainieren möchtest"),
+                            elevation: 1,
+                            contentPadding: EdgeInsets.all(10),
+                            children: <Widget>[
+                              TextField(
+                                controller: _dayPerWeekTextController,
+                                decoration: new InputDecoration(),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: false, signed: true),
+                              ),
+                              FlatButton(
+                                  child: Text("Speichern"),
+                                  onPressed: (){
+                                    setState(() {
+                                      setInt(trainingDaysKey, int.parse( _dayPerWeekTextController.text));
+                                      this.userTrainingDays = int.parse( _dayPerWeekTextController.text);
+                                    });
+                                    Navigator.pop(context);
+                                  }
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Divider(
@@ -236,14 +407,18 @@ class _MeScreenState extends State<MeScreen> {
   }
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    final doc = await getApplicationDocumentsDirectory();
+    String path = doc.path;
+
+    final File newImage = await image.copy('$path/image1.jpg');
+    print(newImage.path);
+    setString(userProfilePicKey, newImage.path);
 
     setState(() {
-      _imageFile = image;
+      _imageFile = newImage;
     });
-
-    //TODO save image
-    _imageFile.copy("assets/img/");
   }
 
   Future<Null> setInt(String key, int w) async {
@@ -302,6 +477,10 @@ class _MeScreenState extends State<MeScreen> {
         case 'userGender':
           this.gender = prefs.get(key) ?? "No Data";
           break;
+        case 'userProfilePic':
+          print("load pic");
+          this._imageFile = new File(prefs.get(key));
+          break;
       }
     });
   }
@@ -320,5 +499,4 @@ class _MeScreenState extends State<MeScreen> {
           color: Colors.green,
           child:
    */
-
 }
