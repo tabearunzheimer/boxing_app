@@ -32,7 +32,6 @@ class _MeScreenState extends State<MeScreen> {
   TextEditingController _yearTextController =  new TextEditingController();
   TextEditingController _monthTextController =  new TextEditingController();
   TextEditingController _dayTextController =  new TextEditingController();
-  int radioButtonValue = 0;
 
   static const String userWeightKey = 'userWeight';
   static const String userGenderKey = 'userGender';
@@ -154,46 +153,31 @@ class _MeScreenState extends State<MeScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      Column(
-                                        children: <Widget>[
-                                          Text("Weiblich",
-                                              style: Theme.of(context).textTheme.body2),
-                                          Radio(
-                                            value: 0,
-                                            groupValue: radioButtonValue,
-                                            onChanged: (value){
-                                              this.radioButtonValue = value;
-                                            },
-                                          ),
-                                        ],
+                                      RaisedButton(
+                                        child: Text("Weiblich",
+                                            style: Theme.of(context).textTheme.body2),
+                                          onPressed: (){
+                                            setState(() {
+                                              setString(userGenderKey, "Weiblich");
+                                              this.gender = "Weiblich";
+                                            });
+                                            Navigator.pop(context);
+                                          },
                                       ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text(
-                                            "Männlich",
-                                            style: Theme.of(context).textTheme.body2,
-                                          ),
-                                          Radio(
-                                            value: 1,
-                                            groupValue: radioButtonValue,
-                                            onChanged: (value){
-                                              this.radioButtonValue = value;
-                                            },
-                                          ),
-                                        ],
+                                      RaisedButton(
+                                        child: Text(
+                                          "Männlich",
+                                          style: Theme.of(context).textTheme.body2,),
+                                        onPressed: (){
+                                          setState(() {
+                                            setString(userGenderKey, "Männlich");
+                                            this.gender = "Männlich";
+                                          });
+                                          Navigator.pop(context);
+                                        },
                                       ),
+
                                     ],
-                                  ),
-                                  FlatButton(
-                                      child: Text("Speichern"),
-                                      onPressed: (){
-                                        setState(() {
-                                          String erg = (this.radioButtonValue == 1) ? "Weiblich" : "Männlich";
-                                          setString(userGenderKey, erg);
-                                          this.gender = erg;
-                                        });
-                                        Navigator.pop(context);
-                                      }
                                   ),
                                 ],
                               ),
