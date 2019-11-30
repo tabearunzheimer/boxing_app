@@ -24,11 +24,22 @@ class ReusableWidgets {
       actions: <Widget>[
         PopupMenuButton<int>(
             icon: Icon(Icons.more_vert,),
+            onSelected: (value){
+              switch(value){
+                case 1:
+                  Navigator.pushNamed(context, '/DataSecurityScreen');
+                  break;
+                case 2:
+                  Navigator.pushNamed(context, '/SettingsScreen');
+                  break;
+              }
+            },
             itemBuilder: (context) =>
             [
               PopupMenuItem(
                 value: 1,
                 child: Text("Datenschutz"),
+                enabled: true,
               ),
               PopupMenuDivider(),
               PopupMenuItem(

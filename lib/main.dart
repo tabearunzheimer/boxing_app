@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:uebung02/screens/choose_workout_style_screen.dart';
+import 'package:uebung02/screens/data_security_screen.dart';
 import 'package:uebung02/screens/diary_screen.dart';
 import 'package:uebung02/screens/done_workout_screen.dart';
 import 'package:uebung02/screens/first_launch_one_screen.dart';
 import 'package:uebung02/screens/home_screen.dart';
 import 'package:uebung02/screens/me_screen.dart';
 import 'package:uebung02/screens/rate_workout_screen.dart';
+import 'package:uebung02/screens/settings_screen.dart';
 import 'package:uebung02/screens/splash_screen.dart';
 
 void main() => runApp(MyApp());
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
         '/me' : (context) => MeScreen(),
         '/chooseWorkoutStyle' : (context) => ChooseWorkoutStyleScreen(),
         '/FirstLaunchScreen' : (context) => FirstLaunchScreenOne(),
+        '/SettingsScreen' : (context) => SettingsScreen(),
+        '/DataSecurityScreen' : (context) => DataSecurityScreen(),
       },
       home: SplashScreen(),
     );
