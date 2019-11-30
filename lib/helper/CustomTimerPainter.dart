@@ -22,11 +22,13 @@ class CustomTimerPainter extends CustomPainter {
       ..strokeCap = StrokeCap.butt
       ..style = PaintingStyle.stroke;
 
+
+    Size s = new Size(size.width, size.width);
+    Offset o = new Offset(0, size.width/-6.2);
+    canvas.drawArc(o & s, math.pi * 1.5, math.pi * 1.5, false, paint);
     canvas.drawCircle(size.center(Offset.zero), size.width / 2.0, paint);
     paint.color = color;
     double progress = (1.0 - animation.value) * 2 * math.pi;
-    Size s = new Size(size.width, size.width);
-    Offset o = new Offset(0, size.width/-6.2);
     canvas.drawArc(o & s, math.pi * 1.5, -progress, false, paint);
   }
 
