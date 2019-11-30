@@ -53,6 +53,10 @@ flutter:
    - assets/img/female_fighter_punch.jpg
    - assets/img/man_boxer.jpg
    - assets/img/hill_fighter_meditate.jpg
+   - female_fighter_kicking.jpg
+   - female_punchingbag.jpg
+   - moon_two_fighter.jpg
+   - training_fight.jpg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

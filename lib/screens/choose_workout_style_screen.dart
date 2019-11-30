@@ -59,8 +59,8 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
       body: TabBarView(controller: _tabController, children: <Widget>[
         buildRundenAndReaktionElement('assets/img/man_boxer.jpg', 0),
         buildRundenAndReaktionElement(
-            'assets/img/hill_fighter_meditate.jpg', 1),
-        buildOffenElement('assets/img/man_boxer.jpg'),
+            'assets/img/female_punchingbag.jpg', 1),
+        buildOffenElement('assets/img/training_fight.jpg'),
       ]),
     );
   }
