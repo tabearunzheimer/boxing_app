@@ -48,7 +48,6 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
       appBar: r.getAppBar(),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height - 100,
           margin: EdgeInsets.only(left: 10, right: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

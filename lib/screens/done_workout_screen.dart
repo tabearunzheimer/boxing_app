@@ -71,7 +71,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width/3.5,
-                    child: Text("kcal\n${widget.workoutInformation.kcal}",textAlign: TextAlign.center,),
+                    child: Text("kcal\n${widget.workoutInformation.kcal.roundToDouble()}",textAlign: TextAlign.center,),
                   ),
                   VerticalDivider(
                     indent: 20,
