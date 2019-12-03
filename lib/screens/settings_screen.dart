@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -8,6 +9,25 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   int radioButtonValue = 0;
+  SharedPreferences prefs;
+  static const String userWeightKey = 'userWeight';
+  static const String userGenderKey = 'userGender';
+  static const String userSizeKey = 'userSize';
+  static const String userNameKey = 'userName';
+  static const String userEmailKey = 'userEmail';
+  static const String userBirthdayKey = 'userBirthday';
+  static const String trainingDaysKey = 'userTrainingDays';
+  static const String userProfilePicKey = 'userProfilePic';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SharedPreferences.getInstance().then((sp) {
+      this.prefs = sp;
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +97,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       builder: (BuildContext context) => AlertDialog(
                         title: Text("Vorsicht!"),
                         content: Text(
-                            "Möchten Sie Ihre Daten wirklich löschen?\nDies beinhaltet die Angaben zu Ihrer Person (Alter, Gewicht, etc), sowie Informationen über die Techniken und Workouts."),
+                            "Möchten Sie Ihre Daten wirklich löschen?\nDies beinhaltet die Angaben zu Ihrer Person (Alter, Gewicht, etc)."),
                         actions: <Widget>[
                           FlatButton(
                             child: Text("Löschen"),
                             onPressed: () {
                               Navigator.pop(context);
-                              //TODO Löschen von shared prefs
+                              prefs.remove(userNameKey);
+                              prefs.remove(userBirthdayKey);
+                              prefs.remove(userSizeKey);
+                              prefs.remove(userWeightKey);
+                              prefs.remove(userGenderKey);
+                              prefs.remove(userProfilePicKey);
+                              prefs.remove(userEmailKey);
+                              prefs.remove(trainingDaysKey);
+                              Navigator.pop(context);
                             },
                           ),
                           FlatButton(
@@ -118,7 +146,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: Text("Löschen"),
                           onPressed: () {
                             Navigator.pop(context);
-                            //TODO löschen von shared prefs und zurücksetzen auf first launch
+                            prefs.clear();
+                            while (Navigator.canPop(context)){
+                              Navigator.pop(context);
+                            }
+                            Navigator.pushNamed(context, '/FirstLaunchScreen');
                           },
                         ),
                         FlatButton(
