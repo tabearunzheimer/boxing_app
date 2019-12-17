@@ -15,7 +15,7 @@ class CurrentWorkoutInformation{
   String type;
   List <Technique> techniques;
   int rating;
-  PlaylistInfo playlist;
+  List<SongInfo> playlist;
 
   CurrentWorkoutInformation(int bt1, int bt2, int ra, int rl, int r2, String t){
     this.breakTimeMin = bt1;
@@ -66,11 +66,11 @@ class CurrentWorkoutInformation{
     return erg;
   }
 
-  void setPlaylist(PlaylistInfo playlistInfo){
-    this.playlist = playlistInfo;
+  void setPlaylist(List<SongInfo> songs){
+    this.playlist = songs;
   }
 
-  PlaylistInfo getPlaylist(){
+  List<SongInfo> getPlaylist(){
     return this.playlist;
   }
 }

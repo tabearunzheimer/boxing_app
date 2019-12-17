@@ -50,7 +50,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
               return Container(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                    widget.workoutInformation.type == "Reaktion" ? "Techniken" : "Playlist: ${widget.workoutInformation.getPlaylist().name}",
+                    widget.workoutInformation.type == "Reaktion" ? "Techniken" : "Playlist",
                     style: Theme.of(context).textTheme.display2,
                 ),
               );

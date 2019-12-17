@@ -83,13 +83,8 @@ class _MusicScreenState extends State<MusicScreen> {
                     child: Text("Auswählen",  style: Theme.of(context).textTheme.display1),
                     //TODO Playlist speichern
                     onPressed: (){
-                      CurrentWorkoutInformation c = widget.workoutInformation;
-                      c.addTechniques(new List());
-                      c.setPlaylist(this.playlist[index]);
-                      Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => ChooseWorkoutSummaryScreen(c)),
-                      );
+                      widget.workoutInformation.addTechniques(new List());
+                      loadSongs(index);
                     },
                   ),
                 ],
@@ -97,6 +92,17 @@ class _MusicScreenState extends State<MusicScreen> {
             )
         );
       },
+    );
+  }
+
+  Future loadSongs(int index) async {
+    List<SongInfo> songs = await audioQuery.getSongsFromPlaylist(playlist: playlist[index]);
+    print("load: ${songs.length}");
+      widget.workoutInformation.setPlaylist(songs);
+      print("set: ${songs.length}");
+    Navigator.push(context,
+      MaterialPageRoute(
+          builder: (context) => ChooseWorkoutSummaryScreen(widget.workoutInformation)),
     );
   }
 }

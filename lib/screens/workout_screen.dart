@@ -1,7 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:uebung02/helper/CustomTimerPainter.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
@@ -30,6 +35,13 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   FlutterTts tts = new FlutterTts();
   String speakinglist;
   int listIndex;
+  AudioPlayer audioPlayer;
+  Duration audioPlayerDuration;
+  int songIndex;
+
+  AudioPlayerState playerState;
+  final FlutterAudioQuery audioQuery = FlutterAudioQuery();
+  List <SongInfo> songs;
 
   @override
   void initState() {
@@ -38,7 +50,11 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     doneRounds = 1;
     this.speakinglist = createRandomItem();
     listIndex = 0;
+    songIndex = 0;
+    audioPlayer = new AudioPlayer();
     breakDone = false;
+    //AudioPlayer.logEnabled = true;
+    songs = widget.workoutInformation.getPlaylist();
     tts.setStartHandler((){
       this.speaking = true;
     });
@@ -62,10 +78,20 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         print("StatusController - restart");
         startNewTimer();
       } else if (controller.isAnimating){
-        sayText();
+        //sayText();
+
+        //TODO
+        print("Songs: ${songs[0].filePath}");
+        playLocal(songs[songIndex].filePath);
       } else if (!controller.isAnimating){
         stopText();
+        pauseLocal();
       }
+    });
+    audioPlayer.onPlayerCompletion.listen((event) {
+       songIndex++;
+       songIndex = (songIndex > songs.length) ? 0 : songIndex;
+       playLocal(songs[songIndex].filePath);
     });
   }
 
@@ -146,13 +172,15 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                         if (controller.isAnimating) {
                           controller.stop();
                           stopText();
+                          pauseLocal();
                         } else {
                           controller.reverse(
                               from: controller.value == 0.0
                                   ? 1.0
                                   : controller.value);
                           this.speakinglist = createRandomItem();
-                          sayText();
+                          //sayText();
+                          resumeLocal();
                         }
                       });
                     },
@@ -228,6 +256,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       }
     } else {
       stopText();
+      stopLocal();
       //Navigator.pushNamed(context, '/RateWorkoutScreen');
       CurrentWorkoutInformation c = widget.workoutInformation;
       Navigator.push(context,
@@ -268,6 +297,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
             child: Text("Verlassen"),
             onPressed: (){
               stopText();
+              pauseLocal();
               Navigator.pop(context);
               Navigator.pop(context);
             },
@@ -316,4 +346,19 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     });
   }
 
+  Future playLocal(String url) async {
+    int result = await audioPlayer.play(url, isLocal: true);
+  }
+
+  Future stopLocal()async{
+    int result = await audioPlayer.stop();
+  }
+
+  Future pauseLocal()async{
+    int result = await audioPlayer.pause();
+  }
+
+  Future resumeLocal()async{
+    int result = await audioPlayer.resume();
+  }
 }
