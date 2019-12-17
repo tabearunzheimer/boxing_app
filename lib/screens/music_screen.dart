@@ -39,7 +39,7 @@ class _MusicScreenState extends State<MusicScreen> {
             color: Color.fromRGBO(0, 0, 0, 0.8),
            ),
           padding: EdgeInsets.only(top: 10),
-          itemCount: playlist.length,
+          itemCount: playlist.length+1,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           physics: const AlwaysScrollableScrollPhysics(),
@@ -58,7 +58,7 @@ class _MusicScreenState extends State<MusicScreen> {
 
   Widget buildListTile(BuildContext context, int index) {
     return ListTile(
-      title: Text(playlist[index].name),
+      title: Text(index < playlist.length ? playlist[index].name : "Keine Musik"),
       leading: Icon(Icons.music_note),
       onTap: (){
         showBottomSheet(
@@ -74,7 +74,7 @@ class _MusicScreenState extends State<MusicScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text("Playlist: ${playlist[index].name}", style: Theme.of(context).textTheme.display4),
+                  Text("Playlist: ${index < playlist.length ? playlist[index].name : 'Keine Musik'} ", style: Theme.of(context).textTheme.display4),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -96,7 +96,13 @@ class _MusicScreenState extends State<MusicScreen> {
   }
 
   Future loadSongs(int index) async {
-    List<SongInfo> songs = await audioQuery.getSongsFromPlaylist(playlist: playlist[index]);
+    List<SongInfo> songs;
+    if (index >= playlist.length){
+      songs = new List();
+    } else {
+      songs = await audioQuery.getSongsFromPlaylist(playlist: playlist[index]);
+    }
+
     print("load: ${songs.length}");
       widget.workoutInformation.setPlaylist(songs);
       print("set: ${songs.length}");
