@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:io';
-
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:uebung02/helper/CustomTimerPainter.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
@@ -33,11 +29,11 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   bool speaking = false;
   List<Technique> list;
   FlutterTts tts = new FlutterTts();
-  String speakinglist;
+  var ttsState;
   int listIndex;
   AudioPlayer audioPlayer;
-  Duration audioPlayerDuration;
   int songIndex;
+  Duration pauseDuration;
 
   AudioPlayerState playerState;
   final FlutterAudioQuery audioQuery = FlutterAudioQuery();
@@ -48,28 +44,45 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     super.initState();
     this.list = widget.workoutInformation.getTechniques();
     doneRounds = 1;
-    this.speakinglist = createRandomItem();
     listIndex = 0;
     songIndex = 0;
     audioPlayer = new AudioPlayer();
     breakDone = false;
     //AudioPlayer.logEnabled = true;
     songs = widget.workoutInformation.getPlaylist();
+
+
+
+    tts.setSpeechRate(0.4);
+    tts.setVolume(1.0);
+    tts.setPitch(1.0);
     tts.setStartHandler((){
       this.speaking = true;
     });
     tts.setCompletionHandler((){
       this.speaking = false;
+      Timer t = new Timer(pauseDuration, (){
+        print("waited for $pauseDuration");
+        if(controller.isAnimating){
+          print("Jetzt reden");
+          sayText();
+        }
+      });
     });
     tts.setLanguage("en-US");
+
     controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: widget.workoutInformation.getRoundLengthSec(), minutes:  widget.workoutInformation.getRoundLengthMin()),
     );
+    /*
+    //TODO WEG?
     controller.addListener(() {
       this.setState(() {
       });
     });
+     */
+
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         print("completed");
@@ -78,16 +91,12 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         print("StatusController - restart");
         startNewTimer();
       } else if (controller.isAnimating){
-        //sayText();
-
-        //TODO
-        print("Songs: ${songs[0].filePath}");
-        playLocal(songs[songIndex].filePath);
+        widget.workoutInformation.type == "Reaktion" ? sayText() : playLocal(songs[songIndex].filePath);
       } else if (!controller.isAnimating){
-        stopText();
-        pauseLocal();
+        widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
       }
     });
+
     audioPlayer.onPlayerCompletion.listen((event) {
        songIndex++;
        songIndex = (songIndex > songs.length) ? 0 : songIndex;
@@ -171,16 +180,13 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                       setState(() {
                         if (controller.isAnimating) {
                           controller.stop();
-                          stopText();
-                          pauseLocal();
+                          widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
                         } else {
                           controller.reverse(
                               from: controller.value == 0.0
                                   ? 1.0
                                   : controller.value);
-                          this.speakinglist = createRandomItem();
-                          //sayText();
-                          resumeLocal();
+                          widget.workoutInformation.type == "Reaktion" ? sayText() : resumeLocal();
                         }
                       });
                     },
@@ -255,8 +261,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
 
       }
     } else {
-      stopText();
-      stopLocal();
+      widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
       //Navigator.pushNamed(context, '/RateWorkoutScreen');
       CurrentWorkoutInformation c = widget.workoutInformation;
       Navigator.push(context,
@@ -296,8 +301,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
           FlatButton(
             child: Text("Verlassen"),
             onPressed: (){
-              stopText();
-              pauseLocal();
+              widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
               Navigator.pop(context);
               Navigator.pop(context);
             },
@@ -315,27 +319,24 @@ class _WorkoutScreenState extends State<WorkoutScreen>
 
   String createRandomItem() {
     var rng = new Random();
-    String erg = "";
-    print(widget.workoutInformation.getRoundLengthMin());
-    int x = (1 + widget.workoutInformation.getRoundLengthMin() * widget.workoutInformation.getRoundAmount() * 5);
-    for (int i = 0; i < x; i++){
-      if(this.list.length != 0) {
-        erg += "${this.list[(rng.nextInt(this.list.length))].name} ";
-      }
-    }
-    return erg;
+    return "${this.list[(rng.nextInt(this.list.length))].name} ";
   }
 
   void sayText(){
-    //print("redet? $speaking");
-    tts.setSpeechRate(0.1);
-    tts.setVolume(1.0);
-    tts.setPitch(1.0);
+    var rng = new Random();
+    print("party?");
+    print("bool1 ${this.speaking}");
     if (!this.speaking){
       setState(() {
-        this.speaking = true;
-        tts.speak(this.speakinglist.toLowerCase());
+        pauseDuration = new Duration(seconds: rng.nextInt(3));
+        //ttsState = ttsState.playing;
       });
+
+      print("bool ${this.speaking}");
+      tts.speak(createRandomItem().toLowerCase());
+      if(pauseDuration.inSeconds == 0){
+        pauseDuration = new Duration(milliseconds: 50);
+      }
     }
   }
 
@@ -347,18 +348,18 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   }
 
   Future playLocal(String url) async {
-    int result = await audioPlayer.play(url, isLocal: true);
+    await audioPlayer.play(url, isLocal: true);
   }
 
   Future stopLocal()async{
-    int result = await audioPlayer.stop();
+    await audioPlayer.stop();
   }
 
   Future pauseLocal()async{
-    int result = await audioPlayer.pause();
+    await audioPlayer.pause();
   }
 
   Future resumeLocal()async{
-    int result = await audioPlayer.resume();
+    await audioPlayer.resume();
   }
 }
