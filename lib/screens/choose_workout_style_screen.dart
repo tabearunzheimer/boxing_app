@@ -66,12 +66,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
   }
 
   Widget buildRundenAndReaktionElement(String imgPfad, int i) {
-    String type;
-    if (i == 0) {
-      type = "Runden";
-    } else {
-      type = "Reaktion";
-    }
+    String type = i==0 ? "Runden" : "Reaktion";
 
     return Container(
       margin: EdgeInsets.only(bottom: 10),
@@ -144,7 +139,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                                 setState(() {
                                   this.breakminutes = int.parse(value);
                                 });
-                              }
+                              },
                             ),
                           ),
                           Text(

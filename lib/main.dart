@@ -6,6 +6,7 @@ import 'package:uebung02/screens/done_workout_screen.dart';
 import 'package:uebung02/screens/first_launch_one_screen.dart';
 import 'package:uebung02/screens/home_screen.dart';
 import 'package:uebung02/screens/me_screen.dart';
+import 'package:uebung02/screens/music_screen.dart';
 import 'package:uebung02/screens/rate_workout_screen.dart';
 import 'package:uebung02/screens/settings_screen.dart';
 import 'package:uebung02/screens/splash_screen.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         '/FirstLaunchScreen' : (context) => FirstLaunchScreenOne(),
         '/SettingsScreen' : (context) => SettingsScreen(),
         '/DataSecurityScreen' : (context) => DataSecurityScreen(),
+        '/MusicScreen' : (context) => MusicScreen(),
       },
       home: SplashScreen(),
     );

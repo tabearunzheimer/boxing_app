@@ -84,7 +84,9 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
                         child: RawMaterialButton(
                           shape: CircleBorder(side: BorderSide(color: Colors.white, width: 1.5)),
                           child: Icon(Icons.music_note, color: Colors.white),
-                          onPressed: null,
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/MusicScreen');
+                          },
                         ),
                       ),
                     ),
