@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
         '/FirstLaunchScreen' : (context) => FirstLaunchScreenOne(),
         '/SettingsScreen' : (context) => SettingsScreen(),
         '/DataSecurityScreen' : (context) => DataSecurityScreen(),
-        '/MusicScreen' : (context) => MusicScreen(),
       },
       home: SplashScreen(),
     );

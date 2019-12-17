@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/screens/choose_workout_techniques.dart';
+import 'package:uebung02/screens/music_screen.dart';
 
 class ChooseWorkoutStyleScreen extends StatefulWidget {
   @override
@@ -268,7 +269,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                       fillColor: Color.fromRGBO(255, 255, 255, 1),
                       child: Icon(Icons.arrow_forward),
                       onPressed: () {
-                        showChooseWorkoutTechniquesScreenFromRound(type);
+                        type == "Reaktion" ? showChooseWorkoutTechniquesScreen(type) : showMusicScreen(type);
                       },
                     ),
                   ],
@@ -282,6 +283,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
   }
 
   Widget buildOffenElement(String imgPfad) {
+    String type = "Offen";
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -371,7 +373,9 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                       shape: CircleBorder(),
                       fillColor: Color.fromRGBO(255, 255, 255, 1),
                       child: Icon(Icons.arrow_forward),
-                      onPressed: showChooseWorkoutTechniquesScreenFromOffen,
+                      onPressed: (){
+                        showMusicScreen(type);
+                      },
                     ),
                   ],
                 ),
@@ -383,23 +387,23 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     );
   }
 
-  void showChooseWorkoutTechniquesScreenFromOffen() {
-    print("Change to choose-Workout-Techniques-Screen");
+  void showMusicScreen(String type) {
+    //TODO Music
+    print("Change to Music-Screen");
     try {
       CurrentWorkoutInformation c =
-          new CurrentWorkoutInformation(0, 0, 0, this.roundminutes, this.roundseconds, "Offen");
+          new CurrentWorkoutInformation(0, 0, 0, this.roundminutes, this.roundseconds, type);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ChooseWorkoutTechniques(c)),
+        MaterialPageRoute(builder: (context) => MusicScreen(c)),
       );
     } catch (e) {
       print(e);
     }
   }
 
-  void showChooseWorkoutTechniquesScreenFromRound(String type) {
+  void showChooseWorkoutTechniquesScreen(String type) {
     print("Change to choose-Workout-Techniques-Screen");
-
     try {
       if (this.breakBetweenRounds) {
       }

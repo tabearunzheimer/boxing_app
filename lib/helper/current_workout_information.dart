@@ -1,5 +1,7 @@
 
 
+import 'package:flutter_audio_query/flutter_audio_query.dart';
+
 import 'Technique.dart';
 
 class CurrentWorkoutInformation{
@@ -13,6 +15,7 @@ class CurrentWorkoutInformation{
   String type;
   List <Technique> techniques;
   int rating;
+  PlaylistInfo playlist;
 
   CurrentWorkoutInformation(int bt1, int bt2, int ra, int rl, int r2, String t){
     this.breakTimeMin = bt1;
@@ -61,5 +64,13 @@ class CurrentWorkoutInformation{
       erg += this.techniques[i].getName();
     }
     return erg;
+  }
+
+  void setPlaylist(PlaylistInfo playlistInfo){
+    this.playlist = playlistInfo;
+  }
+
+  PlaylistInfo getPlaylist(){
+    return this.playlist;
   }
 }

@@ -4,6 +4,8 @@ import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:uebung02/screens/workout_screen.dart';
 
+import 'music_screen.dart';
+
 class ChooseWorkoutSummaryScreen extends StatefulWidget {
   CurrentWorkoutInformation workoutInformation;
 
@@ -39,6 +41,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
           shrinkWrap: true,
           itemCount: (this.list.length + 2),
           scrollDirection: Axis.vertical,
+          padding: EdgeInsets.only(bottom: 10),
           itemBuilder: (context, index) {
             if (index == 0) {
               return _buildFirstListItem();
@@ -46,7 +49,10 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
             if (index == 1) {
               return Container(
                 padding: EdgeInsets.only(left: 10),
-                child: Text("Techniken", style: Theme.of(context).textTheme.display2),
+                child: Text(
+                    widget.workoutInformation.type == "Reaktion" ? "Techniken" : "Playlist: ${widget.workoutInformation.getPlaylist().name}",
+                    style: Theme.of(context).textTheme.display2,
+                ),
               );
             }
             index -= 2;
@@ -70,29 +76,13 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(10.0),
+                margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height / 5)),
                 width: (MediaQuery.of(context).size.width),
-                height: (MediaQuery.of(context).size.height / 3),
+                height: (MediaQuery.of(context).size.height / 8),
+                alignment: Alignment.center,
                 //color: Colors.red,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        height: 50.0,
-                        width: 50.0,
-                        child: RawMaterialButton(
-                          shape: CircleBorder(side: BorderSide(color: Colors.white, width: 1.5)),
-                          child: Icon(Icons.music_note, color: Colors.white),
-                          onPressed: (){
-                            Navigator.pushNamed(context, '/MusicScreen');
-                          },
-                        ),
-                      ),
-                    ),
-                    Text("Gib alles", style: Theme.of(context).textTheme.headline,),
-                  ],
-                ),
+                child: Text("Gib alles", style: Theme.of(context).textTheme.headline,),
+
               ),
               Container(
                 //color: Colors.green,

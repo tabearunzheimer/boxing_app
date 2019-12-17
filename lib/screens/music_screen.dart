@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:uebung02/helper/current_workout_information.dart';
+import 'package:uebung02/screens/choose_workout_summary_screen.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
+import 'package:uebung02/screens/workout_screen.dart';
 
 class MusicScreen extends StatefulWidget {
+  CurrentWorkoutInformation workoutInformation;
+
+  MusicScreen(CurrentWorkoutInformation cOld) {
+    this.workoutInformation = cOld;
+  }
   @override
   _MusicScreenState createState() => _MusicScreenState();
 }
@@ -16,7 +24,6 @@ class _MusicScreenState extends State<MusicScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getPlaylist();
   }
@@ -75,6 +82,15 @@ class _MusicScreenState extends State<MusicScreen> {
                     disabledColor: Color.fromRGBO(200, 0, 0, 1),
                     child: Text("Auswählen",  style: Theme.of(context).textTheme.display1),
                     //TODO Playlist speichern
+                    onPressed: (){
+                      CurrentWorkoutInformation c = widget.workoutInformation;
+                      c.addTechniques(new List());
+                      c.setPlaylist(this.playlist[index]);
+                      Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => ChooseWorkoutSummaryScreen(c)),
+                      );
+                    },
                   ),
                 ],
               ),
