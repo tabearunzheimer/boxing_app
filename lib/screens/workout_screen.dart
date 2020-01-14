@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:uebung02/helper/CustomTimerPainter.dart';
 import 'package:uebung02/helper/Technique.dart';
@@ -64,7 +63,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       this.speaking = false;
       Timer t = new Timer(pauseDuration, (){
         print("waited for $pauseDuration");
-        if(controller.isAnimating){
+        if(controller.isAnimating && !this.breakDone){
           print("Jetzt reden");
           sayText();
         }
@@ -91,10 +90,12 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         controller.reverse();
         print("StatusController - restart");
         startNewTimer();
+      } else if (!controller.isAnimating && this.breakDone && widget.workoutInformation.type == "Reaktion"){
+        stopText();
+      } else if (!controller.isAnimating && widget.workoutInformation.type != "Reaktion"){
+        pauseLocal();
       } else if (controller.isAnimating){
         widget.workoutInformation.type == "Reaktion" ? sayText() : playLocal(songs[songIndex].filePath);
-      } else if (!controller.isAnimating){
-        widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
       }
     });
 

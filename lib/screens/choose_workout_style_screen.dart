@@ -391,8 +391,12 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     //TODO Music
     print("Change to Music-Screen");
     try {
+      if (!this.breakBetweenRounds) {
+        this.breakseconds = 0;
+        this.breakminutes = 0;
+      }
       CurrentWorkoutInformation c =
-          new CurrentWorkoutInformation(0, 0, 0, this.roundminutes, this.roundseconds, type);
+          new CurrentWorkoutInformation(this.breakminutes, this.breakseconds, this.roundamout, this.roundminutes, this.roundseconds, type);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MusicScreen(c)),
@@ -405,7 +409,9 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
   void showChooseWorkoutTechniquesScreen(String type) {
     print("Change to choose-Workout-Techniques-Screen");
     try {
-      if (this.breakBetweenRounds) {
+      if (!this.breakBetweenRounds) {
+        this.breakseconds = 0;
+        this.breakminutes = 0;
       }
       CurrentWorkoutInformation c = new CurrentWorkoutInformation(
           this.breakminutes, this.breakseconds, this.roundamout, this.roundminutes, this.roundseconds, type);
