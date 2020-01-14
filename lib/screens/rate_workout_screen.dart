@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/CustomRateWorkoutPainter.dart';
+import 'package:uebung02/helper/Workout.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/helper/workout_database_helper.dart';
 import 'package:uebung02/screens/done_workout_screen.dart';
@@ -364,21 +365,26 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
 
   Future saveNewWorkout() async {
     int x = await dbHelperWorkouts.queryRowCount();
+    List<Map<String, dynamic>> y = await dbHelperWorkouts.queryAllRows();
         double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 60) );
     double burnedkcal = this.weight/5 * duration;
     print("weight ${this.weight}");
     widget.workoutInformation.kcal = burnedkcal;
     DateTime dt = new DateTime.now();
+    Workout w = new Workout.fromJson(y[x-1]);
+    int highestId = w.getId();
+    print("highestId: $highestId");
+    String techniques = widget.workoutInformation.getTechniquesAsString();
 
     Map<String, dynamic> row = {
-      WorkoutDatabaseHelper.columnId: x+1,
+      WorkoutDatabaseHelper.columnId: highestId+1,
       WorkoutDatabaseHelper.columnType: widget.workoutInformation.type,
       WorkoutDatabaseHelper.columnBurnedCalories: burnedkcal,
       WorkoutDatabaseHelper.columnDuration: duration,
       WorkoutDatabaseHelper.columnTrainingYear: dt.year,
       WorkoutDatabaseHelper.columnTrainingMonth: dt.month,
       WorkoutDatabaseHelper.columnTrainingDay: dt.day,
-      WorkoutDatabaseHelper.columnTechniques: widget.workoutInformation.getTechniquesAsString,
+      WorkoutDatabaseHelper.columnTechniques: techniques,
       WorkoutDatabaseHelper.columnWeekDay: 'Freitag',
     };
     print("row: $row");

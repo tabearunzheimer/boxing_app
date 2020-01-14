@@ -52,7 +52,6 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     songs = widget.workoutInformation.getPlaylist();
 
 
-
     tts.setSpeechRate(0.4);
     tts.setVolume(1.0);
     tts.setPitch(1.0);
@@ -242,6 +241,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   }
 
   void startNewTimer() {
+    //TODO pause runden wechsel sound
     if (checkForRepeat()) {
       print("Repeat war true");
       if (checkForBreak() && !this.breakDone) {
@@ -364,4 +364,5 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   Future resumeLocal()async{
     await audioPlayer.resume();
   }
+
 }
