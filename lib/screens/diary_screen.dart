@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:uebung02/helper/CustomStatisticsPainter.dart';
 import 'package:uebung02/helper/Technique.dart';
@@ -202,6 +203,24 @@ class _DiaryScreenState extends State<DiaryScreen>
 
   //TODO Platzhalter entfernen
   Widget buildStatistics() {
+    List <String> techniken = new List();
+    int z = 0;
+    for (int i = 0; i < workoutList.length; i++){
+      print(workoutList[i].getTechniques());
+      if (workoutList[i].getTechniques().length > 2){
+        print("hinzufügen");
+        List<String> zw = workoutList[i].separateTechniques();
+        for (int j = 0; j < zw.length; j++){
+          if (z < 5){
+            techniken.add(zw[j]);
+            print(techniken[j]);
+            z++;
+          }
+        }
+      }
+    }
+
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,11 +237,11 @@ class _DiaryScreenState extends State<DiaryScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
+                techniken.length == 0 ? Text("Keine Techniken vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[0], style: Theme.of(context).textTheme.body2,),
+                techniken.length <= 1 ? Text("Keine Technik vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[1], style: Theme.of(context).textTheme.body2,),
+                techniken.length <= 2 ? Text("Keine Technik vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[2], style: Theme.of(context).textTheme.body2,),
+                techniken.length <= 3 ? Text("Keine Technik vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[3], style: Theme.of(context).textTheme.body2,),
+                techniken.length <= 4 ? Text("Keine Technik vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[4], style: Theme.of(context).textTheme.body2,),
               ],
             ),
           ),
@@ -536,7 +555,7 @@ class _DiaryScreenState extends State<DiaryScreen>
     EventList<Event> ev = new EventList();
     print("Workout Liste: ${l.length}");
     int x = l.length;
-    for (int i = 0; i < x; i++) {
+    for (int i = x-1; i >= 0; i--) {
       print(l[i].toString());
       Workout w = new Workout.fromJson(l[i]);
       erg.add(w);
@@ -588,17 +607,20 @@ class _DiaryScreenState extends State<DiaryScreen>
   }
 
   String getCurrentInput() {
+
     int index = 0;
     double alt = 0;
     for (double i = 50; i < MediaQuery.of(context).size.width && index < this.testWerteX.length; i = i + (MediaQuery.of(context).size.width - 60) / this.testWerteX.length) {
       if (this.posx <= i && this.posx >= alt) {
-        return "${this.testWerteX[index]}: ${this.testwerte[index]} Trainings";
+        String month = datehelper.getMonthName(int.parse(this.testWerteX[index]));
+        return "$month: ${this.testwerte[index]} mal trainiert";
       }
       alt = i;
       index++;
       index = index > 11 ? 11 : index;
     }
   }
+
 
 
 }

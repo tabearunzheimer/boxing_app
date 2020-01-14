@@ -99,4 +99,9 @@ class Workout {
     return this._workoutTime;
   }
 
+  List <String> separateTechniques(){
+    List <String> split= _techniques.split(", ");
+    return split;
+  }
+
 }
