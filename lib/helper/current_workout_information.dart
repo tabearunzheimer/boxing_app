@@ -61,7 +61,7 @@ class CurrentWorkoutInformation{
   String getTechniquesAsString(){
     String erg = "";
     for (int i = 0; i < this.techniques.length; i++){
-      erg += this.techniques[i].getName();
+      erg += i == this.techniques.length-1 ? "${this.techniques[i].getName()}" : "${this.techniques[i].getName()}, ";
     }
     return erg;
   }
