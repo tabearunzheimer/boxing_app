@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/CustomStatisticsPainter.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/Workout.dart';
@@ -23,6 +24,7 @@ class _DiaryScreenState extends State<DiaryScreen>
     with TickerProviderStateMixin {
   int selectedIndex = 1;
   ReusableWidgets _reusableWidgets;
+  SharedPreferences prefs;
   DateTime _currentDate;
   List<Technique> learnedTechniques;
   List<Technique> notLearnedTechniques;
@@ -38,7 +40,7 @@ class _DiaryScreenState extends State<DiaryScreen>
   final dbHelperTechniques = TechniquesDatabaseHelper.instance;
   final dbHelperWorkouts = WorkoutDatabaseHelper.instance;
 
-  List<int> testwerte = [1,5,7,2,11,9,4,3,14,10,0,6];
+  List<int> testwerte = [0,0,0,0,0,0,0,0,0,0,0,0];
   List<String> testWerteX = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 
   @override
@@ -56,6 +58,10 @@ class _DiaryScreenState extends State<DiaryScreen>
       vsync: this,
     );
     this.tapInProgress = false;
+    SharedPreferences.getInstance().then((sp) {
+      this.prefs = sp;
+    });
+
   }
 
   @override
@@ -219,7 +225,7 @@ class _DiaryScreenState extends State<DiaryScreen>
         }
       }
     }
-
+    List<String> mostTrainedTechniques = getMostTrainedTechniques();
 
     return SingleChildScrollView(
       child: Column(
@@ -250,7 +256,7 @@ class _DiaryScreenState extends State<DiaryScreen>
           ),
           Container(
             padding: EdgeInsets.only(left: 10),
-            child: Text("Lange nicht trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
+            child: Text("Am meissten trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
           ),
           Divider(
             color: Colors.black54,
@@ -260,11 +266,11 @@ class _DiaryScreenState extends State<DiaryScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("Technik 1", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 2", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 3", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 4", style: Theme.of(context).textTheme.body2,),
-                Text("Technik 5", style: Theme.of(context).textTheme.body2,),
+                Text(mostTrainedTechniques[0], style: Theme.of(context).textTheme.body2,),
+                Text(mostTrainedTechniques[1], style: Theme.of(context).textTheme.body2,),
+                Text(mostTrainedTechniques[2], style: Theme.of(context).textTheme.body2,),
+                Text(mostTrainedTechniques[3], style: Theme.of(context).textTheme.body2,),
+                Text(mostTrainedTechniques[4], style: Theme.of(context).textTheme.body2,),
               ],
             ),
           ),
@@ -569,8 +575,36 @@ class _DiaryScreenState extends State<DiaryScreen>
       this.trainingDays = ev;
       print("Workout-Liste uebergeben, laenge: ${this.workoutList.length}");
     });
+
+    getTrainingAmountPerMonth();
   }
 
+  //TODO
+  List <String> getMostTrainedTechniques(){
+    List <String> e  = new List();
+    e.add("Keine Technik vorhanden");
+    e.add("Keine Technik vorhanden");
+    e.add("Keine Technik vorhanden");
+    e.add("Keine Technik vorhanden");
+    e.add("Keine Technik vorhanden");
+    return e;
+  }
+
+  void getTrainingAmountPerMonth() async {
+    print("get training amount");
+    for (int i = 0; i < this.workoutList.length; i++){
+      int m = this.workoutList[i].getDateTime().month-1;
+      print("month m");
+      print("testwerte v m ${testwerte[m]}");
+      setState(() {
+        this.testwerte[m]++;
+      });
+    }
+  }
+
+  Future<int> loadInt(String key) async {
+    return prefs.get(key) ?? 0;
+  }
 
   void dragStart(BuildContext context, DragStartDetails details) {
     //print('Start: ${details.globalPosition}');
@@ -619,6 +653,7 @@ class _DiaryScreenState extends State<DiaryScreen>
       index++;
       index = index > 11 ? 11 : index;
     }
+    return "";
   }
 
 

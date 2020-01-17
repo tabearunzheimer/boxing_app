@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/CustomRateWorkoutPainter.dart';
+import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/Workout.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/helper/workout_database_helper.dart';
@@ -69,7 +70,6 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
               height: 900.0,
             ),
           ),
-
           Container(
             margin:
             EdgeInsets.only(top: (MediaQuery
@@ -127,7 +127,6 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                         textAlign: TextAlign.center,
                       );
                     }),
-
                 Divider(
                   indent: 100,
                   endIndent: 100,
@@ -136,8 +135,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 50, right: 50),
-                  child:
-                  AnimatedBuilder(
+                  child: AnimatedBuilder(
                       animation: controller,
                       builder: (BuildContext context, Widget child) {
                         return Text(
@@ -149,7 +147,6 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                               .display1,
                         );
                       }),
-
                 ),
               ],
             ),
@@ -366,18 +363,19 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   Future saveNewWorkout() async {
     int x = await dbHelperWorkouts.queryRowCount();
     List<Map<String, dynamic>> y = await dbHelperWorkouts.queryAllRows();
-        double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 60) );
-    double burnedkcal = this.weight/5 * duration;
+    double duration = (widget.workoutInformation.getRoundLengthMin() +
+        (widget.workoutInformation.getRoundLengthSec() / 60));
+    double burnedkcal = this.weight / 5 * duration;
     print("weight ${this.weight}");
     widget.workoutInformation.kcal = burnedkcal;
     DateTime dt = new DateTime.now();
-    Workout w = new Workout.fromJson(y[x-1]);
+    Workout w = new Workout.fromJson(y[x - 1]);
     int highestId = w.getId();
     print("highestId: $highestId");
     String techniques = widget.workoutInformation.getTechniquesAsString();
 
     Map<String, dynamic> row = {
-      WorkoutDatabaseHelper.columnId: highestId+1,
+      WorkoutDatabaseHelper.columnId: highestId + 1,
       WorkoutDatabaseHelper.columnType: widget.workoutInformation.type,
       WorkoutDatabaseHelper.columnBurnedCalories: burnedkcal,
       WorkoutDatabaseHelper.columnDuration: duration,
@@ -390,6 +388,17 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     print("row: $row");
     dbHelperWorkouts.insert(row);
 
+    //TODO testen ob es funktioniert
+    //save amount of how often technique is trained
+    List<Technique> test = widget.workoutInformation.getTechniques();
+    for (int i = 0; i < widget.workoutInformation.getTechniques().length; i++) {
+      loadInt(test[i].getName()).then((value) {
+        //print("Wert fuer sharedpref: $value");
+        value++;
+        //print("neuer Wert fuer sharedpref: $value");
+        setInt(test[i].getName(), value);
+      });
+    }
 
     Navigator.pop(context);
     Navigator.pop(context);
@@ -397,8 +406,16 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     Navigator.pop(context);
     Navigator.pop(context);
     print("Change to Done-Workout-Screen");
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DoneWorkoutScreen(widget.workoutInformation)),);
-
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => DoneWorkoutScreen(widget
+    .
+    workoutInformation
+    )
+    )
+    ,
+    );
   }
 
   Future<Null> setDouble(String key, double w) async {
@@ -412,4 +429,12 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     });
   }
 
+  Future<Null> setInt(String key, int w) async {
+    await this.prefs.setInt(key, w);
+    print("Int saved");
+  }
+
+  Future<int> loadInt(String key) async {
+    return prefs.get(key) ?? 0;
+  }
 }
