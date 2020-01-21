@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/techniques_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
@@ -77,10 +78,9 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
       ),
       trailing: this.learnedTechniques[index].getTypeIcon(),
       onTap: () {
+        this.learnedTechniques[index].learned = this.learnedTechniques[index].learned ? false : true;
         if (_checkBoxVal[index]) {
           print("entfernen");
-          this.learnedTechniques[index].learned = this.learnedTechniques[index].learned ? false : true;
-          updateTechniquesDatabaseEntry(this.learnedTechniques[index]);
           setState(() {
             _checkBoxVal[index] = false;
           });
@@ -89,6 +89,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
             _checkBoxVal[index] = true;
           });
         }
+        updateTechniquesDatabaseEntry(this.learnedTechniques[index]);
       },
     );
   }
@@ -154,6 +155,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
       TechniquesDatabaseHelper.columnLastTrainedYear: t.getYear(),
     };
     final rowsAffected = await dbHelper.update(row);
+    //print("name ${t.getName()} learned ${t.getLearned()}");
     print('updated $rowsAffected row(s)');
   }
 

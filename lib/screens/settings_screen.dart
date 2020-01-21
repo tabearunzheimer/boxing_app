@@ -156,7 +156,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             while (Navigator.canPop(context)){
                               Navigator.pop(context);
                             }
-                            Navigator.pushNamed(context, '/FirstLaunchScreen');
+                            Navigator.pushNamed(context, '/splashScreen');
                           },
                         ),
                         FlatButton(

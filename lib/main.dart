@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
         '/home' : (context) => HomeScreen(),
         '/diary' : (context) => DiaryScreen(),
         '/me' : (context) => MeScreen(),
+        '/splashScreen' : (context) => SplashScreen(),
         '/chooseWorkoutStyle' : (context) => ChooseWorkoutStyleScreen(),
         '/FirstLaunchScreen' : (context) => FirstLaunchScreenOne(),
         '/SettingsScreen' : (context) => SettingsScreen(),
