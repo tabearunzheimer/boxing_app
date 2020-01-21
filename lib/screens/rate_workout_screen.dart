@@ -62,7 +62,6 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
       body: Stack(
         children: <Widget>[
           Container(
-
             ///Hintergrundbild
             child: new Image.asset(
               'assets/img/female_boxer.jpg',
@@ -72,18 +71,9 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
           ),
           Container(
             margin:
-            EdgeInsets.only(top: (MediaQuery
-                .of(context)
-                .size
-                .height) / 5),
-            height: (MediaQuery
-                .of(context)
-                .size
-                .height / 7),
-            width: (MediaQuery
-                .of(context)
-                .size
-                .width),
+                EdgeInsets.only(top: (MediaQuery.of(context).size.height) / 5),
+            height: (MediaQuery.of(context).size.height / 7),
+            width: (MediaQuery.of(context).size.width),
             //color: Colors.green,
             alignment: Alignment.center,
             child: AnimatedBuilder(
@@ -98,18 +88,9 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
           Container(),
           Container(
             margin: EdgeInsets.only(
-                top: (MediaQuery
-                    .of(context)
-                    .size
-                    .height) / 2.5),
-            height: (MediaQuery
-                .of(context)
-                .size
-                .height / 3.5),
-            width: (MediaQuery
-                .of(context)
-                .size
-                .width),
+                top: (MediaQuery.of(context).size.height) / 2.5),
+            height: (MediaQuery.of(context).size.height / 3.5),
+            width: (MediaQuery.of(context).size.width),
             //color: Colors.green,
             alignment: Alignment.center,
             child: Column(
@@ -120,10 +101,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                     builder: (BuildContext context, Widget child) {
                       return Text(
                         getRatingDefinition(),
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .subtitle,
+                        style: Theme.of(context).textTheme.subtitle,
                         textAlign: TextAlign.center,
                       );
                     }),
@@ -141,10 +119,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                         return Text(
                           getRatingText(),
                           textAlign: TextAlign.center,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .display1,
+                          style: Theme.of(context).textTheme.display1,
                         );
                       }),
                 ),
@@ -152,14 +127,8 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
             ),
           ),
           Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
 
             ///Animation zum bewerten
             child: GestureDetector(
@@ -174,13 +143,11 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
                 builder: (BuildContext context, Widget child) {
                   return CustomPaint(
                       painter: CustomRateWorkoutPainter(
-                        animation: this.controller,
-                        backgroundColor: Colors.white,
-                        color: Theme
-                            .of(context)
-                            .accentColor,
-                        posX: this.posx,
-                      ));
+                    animation: this.controller,
+                    backgroundColor: Colors.white,
+                    color: Theme.of(context).accentColor,
+                    posX: this.posx,
+                  ));
                 },
               ),
             ),
@@ -228,10 +195,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   String getCurrentRating(BuildContext context) {
-    double size = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double size = MediaQuery.of(context).size.width;
     double alt = 0;
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
@@ -245,10 +209,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   String getRatingDefinition() {
-    double size = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double size = MediaQuery.of(context).size.width;
     double alt = 0;
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
@@ -263,10 +224,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   String getRatingText() {
-    double size = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double size = MediaQuery.of(context).size.width;
     double alt = 0;
     int index = 0;
     for (double i = 0; i < size + 1; i = i + size / 10) {
@@ -292,14 +250,14 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
         break;
       case 2:
         erg =
-        "Leicht erhöhte Atmung. Das war keine besonders große Anstrengung.";
+            "Leicht erhöhte Atmung. Das war keine besonders große Anstrengung.";
         break;
       case 3:
         erg = "Erhöhte Atmung. Das war etwas anstrengend.";
         break;
       case 4:
         erg =
-        "Erhöhte Atmung und etwas erhöhter Puls. Es war etwas anstrengend aber keine Herausforderung.";
+            "Erhöhte Atmung und etwas erhöhter Puls. Es war etwas anstrengend aber keine Herausforderung.";
         break;
       case 5:
         erg = "Erhöhte Atmung und erhöhter Puls. Das war anstrengend.";
@@ -388,18 +346,6 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     print("row: $row");
     dbHelperWorkouts.insert(row);
 
-    //TODO testen ob es funktioniert
-    //save amount of how often technique is trained
-    List<Technique> test = widget.workoutInformation.getTechniques();
-    for (int i = 0; i < widget.workoutInformation.getTechniques().length; i++) {
-      loadInt(test[i].getName()).then((value) {
-        //print("Wert fuer sharedpref: $value");
-        value++;
-        //print("neuer Wert fuer sharedpref: $value");
-        setInt(test[i].getName(), value);
-      });
-    }
-
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pop(context);
@@ -407,14 +353,9 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     Navigator.pop(context);
     print("Change to Done-Workout-Screen");
     Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) => DoneWorkoutScreen(widget
-    .
-    workoutInformation
-    )
-    )
-    ,
+      context,
+      MaterialPageRoute(
+          builder: (context) => DoneWorkoutScreen(widget.workoutInformation)),
     );
   }
 
@@ -427,14 +368,5 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     setState(() {
       this.weight = prefs.get(key) ?? 0;
     });
-  }
-
-  Future<Null> setInt(String key, int w) async {
-    await this.prefs.setInt(key, w);
-    print("Int saved");
-  }
-
-  Future<int> loadInt(String key) async {
-    return prefs.get(key) ?? 0;
   }
 }

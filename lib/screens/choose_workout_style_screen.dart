@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
   //TODO Add Text Controller
   TabController _tabController;
   bool breakBetweenRounds = false;
+  String errorText = "";
 
   int breakminutes, breakseconds, roundamout, roundminutes, roundseconds;
 
@@ -59,15 +61,14 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
       ),
       body: TabBarView(controller: _tabController, children: <Widget>[
         buildRundenAndReaktionElement('assets/img/man_boxer.jpg', 0),
-        buildRundenAndReaktionElement(
-            'assets/img/female_punchingbag.jpg', 1),
+        buildRundenAndReaktionElement('assets/img/female_punchingbag.jpg', 1),
         buildOffenElement('assets/img/training_fight.jpg'),
       ]),
     );
   }
 
   Widget buildRundenAndReaktionElement(String imgPfad, int i) {
-    String type = i==0 ? "Runden" : "Reaktion";
+    String type = i == 0 ? "Runden" : "Reaktion";
 
     return Container(
       margin: EdgeInsets.only(bottom: 10),
@@ -88,7 +89,11 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
               margin: EdgeInsets.all(10),
               child: Container(
                 padding: EdgeInsets.all(10),
-                child: Text(i == 0 ? "Beim Runden-Training kannst du einen typischen Boxkampf simulieren oder einfach Sets mit Pausen festlegen um verschiedene Techniken zu trainieren. Für die klassische Runden-Simulation solltest du keine Techniken auswählen." : "Das Reaktionstraining funktioniert wie das Runden-Training, allerdings musst du hier verschiedene Techniken auswählen. Diese werden dann während des Trainings genannt und du musst Sie so schnell wie möglich ausführen.", style: Theme.of(context).textTheme.body2,
+                child: Text(
+                  i == 0
+                      ? "Beim Runden-Training kannst du einen typischen Boxkampf simulieren oder einfach Sets mit Pausen festlegen um verschiedene Techniken zu trainieren. Für die klassische Runden-Simulation solltest du keine Techniken auswählen."
+                      : "Das Reaktionstraining funktioniert wie das Runden-Training, allerdings musst du hier verschiedene Techniken auswählen. Diese werden dann während des Trainings genannt und du musst Sie so schnell wie möglich ausführen.",
+                  style: Theme.of(context).textTheme.body2,
                 ),
               ),
             ),
@@ -136,7 +141,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                               decoration: new InputDecoration(),
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: false, signed: true),
-                                onChanged: (String value){
+                              onChanged: (String value) {
                                 setState(() {
                                   this.breakminutes = int.parse(value);
                                 });
@@ -151,16 +156,15 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                             width: 40,
                             height: 40,
                             child: TextFormField(
-                              enabled: breakBetweenRounds,
-                              decoration: new InputDecoration(),
-                              keyboardType: TextInputType.numberWithOptions(
-                                  decimal: false, signed: true),
-                                onChanged: (String value){
-                                setState(() {
-                                  this.breakseconds = int.parse(value);
-                                });
-                                }
-                            ),
+                                enabled: breakBetweenRounds,
+                                decoration: new InputDecoration(),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: false, signed: true),
+                                onChanged: (String value) {
+                                  setState(() {
+                                    this.breakseconds = int.parse(value);
+                                  });
+                                }),
                           ),
                           Text(
                             "sek",
@@ -199,15 +203,15 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                                 width: 40,
                                 height: 40,
                                 child: TextFormField(
-                                  decoration: new InputDecoration(),
-                                  keyboardType: TextInputType.numberWithOptions(
-                                      decimal: false, signed: true),
-                                    onChanged: (String value){
+                                    decoration: new InputDecoration(),
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: false, signed: true),
+                                    onChanged: (String value) {
                                       setState(() {
                                         this.roundamout = int.parse(value);
                                       });
-                                    }
-                                ),
+                                    }),
                               ),
                               //Text("0-99"),
                             ],
@@ -224,15 +228,15 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                                 width: 40,
                                 height: 40,
                                 child: TextFormField(
-                                  decoration: new InputDecoration(),
-                                  keyboardType: TextInputType.numberWithOptions(
-                                      decimal: false, signed: true),
-                                    onChanged: (String value){
+                                    decoration: new InputDecoration(),
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: false, signed: true),
+                                    onChanged: (String value) {
                                       setState(() {
                                         this.roundminutes = int.parse(value);
                                       });
-                                    }
-                                ),
+                                    }),
                               ),
                               Text(
                                 "min",
@@ -243,16 +247,15 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                                 width: 40,
                                 height: 40,
                                 child: TextFormField(
-                                  decoration: new InputDecoration(),
-                                  keyboardType: TextInputType.numberWithOptions(
-                                      decimal: false, signed: true),
-                                    onChanged: (String value){
-                                    setState(() {
-                                      print("save");
-                                      this.roundseconds = int.parse(value);
-                                    });
-                                    }
-                                ),
+                                    decoration: new InputDecoration(),
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: false, signed: true),
+                                    onChanged: (String value) {
+                                      setState(() {
+                                        this.roundseconds = int.parse(value);
+                                      });
+                                    }),
                               ),
                               Text(
                                 "sek",
@@ -269,7 +272,25 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                       fillColor: Color.fromRGBO(255, 255, 255, 1),
                       child: Icon(Icons.arrow_forward),
                       onPressed: () {
-                        type == "Reaktion" ? showChooseWorkoutTechniquesScreen(type) : showMusicScreen(type);
+                        if (!this.breakBetweenRounds) {
+                          this.breakseconds = 0;
+                          this.breakminutes = 0;
+                        }
+                        if (validateAll()) {
+                          type == "Reaktion"
+                              ? showChooseWorkoutTechniquesScreen(type)
+                              : showMusicScreen(type);
+                        } else {
+                          print("Fehler beim validieren");
+                          Flushbar(
+                            title: "Hinweis",
+                            message: "$errorText",
+                            backgroundColor: Colors.black54,
+                            margin: EdgeInsets.all(10),
+                            borderRadius: 10,
+                            duration: Duration(seconds: 3),
+                          )..show(context);
+                        }
                       },
                     ),
                   ],
@@ -280,6 +301,34 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
         ),
       ),
     );
+  }
+
+  bool validateMinutes(int min) {
+    if (min == 0 && this.breakBetweenRounds) {
+      errorText = "Der Minutenwert muss größer als 0 sein";
+      return false;
+    }
+    return true;
+  }
+
+  bool validateSeconds(int sec) {
+    print("Sekunden $sec");
+    if (sec == 0 && this.breakBetweenRounds) {
+      errorText = "Der Sekundenwert muss größer als 0 sein";
+      return false;
+    } else if (sec >= 60) {
+      errorText = "Der Sekundenwert muss kleiner als 60 sein";
+      return false;
+    }
+    return true;
+  }
+
+  bool validateRounds(int r) {
+    if (r == 0) {
+      errorText = "Der Rundenwert muss größer als 0 sein";
+      return false;
+    }
+    return true;
   }
 
   Widget buildOffenElement(String imgPfad) {
@@ -332,15 +381,14 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                             width: 40,
                             height: 40,
                             child: TextFormField(
-                              decoration: new InputDecoration(),
-                              keyboardType: TextInputType.numberWithOptions(
-                                  decimal: false, signed: true),
-                                onChanged: (String value){
+                                decoration: new InputDecoration(),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: false, signed: true),
+                                onChanged: (String value) {
                                   setState(() {
                                     this.roundminutes = int.parse(value);
                                   });
-                                }
-                            ),
+                                }),
                           ),
                           Text(
                             "min",
@@ -351,15 +399,14 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                             width: 40,
                             height: 40,
                             child: TextFormField(
-                              decoration: new InputDecoration(),
-                              keyboardType: TextInputType.numberWithOptions(
-                                  decimal: false, signed: true),
-                                onChanged: (String value){
-                                setState(() {
-                                  this.roundseconds = int.parse(value);
-                                });
-                                }
-                            ),
+                                decoration: new InputDecoration(),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: false, signed: true),
+                                onChanged: (String value) {
+                                  setState(() {
+                                    this.roundseconds = int.parse(value);
+                                  });
+                                }),
                           ),
                           Text(
                             "sek",
@@ -373,8 +420,26 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                       shape: CircleBorder(),
                       fillColor: Color.fromRGBO(255, 255, 255, 1),
                       child: Icon(Icons.arrow_forward),
-                      onPressed: (){
-                        showMusicScreen(type);
+                      onPressed: () {
+                        setState(() {
+                          this.breakBetweenRounds = false;
+                          this.breakseconds = 0;
+                          this.breakminutes = 0;
+                          this.roundamout = 1;
+                        });
+                        if (validateAll()) {
+                          showMusicScreen(type);
+                        } else {
+                          print("Fehler beim validieren");
+                          Flushbar(
+                            title: "Hinweis",
+                            message: "$errorText",
+                            backgroundColor: Colors.black54,
+                            margin: EdgeInsets.all(10),
+                            borderRadius: 10,
+                            duration: Duration(seconds: 3),
+                          )..show(context);
+                        }
                       },
                     ),
                   ],
@@ -388,15 +453,15 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
   }
 
   void showMusicScreen(String type) {
-    //TODO Music
     print("Change to Music-Screen");
     try {
-      if (!this.breakBetweenRounds) {
-        this.breakseconds = 0;
-        this.breakminutes = 0;
-      }
-      CurrentWorkoutInformation c =
-          new CurrentWorkoutInformation(this.breakminutes, this.breakseconds, this.roundamout, this.roundminutes, this.roundseconds, type);
+      CurrentWorkoutInformation c = new CurrentWorkoutInformation(
+          this.breakminutes,
+          this.breakseconds,
+          this.roundamout,
+          this.roundminutes,
+          this.roundseconds,
+          type);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MusicScreen(c)),
@@ -406,15 +471,25 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     }
   }
 
+  bool validateAll() {
+    if (!validateMinutes(this.breakminutes)) return false;
+    if (!validateSeconds(this.breakseconds)) return false;
+    if (!validateRounds(this.roundamout)) return false;
+    if (!validateMinutes(this.roundminutes)) return false;
+    if (!validateSeconds(this.roundseconds)) return false;
+    return true;
+  }
+
   void showChooseWorkoutTechniquesScreen(String type) {
     print("Change to choose-Workout-Techniques-Screen");
     try {
-      if (!this.breakBetweenRounds) {
-        this.breakseconds = 0;
-        this.breakminutes = 0;
-      }
       CurrentWorkoutInformation c = new CurrentWorkoutInformation(
-          this.breakminutes, this.breakseconds, this.roundamout, this.roundminutes, this.roundseconds, type);
+          this.breakminutes,
+          this.breakseconds,
+          this.roundamout,
+          this.roundminutes,
+          this.roundseconds,
+          type);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ChooseWorkoutTechniques(c)),

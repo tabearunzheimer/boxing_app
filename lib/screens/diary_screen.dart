@@ -225,7 +225,6 @@ class _DiaryScreenState extends State<DiaryScreen>
         }
       }
     }
-    List<String> mostTrainedTechniques = getMostTrainedTechniques();
 
     return SingleChildScrollView(
       child: Column(
@@ -248,29 +247,6 @@ class _DiaryScreenState extends State<DiaryScreen>
                 techniken.length <= 2 ? Text("Keine Technik vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[2], style: Theme.of(context).textTheme.body2,),
                 techniken.length <= 3 ? Text("Keine Technik vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[3], style: Theme.of(context).textTheme.body2,),
                 techniken.length <= 4 ? Text("Keine Technik vorhanden", style: Theme.of(context).textTheme.body2,) : Text(techniken[4], style: Theme.of(context).textTheme.body2,),
-              ],
-            ),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text("Am meissten trainierte Techniken", style: TextStyle(fontSize: 20, color: Colors.black),),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(mostTrainedTechniques[0], style: Theme.of(context).textTheme.body2,),
-                Text(mostTrainedTechniques[1], style: Theme.of(context).textTheme.body2,),
-                Text(mostTrainedTechniques[2], style: Theme.of(context).textTheme.body2,),
-                Text(mostTrainedTechniques[3], style: Theme.of(context).textTheme.body2,),
-                Text(mostTrainedTechniques[4], style: Theme.of(context).textTheme.body2,),
               ],
             ),
           ),
@@ -579,16 +555,6 @@ class _DiaryScreenState extends State<DiaryScreen>
     getTrainingAmountPerMonth();
   }
 
-  //TODO
-  List <String> getMostTrainedTechniques(){
-    List <String> e  = new List();
-    e.add("Keine Technik vorhanden");
-    e.add("Keine Technik vorhanden");
-    e.add("Keine Technik vorhanden");
-    e.add("Keine Technik vorhanden");
-    e.add("Keine Technik vorhanden");
-    return e;
-  }
 
   void getTrainingAmountPerMonth() async {
     print("get training amount");
