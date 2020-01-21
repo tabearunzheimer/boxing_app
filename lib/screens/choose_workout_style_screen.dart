@@ -90,8 +90,8 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
                 padding: EdgeInsets.all(10),
                 child: Text(
                   i == 0
-                      ? "Beim Runden-Training kannst du einen typischen Boxkampf simulieren oder einfach Sets mit Pausen festlegen um verschiedene Techniken zu trainieren. Für die klassische Runden-Simulation solltest du keine Techniken auswählen."
-                      : "Das Reaktionstraining funktioniert wie das Runden-Training, allerdings musst du hier verschiedene Techniken auswählen. Diese werden dann während des Trainings genannt und du musst Sie so schnell wie möglich ausführen.",
+                      ? "Beim Runden-Training kannst du einen typischen Boxkampf simulieren oder einfach Sets mit Pausen festlegen um ein Zirkeltraining zu simulieren. Außerdem kannst du im nächsten Schritt Musik auswählen, falls du welche hören möchtest."
+                      : "Das Reaktionstraining funktioniert wie das Runden-Training, allerdings musst du hier verschiedene Techniken auswählen. Diese werden dann während des Trainings genannt und du musst Sie so schnell wie möglich ausführen. Wenn die Techniken zu schnell gesagt werden, überspringe eine Technik und führe direkt die nächste aus.",
                   style: Theme.of(context).textTheme.body2,
                 ),
               ),

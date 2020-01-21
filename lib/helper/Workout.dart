@@ -88,7 +88,7 @@ class Workout {
 
   String getDurationAsString(){
     print("duration:_${((this._duration - this._duration.toInt()) * 100)}");
-    return "${this._duration.toInt()} min ${((this._duration - this._duration.toInt()) * 100).toInt()} sek ";
+    return "${this._duration.toInt()} min ${((this._duration - this._duration.toInt()) * 100).toInt()} sek git ";
   }
 
   String getWeekDay(){
