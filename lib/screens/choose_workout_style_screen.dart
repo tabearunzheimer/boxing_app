@@ -302,21 +302,24 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     );
   }
 
-  bool validateMinutes(int min) {
-    if (min == 0 && this.breakBetweenRounds) {
-      errorText = "Der Minutenwert muss größer als 0 sein";
+  bool validateMinutes(int min, int sec) {
+    if (min == 0 && sec == 0 && this.breakBetweenRounds) {
+      errorText = "Einer der beider Werte muss größer als 0 sein";
       return false;
     }
     return true;
   }
 
-  bool validateSeconds(int sec) {
-    print("Sekunden $sec");
-    if (sec == 0 && this.breakBetweenRounds) {
-      errorText = "Der Sekundenwert muss größer als 0 sein";
+  bool validateSeconds(int sec, int min, bool testSecond) {
+    if (sec == 0 && min == 0 && this.breakBetweenRounds) {
+      errorText = "Einer der beider Werte muss größer als 0 sein";
+      return false;
+    }  else if (min == 0 && sec == 0 && testSecond){
+      print("Fehler min $min und sec $sec");
+      errorText = "Einer der beider Werte muss größer als 0 sein";
       return false;
     } else if (sec >= 60) {
-      errorText = "Der Sekundenwert muss kleiner als 60 sein";
+      errorText = "Einer der beider Werte muss größer als 0 sein";
       return false;
     }
     return true;
@@ -471,11 +474,11 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
   }
 
   bool validateAll() {
-    if (!validateMinutes(this.breakminutes)) return false;
-    if (!validateSeconds(this.breakseconds)) return false;
+    if (!validateMinutes(this.breakminutes, this.breakseconds)) return false;
+    if (!validateSeconds(this.breakseconds, this.breakminutes, false)) return false;
     if (!validateRounds(this.roundamout)) return false;
-    if (!validateMinutes(this.roundminutes)) return false;
-    if (!validateSeconds(this.roundseconds)) return false;
+    if (!validateMinutes(this.roundminutes, this.roundseconds)) return false;
+    if (!validateSeconds(this.roundseconds, this.roundminutes, true)) return false;
     return true;
   }
 

@@ -47,7 +47,11 @@ class Validator{
   }
 
   bool validateMail(String mail){
-    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(mail);
+    if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(mail)){
+      _errorText = "Bitte gib eine korrekte Email an";
+      return false;
+    }
+    return true;
   }
 
   bool validateDaysPerWeek(int days){
