@@ -102,20 +102,5 @@ class WorkoutDatabaseHelper {
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
 
-  //TODO Update Row Ids
-  Future<int> updateRowsAfterDelete(int id) async{
-    Map<String, dynamic> r = {
-      columnId: 1,
-      columnType: "Offen",
-      columnBurnedCalories: 100.5,
-      columnDuration: 20.0,
-      columnTrainingYear: 1999,
-      columnTrainingMonth: 12,
-      columnTrainingDay: 24,
-      columnTechniques: 'Jab, Cross, Hook',
-      columnWeekDay: 'Freitag',
-    };
-
-  }
 
 }

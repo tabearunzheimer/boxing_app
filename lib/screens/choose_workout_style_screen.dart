@@ -26,7 +26,6 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     )
   ];
 
-  //TODO Add Text Controller
   TabController _tabController;
   bool breakBetweenRounds = false;
   String errorText = "";

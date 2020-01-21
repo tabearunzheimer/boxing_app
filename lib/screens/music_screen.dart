@@ -81,7 +81,6 @@ class _MusicScreenState extends State<MusicScreen> {
                     color: Color.fromRGBO(200, 0, 0, 1),
                     disabledColor: Color.fromRGBO(200, 0, 0, 1),
                     child: Text("Auswählen",  style: Theme.of(context).textTheme.display1),
-                    //TODO Playlist speichern
                     onPressed: (){
                       widget.workoutInformation.addTechniques(new List());
                       loadSongs(index);

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/CustomRateWorkoutPainter.dart';
-import 'package:uebung02/helper/Technique.dart';
 import 'package:uebung02/helper/Workout.dart';
 import 'package:uebung02/helper/current_workout_information.dart';
 import 'package:uebung02/helper/workout_database_helper.dart';
@@ -330,6 +329,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     print("row count $x");
     int highestId;
 
+    print("duration $duration");
     if (x == 0){
       highestId= 1;
     } else {

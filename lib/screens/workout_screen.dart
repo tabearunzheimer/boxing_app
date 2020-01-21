@@ -74,13 +74,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       vsync: this,
       duration: Duration(seconds: widget.workoutInformation.getRoundLengthSec(), minutes:  widget.workoutInformation.getRoundLengthMin()),
     );
-    /*
-    //TODO WEG?
-    controller.addListener(() {
-      this.setState(() {
-      });
-    });
-     */
+
 
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {

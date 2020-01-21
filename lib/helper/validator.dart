@@ -46,9 +46,8 @@ class Validator{
     return true;
   }
 
-  //TODO
   bool validateMail(String mail){
-    return true;
+    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(mail);
   }
 
   bool validateDaysPerWeek(int days){

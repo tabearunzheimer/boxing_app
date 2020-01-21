@@ -207,7 +207,7 @@ class _DiaryScreenState extends State<DiaryScreen>
     );
   }
 
-  //TODO Platzhalter entfernen
+
   Widget buildStatistics() {
     List <String> techniken = new List();
     int z = 0;
@@ -266,7 +266,6 @@ class _DiaryScreenState extends State<DiaryScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                //TODO ANIMATION
                 Container(
                   height: 320,
                   //margin: EdgeInsets.only(top: 500, bottom: 0),
