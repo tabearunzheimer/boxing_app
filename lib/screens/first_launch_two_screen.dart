@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
@@ -12,6 +13,8 @@ class FirstLaunchScreenTwo extends StatefulWidget {
 class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
   ReusableWidgets r;
   SharedPreferences prefs;
+
+  String errorText ="";
 
   int radioButtonValue = 0;
   bool switchVal = false;
@@ -351,25 +354,152 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
     });
   }
 
-//TODO: Shared Prefs
+  bool validateDay(int day, int month){
+    if (day < 0){
+      errorText  = " Bitte gib einen korrekten Tag an";
+      return false;
+    } else if (month == 2 && day > 29) {
+      errorText = "Bitte gib einen korrekten Tag an";
+      return false;
+    } else if ((month%2) != 0 && day > 31){
+      errorText = "Bitte gib einen korrekten Tag an";
+      return false;
+    } else if ((month%2) == 0 && day > 30){
+      errorText = "Bitte gib einen korrekten Monat an";
+      return false;
+    }
+    return true;
+  }
 
-  void showNextScreen() {
+  bool validateMonth(int month){
+    if (month < 1) {
+      errorText = "Bitte gib einen korrekten Monat an";
+      return false;
+    } else if (month > 12){
+      errorText = "Bitte gib einen korrekten Monat an";
+      return false;
+    }
+    return true;
+  }
+
+  bool validateYear(int year){
+    if (year < 1850){
+      errorText = "Bitte gib einen korrekten Monat an";
+      return false;
+    } else if (year > DateTime.now().year){
+      errorText = "Bitte gib ein korrektes Jahr an";
+      return false;
+    }
+    return true;
+  }
+
+  //TODO
+  bool validateMail(String mail){
+    return true;
+  }
+
+  bool validateDaysPerWeek(int days){
+    if (days < 0){
+      errorText = "Bitte gib einen Wert größer als 1 an.";
+      return false;
+    } else if (days > 7){
+      errorText = "Aus gesundheitlichen Gründen werden nicht mehr als 7 Trainingstage pro Woche unterstützt.";
+      return false;
+    }
+    return true;
+  }
+
+  bool validateWeight(double weight){
+    print("weight $weight");
+    if (weight < 30){
+      errorText = "Bitte gib für dein Gewicht einen Wert größer als 30 an.";
+      return false;
+    } else if (weight > 200){
+      errorText = "Bitte gib für dein Gewicht einen Wert kleiner als 200 an.";
+      return false;
+    }
+    return true;
+  }
+
+  bool validateSize(int size){
+    if (size < 30){
+      errorText = "Bitte gib für deine Größe mit einem Wert größer als 30 an.";
+      return false;
+    } else if (size > 300){
+      errorText = "Bitte gib für deine Größe einen Wert kleiner als 300 an.";
+      return false;
+    }
+    return true;
+  }
+
+  bool validateBirthday(DateTime birth){
+    if (birth.isAfter(DateTime.now())){
+      errorText = "Bitte gib einen korrekten Wert an.";
+      return false;
+    }
+    return true;
+  }
+
+  Widget showNextScreen() {
+    String name = "";
+    String email = "";
+    String gender = "";
+    int year = 0;
+    int month = 0;
+    int day = 0;
+    double weight = 0;
+    int size = 0;
+    int trainingdays = 0;
+
     try{
-      String name = this.nameTextController.text;
-      String email = this.emailTextController.text;
-      String gender = (radioButtonValue==0) ? "Weiblich" : "Männlich";
-      int year = int.parse(this.yearTextController.text);
-      int month = int.parse(this.monthTextController.text);
-      int day = int.parse(this.dayTextController.text);
-      double weight = double.parse(this.weightTextController.text);
-      int size = int.parse(this.sizeTextController.text);
-      int trainingdays;
-      if (this.switchVal){
-        trainingdays  = int.parse(this.dayPerWeekTextController.text);
-      } else {
-        trainingdays = 0;
-      }
+      name = this.nameTextController.text;
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      email = this.emailTextController.text;
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      gender = (radioButtonValue==0) ? "Weiblich" : "Männlich";
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      year = int.parse(this.yearTextController.text);
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      month = int.parse(this.monthTextController.text);
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      day = int.parse(this.dayTextController.text);
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      weight = double.parse(this.weightTextController.text);
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      size = int.parse(this.sizeTextController.text);
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
+    try{
+      trainingdays = int.parse(this.dayPerWeekTextController.text);
+    }catch(e){
+      print("Fehler bei try and catch $e");
+    }
 
+
+
+    if (validateDay(day, month) && validateDaysPerWeek(trainingdays) && validateMail(email) && validateMonth(month) && validateYear(year) && validateSize(size) && validateWeight(weight) && validateBirthday(DateTime(year, month, day))){
       int birthday = year*10000 + month*100 + day;
       print("birthday: $birthday");
 
@@ -383,13 +513,20 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
         setInt(userBirthdayKey, birthday);
         setInt(trainingDaysKey, trainingdays);
       });
-    }catch(e){
-      print(e);
+
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => FirstLaunchScreenThree()));
+    } else {
+      print("Fehler beim validieren");
+      Flushbar(
+        title: "Hinweis",
+        message: "$errorText",
+        backgroundColor: Colors.black54,
+        margin: EdgeInsets.all(10),
+        borderRadius: 10,
+        duration: Duration(seconds: 3),
+      )..show(context);
     }
-
-
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => FirstLaunchScreenThree()));
   }
 
   Future<Null> setDouble(String key, double w) async {
