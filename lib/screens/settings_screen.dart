@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uebung02/helper/techniques_database_helper.dart';
+import 'package:uebung02/helper/workout_database_helper.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -147,6 +149,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           onPressed: () {
                             Navigator.pop(context);
                             prefs.clear();
+                            final dbHelperTechniques = TechniquesDatabaseHelper.instance;
+                            dbHelperTechniques.deleteAll();
+                            final dbHelperWorkouts = WorkoutDatabaseHelper.instance;
+                            dbHelperWorkouts.deleteAll();
                             while (Navigator.canPop(context)){
                               Navigator.pop(context);
                             }

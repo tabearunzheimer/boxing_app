@@ -99,6 +99,12 @@ class TechniquesDatabaseHelper {
     return await db.delete(table, where: '$columnName = ?', whereArgs: [id]);
   }
 
+
+  Future<int> deleteAll() async{
+    Database db = await instance.database;
+    db.delete(table);
+  }
+
   List<Map<String, dynamic>> initEntries() {
     List<Map<String, dynamic>> list = [
       {

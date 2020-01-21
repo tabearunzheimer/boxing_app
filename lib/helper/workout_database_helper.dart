@@ -102,5 +102,9 @@ class WorkoutDatabaseHelper {
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
 
+  Future<int> deleteAll() async{
+    Database db = await instance.database;
+    db.delete(table);
+  }
 
 }
