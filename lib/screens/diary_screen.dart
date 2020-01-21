@@ -364,7 +364,7 @@ class _DiaryScreenState extends State<DiaryScreen>
               Text("Trainingstyp: ${this.workoutList[index].getType()}",style: Theme.of(context).textTheme.body2,),
               Text("Datum: ${this.workoutList[index].getDateTimeString()}",style: Theme.of(context).textTheme.body2,),
               Text("Dauer: ${this.workoutList[index].getDuration()} min",style: Theme.of(context).textTheme.body2,),
-              Text("Kcal: ${this.workoutList[index].getBurnedCalories()}",style: Theme.of(context).textTheme.body2,),
+              Text("Kcal: ${double.parse(this.workoutList[index].getBurnedCalories().toStringAsFixed(2))}",style: Theme.of(context).textTheme.body2,),
               Text("Techniken: ${this.workoutList[index].getTechniques()}",style: Theme.of(context).textTheme.body2,),
             ],
           ),
