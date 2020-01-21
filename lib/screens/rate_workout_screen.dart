@@ -320,7 +320,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   Future saveNewWorkout() async {
     int x = await dbHelperWorkouts.queryRowCount();
     List<Map<String, dynamic>> y = await dbHelperWorkouts.queryAllRows();
-    double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 60));
+    double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 100)) * widget.workoutInformation.roundAmount;
     double burnedkcal = this.weight / 5 * duration;
     print("weight ${this.weight}");
     widget.workoutInformation.kcal = burnedkcal;

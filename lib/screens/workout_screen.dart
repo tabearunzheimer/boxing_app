@@ -10,6 +10,8 @@ import 'package:uebung02/screens/rate_workout_screen.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'dart:math';
 
+import 'package:wakelock/wakelock.dart';
+
 class WorkoutScreen extends StatefulWidget {
   CurrentWorkoutInformation workoutInformation;
 
@@ -176,12 +178,11 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                         if (controller.isAnimating) {
                           controller.stop();
                           widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
+                          Wakelock.disable();
                         } else {
-                          controller.reverse(
-                              from: controller.value == 0.0
-                                  ? 1.0
-                                  : controller.value);
+                          controller.reverse(from: controller.value == 0.0 ? 1.0 : controller.value);
                           widget.workoutInformation.type == "Reaktion" ? sayText() : resumeLocal();
+                          Wakelock.enable();
                         }
                       });
                     },
@@ -241,15 +242,19 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       if (checkForBreak() && !this.breakDone) {
         print("Pause war true");
         //starte Timer mit neuer Zeit fuer Pause
-        this.breakDone = true;
+        setState(() {
+          this.breakDone = true;
+        });
         controller.reset();
         Duration d = new Duration(minutes: widget.workoutInformation.getBreakTimeMin(), seconds: widget.workoutInformation.getBreakTimeSec());
         controller.duration = d;
         controller.reverse(from: 1.0);
       } else {
         print("Runde war true");
-        this.doneRounds++;
-        this.breakDone = false;
+        setState(() {
+          this.doneRounds++;
+          this.breakDone = false;
+        });
         controller.reset();
         Duration d = new Duration(minutes:  widget.workoutInformation.getRoundLengthMin(), seconds:  widget.workoutInformation.getRoundLengthSec());
         controller.duration = d;
@@ -260,6 +265,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
       //Navigator.pushNamed(context, '/RateWorkoutScreen');
       CurrentWorkoutInformation c = widget.workoutInformation;
+      Wakelock.disable();
       Navigator.push(context,
         MaterialPageRoute(
             builder: (context) => RateWorkoutScreen(c)),

@@ -319,7 +319,7 @@ class _DiaryScreenState extends State<DiaryScreen>
   Widget _buildWorkoutListItems(int index){
     print("index ${index}");
     return ListTile(
-      title: Text("${this.workoutList[index].getType()}: ${this.workoutList[index].getDuration()} min"),
+      title: Text("${this.workoutList[index].getType()}-Training: ${this.workoutList[index].getDurationAsString()}"),
       subtitle: Text("Datum: ${this.workoutList[index].getDateTimeString()}", style: TextStyle(fontSize: 12.0),),
       trailing: IconButton(
         icon: Icon(Icons.delete),
@@ -363,7 +363,7 @@ class _DiaryScreenState extends State<DiaryScreen>
             children: <Widget>[
               Text("Trainingstyp: ${this.workoutList[index].getType()}",style: Theme.of(context).textTheme.body2,),
               Text("Datum: ${this.workoutList[index].getDateTimeString()}",style: Theme.of(context).textTheme.body2,),
-              Text("Dauer: ${this.workoutList[index].getDuration()} min",style: Theme.of(context).textTheme.body2,),
+              Text("Gesamtdauer: ${this.workoutList[index].getDurationAsString()}",style: Theme.of(context).textTheme.body2,),
               Text("Kcal: ${double.parse(this.workoutList[index].getBurnedCalories().toStringAsFixed(2))}",style: Theme.of(context).textTheme.body2,),
               Text("Techniken: ${this.workoutList[index].getTechniques()}",style: Theme.of(context).textTheme.body2,),
             ],

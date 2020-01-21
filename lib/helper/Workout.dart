@@ -25,7 +25,6 @@ class Workout {
     this._id  = id;
     this._type = type;
     this._burnedCalories = burnedCalories;
-    duration = duration.roundToDouble();
     this._duration = duration;
     this._weekDay = weekDay;
    this._techniques = techniques;
@@ -85,6 +84,11 @@ class Workout {
 
   double getDuration(){
     return this._duration;
+  }
+
+  String getDurationAsString(){
+    print("duration:_${((this._duration - this._duration.toInt()) * 100)}");
+    return "${this._duration.toInt()} min ${((this._duration - this._duration.toInt()) * 100).toInt()} sek ";
   }
 
   String getWeekDay(){
