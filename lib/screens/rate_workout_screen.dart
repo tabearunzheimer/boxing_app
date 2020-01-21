@@ -321,15 +321,23 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   Future saveNewWorkout() async {
     int x = await dbHelperWorkouts.queryRowCount();
     List<Map<String, dynamic>> y = await dbHelperWorkouts.queryAllRows();
-    double duration = (widget.workoutInformation.getRoundLengthMin() +
-        (widget.workoutInformation.getRoundLengthSec() / 60));
+    double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 60));
     double burnedkcal = this.weight / 5 * duration;
     print("weight ${this.weight}");
     widget.workoutInformation.kcal = burnedkcal;
     DateTime dt = new DateTime.now();
-    Workout w = new Workout.fromJson(y[x - 1]);
-    int highestId = w.getId();
-    print("highestId: $highestId");
+    Workout w;
+    print("row count $x");
+    int highestId;
+
+    if (x == 0){
+      highestId= 1;
+    } else {
+      w = new Workout.fromJson(y[x - 1]);
+      highestId = w.getId();
+    }
+
+    //print("highestId: $highestId");
     String techniques = widget.workoutInformation.getTechniquesAsString();
 
     Map<String, dynamic> row = {
