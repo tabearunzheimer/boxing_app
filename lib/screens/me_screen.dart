@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uebung02/helper/date_helper.dart';
+import 'package:uebung02/helper/validator.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -131,7 +132,7 @@ class _MeScreenState extends State<MeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(
-                        width: 180.0,
+                        width: 190.0,
                         height: 50.0,
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
@@ -186,7 +187,7 @@ class _MeScreenState extends State<MeScreen> {
                         ),
                       ),
                       Container(
-                        width: 180.0,
+                        width: 190.0,
                         height: 50.0,
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
@@ -261,15 +262,20 @@ class _MeScreenState extends State<MeScreen> {
                                   FlatButton(
                                       child: Text("Speichern"),
                                       onPressed: (){
-                                        setState(() {
-                                          int year = int.parse(_yearTextController.text);
-                                          int month = int.parse(_monthTextController.text);
-                                          int day = int.parse(_dayTextController.text);
-                                          int birthday = year*10000 + month*100 + day;
-                                          setInt(userBirthdayKey, birthday);
-                                          this.age = new DateTime(year, month, day);
-                                        });
-                                        Navigator.pop(context);
+                                        int year = int.parse(_yearTextController.text);
+                                        int month = int.parse(_monthTextController.text);
+                                        int day = int.parse(_dayTextController.text);
+                                        int birthday = year*10000 + month*100 + day;
+
+                                        Validator v = new Validator();
+
+                                        if (v.validateYear(year) && v.validateDay(day, month) && v.validateMonth(month)){
+                                          setState(() {
+                                            setInt(userBirthdayKey, birthday);
+                                            this.age = new DateTime(year, month, day);
+                                          });
+                                          Navigator.pop(context);
+                                        }
                                       }
                                   ),
                                 ],
@@ -287,7 +293,7 @@ class _MeScreenState extends State<MeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(
-                        width: 180.0,
+                        width: 190.0,
                         height: 50.0,
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
@@ -318,11 +324,15 @@ class _MeScreenState extends State<MeScreen> {
                                   FlatButton(
                                       child: Text("Speichern"),
                                       onPressed: (){
-                                        setState(() {
-                                          setDouble(userWeightKey, double.parse( _weightTextController.text));
-                                          this.weight = double.parse( _weightTextController.text);
-                                        });
-                                        Navigator.pop(context);
+                                        Validator v = new Validator();
+
+                                        if (v.validateWeight(double.parse( _weightTextController.text))){
+                                          setState(() {
+                                            setDouble(userWeightKey, double.parse( _weightTextController.text));
+                                            this.weight = double.parse( _weightTextController.text);
+                                          });
+                                          Navigator.pop(context);
+                                        }
                                       }
                                   ),
                                 ],
@@ -332,7 +342,7 @@ class _MeScreenState extends State<MeScreen> {
                         ),
                       ),
                       Container(
-                        width: 180.0,
+                        width: 190.0,
                         height: 50.0,
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
@@ -360,11 +370,15 @@ class _MeScreenState extends State<MeScreen> {
                                   FlatButton(
                                       child: Text("Speichern"),
                                       onPressed: (){
-                                        setState(() {
-                                          setInt(userSizeKey, int.parse( _sizeTextController.text));
-                                          this.userSize = int.parse( _sizeTextController.text);
-                                        });
-                                        Navigator.pop(context);
+                                        Validator v = new Validator();
+
+                                        if (v.validateSize(int.parse( _sizeTextController.text))){
+                                          setState(() {
+                                            setInt(userSizeKey, int.parse( _sizeTextController.text));
+                                            this.userSize = int.parse( _sizeTextController.text);
+                                          });
+                                          Navigator.pop(context);
+                                        }
                                       }
                                   ),
                                 ],
@@ -376,9 +390,9 @@ class _MeScreenState extends State<MeScreen> {
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                    margin: EdgeInsets.fromLTRB(5, 20, 5, 20),
                     height: 50.0,
-                    width: MediaQuery.of(context).size.width / 1.1,
+                    width: MediaQuery.of(context).size.width,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
@@ -405,11 +419,15 @@ class _MeScreenState extends State<MeScreen> {
                               FlatButton(
                                   child: Text("Speichern"),
                                   onPressed: (){
-                                    setState(() {
-                                      setInt(trainingDaysKey, int.parse( _dayPerWeekTextController.text));
-                                      this.userTrainingDays = int.parse( _dayPerWeekTextController.text);
-                                    });
-                                    Navigator.pop(context);
+                                    Validator v = new Validator();
+
+                                    if(v.validateDaysPerWeek( int.parse( _dayPerWeekTextController.text))){
+                                      setState(() {
+                                        setInt(trainingDaysKey, int.parse( _dayPerWeekTextController.text));
+                                        this.userTrainingDays = int.parse( _dayPerWeekTextController.text);
+                                      });
+                                      Navigator.pop(context);
+                                    }
                                   }
                               ),
                             ],
