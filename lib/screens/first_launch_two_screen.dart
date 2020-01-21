@@ -1,6 +1,7 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uebung02/helper/validator.dart';
 import 'package:uebung02/screens/reusable_widgets.dart';
 
 import 'first_launch_three_screen.dart';
@@ -13,8 +14,6 @@ class FirstLaunchScreenTwo extends StatefulWidget {
 class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
   ReusableWidgets r;
   SharedPreferences prefs;
-
-  String errorText ="";
 
   int radioButtonValue = 0;
   bool switchVal = false;
@@ -354,92 +353,6 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
     });
   }
 
-  bool validateDay(int day, int month){
-    if (day < 0){
-      errorText  = " Bitte gib einen korrekten Tag an";
-      return false;
-    } else if (month == 2 && day > 29) {
-      errorText = "Bitte gib einen korrekten Tag an";
-      return false;
-    } else if ((month%2) != 0 && day > 31){
-      errorText = "Bitte gib einen korrekten Tag an";
-      return false;
-    } else if ((month%2) == 0 && day > 30){
-      errorText = "Bitte gib einen korrekten Monat an";
-      return false;
-    }
-    return true;
-  }
-
-  bool validateMonth(int month){
-    if (month < 1) {
-      errorText = "Bitte gib einen korrekten Monat an";
-      return false;
-    } else if (month > 12){
-      errorText = "Bitte gib einen korrekten Monat an";
-      return false;
-    }
-    return true;
-  }
-
-  bool validateYear(int year){
-    if (year < 1850){
-      errorText = "Bitte gib einen korrekten Monat an";
-      return false;
-    } else if (year > DateTime.now().year){
-      errorText = "Bitte gib ein korrektes Jahr an";
-      return false;
-    }
-    return true;
-  }
-
-  //TODO
-  bool validateMail(String mail){
-    return true;
-  }
-
-  bool validateDaysPerWeek(int days){
-    if (days < 0){
-      errorText = "Bitte gib einen Wert größer als 1 an.";
-      return false;
-    } else if (days > 7){
-      errorText = "Aus gesundheitlichen Gründen werden nicht mehr als 7 Trainingstage pro Woche unterstützt.";
-      return false;
-    }
-    return true;
-  }
-
-  bool validateWeight(double weight){
-    print("weight $weight");
-    if (weight < 30){
-      errorText = "Bitte gib für dein Gewicht einen Wert größer als 30 an.";
-      return false;
-    } else if (weight > 200){
-      errorText = "Bitte gib für dein Gewicht einen Wert kleiner als 200 an.";
-      return false;
-    }
-    return true;
-  }
-
-  bool validateSize(int size){
-    if (size < 30){
-      errorText = "Bitte gib für deine Größe mit einem Wert größer als 30 an.";
-      return false;
-    } else if (size > 300){
-      errorText = "Bitte gib für deine Größe einen Wert kleiner als 300 an.";
-      return false;
-    }
-    return true;
-  }
-
-  bool validateBirthday(DateTime birth){
-    if (birth.isAfter(DateTime.now())){
-      errorText = "Bitte gib einen korrekten Wert an.";
-      return false;
-    }
-    return true;
-  }
-
   Widget showNextScreen() {
     String name = "";
     String email = "";
@@ -497,9 +410,10 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
       print("Fehler bei try and catch $e");
     }
 
+    Validator v = new Validator();
 
 
-    if (validateDay(day, month) && validateDaysPerWeek(trainingdays) && validateMail(email) && validateMonth(month) && validateYear(year) && validateSize(size) && validateWeight(weight) && validateBirthday(DateTime(year, month, day))){
+    if (v.validateDay(day, month) && v.validateDaysPerWeek(trainingdays) && v.validateMail(email) && v.validateMonth(month) && v.validateYear(year) && v.validateSize(size) && v.validateWeight(weight) && v.validateBirthday(DateTime(year, month, day))){
       int birthday = year*10000 + month*100 + day;
       print("birthday: $birthday");
 
@@ -520,7 +434,7 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
       print("Fehler beim validieren");
       Flushbar(
         title: "Hinweis",
-        message: "$errorText",
+        message: "${v.getErrorText()}",
         backgroundColor: Colors.black54,
         margin: EdgeInsets.all(10),
         borderRadius: 10,
