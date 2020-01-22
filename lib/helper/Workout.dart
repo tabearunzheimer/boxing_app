@@ -32,6 +32,7 @@ class Workout {
     this._workoutTime =  DateTime(year, month, day);
   }
 
+  ///creates a workout element from a given database or json
   factory Workout.fromJson(Map<String, dynamic> parsedJson) {
     //print(" ID: ${parsedJson['trainingDay']}");
     Workout w = new Workout(
@@ -49,60 +50,73 @@ class Workout {
     return w;
   }
 
-  //zeit in minuten, gewicht in kg
+  ///calculates the burned calories
+  ///weight must be in kg and time in minutes
   double calculateBurnedCalories(double weight, int time){
     return (weight/5)*time;
   }
 
+  ///returns a String containing all techniques, separated with a comma
   String createTechniques(List<Technique> list){
     String erg = "";
     for (int i = 0; i < list.length; i++){
-      erg += ", ${list[i].name}";
+      erg += ", ${list[i].getName()}";
     }
     return erg;
   }
 
+  ///returns the current date and time
   DateTime createWorkoutTime(){
     return DateTime.now();
   }
 
+  ///returns the workoutTime as a readable string in format dd.mm.yyyy
   String getDateTimeString(){
     return "${this._workoutTime.day}.${this._workoutTime.month}.${this._workoutTime.year}";
   }
 
+  ///returns the workout id
   int getId(){
     return this._id;
   }
 
+  ///returns the workout type
   String getType(){
     return this._type;
   }
 
+  ///returns the burned calories for the workout
   double getBurnedCalories(){
     return this._burnedCalories;
   }
 
+  ///returns the duration of the whole workout as double
   double getDuration(){
     return this._duration;
   }
 
+  ///returns the duration as a readable string in minutes and seconds
   String getDurationAsString(){
-    print("duration:_${((this._duration - this._duration.toInt()) * 100)}");
-    return "${this._duration.toInt()} min ${((this._duration - this._duration.toInt()) * 100).toInt()} sek git ";
+    //print("duration:_${((this._duration - this._duration.toInt()) * 100)}");
+    return "${this._duration.toInt()} min ${((this._duration - this._duration.toInt()) * 100).toInt()} sek";
   }
 
+  ///returns the weekday
   String getWeekDay(){
     return this._weekDay;
   }
 
+  ///returns a string of techniques
   String getTechniques(){
     return this._techniques;
   }
 
+  ///returns the day when the workout was
   DateTime getDateTime(){
     return this._workoutTime;
   }
 
+  ///returns a list of the technique names
   List <String> separateTechniques(){
     List <String> split= _techniques.split(", ");
     return split;

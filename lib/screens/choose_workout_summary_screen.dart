@@ -50,7 +50,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
               return Container(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                    widget.workoutInformation.type == "Reaktion" ? "Techniken" : "Playlist",
+                    widget.workoutInformation.getType() == "Reaktion" ? "Techniken" : "Playlist",
                     style: Theme.of(context).textTheme.display2,
                 ),
               );
@@ -157,7 +157,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
 
   Widget _buildListItems(int index) {
       return new ListTile(
-        title: Text(this.list[index].name, style: Theme.of(context).textTheme.display2,),
+        title: Text(this.list[index].getName(), style: Theme.of(context).textTheme.display2,),
         subtitle: Text("Zuletzt: 06. November 2019", style: Theme.of(context).textTheme.display3,),
         trailing: Row(
           mainAxisAlignment: MainAxisAlignment.end,

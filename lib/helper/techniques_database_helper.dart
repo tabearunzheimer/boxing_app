@@ -34,7 +34,7 @@ class TechniquesDatabaseHelper {
     return _database;
   }
 
-  //oeffnet und gegebenenfalls erstellt die Datenbank
+  ///opens and possibly creates the database
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
@@ -42,18 +42,20 @@ class TechniquesDatabaseHelper {
         version: _databaseVersion, onCreate: _onCreate);
   }
 
-  //erstellt die Tabelle
+  ///creates the table
   Future _onCreate(Database db, int version) async {
     await db.execute(
         '''CREATE TABLE $table($columnId INTEGER PRIMARY KEY, $columnName STRING, $columnType STRING NOT NULL, $columnLink STRING, $columnExplanation STRING, $columnLearned STRING, $columnLastTrainedDay INTEGER, $columnLastTrainedMonth INTEGER, $columnLastTrainedYear INTEGER)''');
   }
 
-  // fuegt eine Spalte hinzu, rueckgabe-wert ist der wert der eingefuegten Spalte
+  ///adds a new column
+  ///returns the value of the added column
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
     return await db.insert(table, row);
   }
 
+  ///adds a list of values
   Future<int> insertList() async {
     Database db = await instance.database;
     List<Map> list = initEntries();
@@ -65,6 +67,7 @@ class TechniquesDatabaseHelper {
     return Future.value(0);
   }
 
+  ///returns the column which fits to the id as a map
   Future<List> getList(int id)async{
     Database db = await instance.database;
     final Future<List<Map<String, dynamic>>> map =  db.query(table, where: 'id = ?', whereArgs: [id]);
@@ -72,20 +75,20 @@ class TechniquesDatabaseHelper {
     return m;
   }
 
-  //alle Spalten werden zurueckgegeben
+  ///returns all columns
   Future<List<Map<String, dynamic>>> queryAllRows() async {
     Database db = await instance.database;
     return await db.query(table);
   }
 
-  //gibt alle Spalten zurueck
+  ///returns the amount of columns
   Future<int> queryRowCount() async {
     Database db = await instance.database;
     return Sqflite.firstIntValue(
         await db.rawQuery('SELECT COUNT(*) FROM $table'));
   }
 
-  //update die Spalte mit dem gegebenem Namen
+  ///updates the column with a given column
   Future<int> update(Map<String, dynamic> row) async {
     Database db = await instance.database;
     String id = row[columnName];
@@ -93,18 +96,19 @@ class TechniquesDatabaseHelper {
         .update(table, row, where: '$columnName = ?', whereArgs: [id]);
   }
 
-  //loescht die Spalte anhand des Namens
+  ///deletes the column with the given id
   Future<int> delete(String id) async {
     Database db = await instance.database;
     return await db.delete(table, where: '$columnName = ?', whereArgs: [id]);
   }
 
-
+  ///deletes the whole database
   Future<int> deleteAll() async{
     Database db = await instance.database;
     db.delete(table);
   }
 
+  ///list of init values
   List<Map<String, dynamic>> initEntries() {
     List<Map<String, dynamic>> list = [
       {

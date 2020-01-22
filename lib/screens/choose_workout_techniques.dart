@@ -83,7 +83,7 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
         },
       ),
       title: Text(
-        this.list[index].name,
+        this.list[index].getName(),
         style: Theme.of(context).textTheme.display2,
       ),
       subtitle: Text("Datum: ${this.list[index].getLastTrained()}",

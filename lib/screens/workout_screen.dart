@@ -87,12 +87,12 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         print("StatusController - restart");
         quietLocal();
         startNewTimer();
-      } else if (!controller.isAnimating && this.breakDone && widget.workoutInformation.type == "Reaktion"){
+      } else if (!controller.isAnimating && this.breakDone && widget.workoutInformation.getType() == "Reaktion"){
         stopText();
-      } else if (!controller.isAnimating && widget.workoutInformation.type != "Reaktion"){
+      } else if (!controller.isAnimating && widget.workoutInformation.getType() != "Reaktion"){
         pauseLocal();
       } else if (controller.isAnimating){
-        widget.workoutInformation.type == "Reaktion" ? sayText() : playLocal(songs[songIndex].filePath);
+        widget.workoutInformation.getType() == "Reaktion" ? sayText() : playLocal(songs[songIndex].filePath);
       }
     });
 
@@ -179,11 +179,11 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                       setState(() {
                         if (controller.isAnimating) {
                           controller.stop();
-                          widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
+                          widget.workoutInformation.getType() == "Reaktion" ? stopText() : pauseLocal();
                           Wakelock.disable();
                         } else {
                           controller.reverse(from: controller.value == 0.0 ? 1.0 : controller.value);
-                          widget.workoutInformation.type == "Reaktion" ? sayText() : resumeLocal();
+                          widget.workoutInformation.getType() == "Reaktion" ? sayText() : resumeLocal();
                           Wakelock.enable();
                         }
                       });
@@ -272,7 +272,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
 
       }
     } else {
-      widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
+      widget.workoutInformation.getType() == "Reaktion" ? stopText() : pauseLocal();
       //Navigator.pushNamed(context, '/RateWorkoutScreen');
       CurrentWorkoutInformation c = widget.workoutInformation;
       Wakelock.disable();
@@ -314,7 +314,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
           FlatButton(
             child: Text("Verlassen"),
             onPressed: (){
-              widget.workoutInformation.type == "Reaktion" ? stopText() : pauseLocal();
+              widget.workoutInformation.getType() == "Reaktion" ? stopText() : pauseLocal();
               Navigator.pop(context);
               Navigator.pop(context);
             },
@@ -332,7 +332,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
 
   String createRandomItem() {
     var rng = new Random();
-    return "${this.list[(rng.nextInt(this.list.length))].name} ";
+    return "${this.list[(rng.nextInt(this.list.length))].getName()} ";
   }
 
   void sayText(){

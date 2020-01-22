@@ -31,11 +31,11 @@ class CustomStatisticPainter extends CustomPainter {
     paint.color = Colors.black;
     paint.strokeWidth = 2;
 
-    ///vertikale Linie
+    ///vertical line, y axis
     Offset oS = Offset(30, size.height - 30);
     Offset oE = Offset(30, size.height - 280);
     canvas.drawLine(oS, oE, paint);
-    //Pfeil
+    ///arrow for the y axis
     oS = Offset(25, size.height - 270);
     oE = Offset(30, size.height - 280);
     canvas.drawLine(oS, oE, paint);
@@ -43,11 +43,11 @@ class CustomStatisticPainter extends CustomPainter {
     oE = Offset(35, size.height - 270);
     canvas.drawLine(oS, oE, paint);
 
-    ///horizonzale Linie
+    ///horizontal line, x axis
     oS = Offset(30, size.height - 30);
     oE = Offset(size.width - 30, size.height - 30);
     canvas.drawLine(oS, oE, paint);
-    //Pfeil
+    ///arrow for the x axis
     oS = Offset(size.width - 40, size.height - 25);
     oE = Offset(size.width - 30, size.height - 30);
     canvas.drawLine(oS, oE, paint);
@@ -55,7 +55,7 @@ class CustomStatisticPainter extends CustomPainter {
     oE = Offset(size.width - 40, size.height - 35);
     canvas.drawLine(oS, oE, paint);
 
-    //pruefe ob der Wert über den Rand geht
+    ///checks if the given position runs over the width
     double posXNew;
     if(posX > size.width-51){
       posXNew = size.width-51;
@@ -70,7 +70,7 @@ class CustomStatisticPainter extends CustomPainter {
     paint.strokeWidth = 3;
     oS = Offset(posXNew, size.height - 300);
     oE = Offset(posXNew, size.height - 270);
-    //Pfeil
+    ///arrow for the pointer
     canvas.drawLine(oS, oE, paint);
     oS = Offset(posXNew, size.height - 270);
     oE = Offset(posXNew - 5, size.height - 280);
@@ -79,7 +79,7 @@ class CustomStatisticPainter extends CustomPainter {
     oE = Offset(posXNew + 5, size.height - 280);
     canvas.drawLine(oS, oE, paint);
     paint.color = Colors.black12;
-    //gestrichelte Linie
+    ///dashed line showing where the pointer is pointing to
     for (double i = size.height - 260; i < size.height - 30; i += 20) {
       oS = Offset(posXNew, i);
       oE = Offset(posXNew, i + 10);
@@ -87,12 +87,13 @@ class CustomStatisticPainter extends CustomPainter {
     }
 
 
+    ///gets the highest possible value of the y axis to draw and set the other values depending on the highest
     int hoechsterWert = 0;
     for (int i = 0; i < this.werteY.length; i++) {
       hoechsterWert = (hoechsterWert >= werteY[i]) ? hoechsterWert : werteY[i];
     }
 
-    ///Y-Achse
+    ///draws the values next to the y axis
     int index = 5;
     for (double i = 60; i < size.height; i = i + (size.height - 90) / 5) {
       int text = (hoechsterWert / 5 * index).round();
@@ -108,7 +109,7 @@ class CustomStatisticPainter extends CustomPainter {
       index--;
     }
 
-    ///X-Achse
+    ///draws the x values under the x axis
     index = 0;
     for (double i = 30; i < size.width - 30 && index < anzahlWerteX; i = i + (size.width - 60) / this.anzahlWerteX) {
       TextSpan span = new TextSpan(style: new TextStyle(color: Colors.black), text: this.werteX[index]);
@@ -118,7 +119,7 @@ class CustomStatisticPainter extends CustomPainter {
       index++;
     }
 
-    ///Y-Werte
+    ///draws the function as line
     paint.color = Colors.black;
     index = 0;
     //laenge der y-achse

@@ -71,7 +71,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width/3.5,
-                    child: Text("kcal\n${widget.workoutInformation.kcal.roundToDouble()}",textAlign: TextAlign.center,),
+                    child: Text("kcal\n${widget.workoutInformation.getKcal().roundToDouble()}",textAlign: TextAlign.center,),
                   ),
                   VerticalDivider(
                     indent: 20,
@@ -91,7 +91,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width/3.5,
-                    child: Text("Bewertung\n ${widget.workoutInformation.rating}",textAlign: TextAlign.center,),
+                    child: Text("Bewertung\n ${widget.workoutInformation.getRating()}",textAlign: TextAlign.center,),
                   ),
                 ],
               ),

@@ -70,7 +70,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
         },
       ),
       title: Text(
-        this.learnedTechniques[index].name,
+        this.learnedTechniques[index].getName(),
         style: Theme.of(context).textTheme.display2,
       ),
       subtitle: Text("Datum: ${this.learnedTechniques[index].getLastTrained()}",
@@ -78,7 +78,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
       ),
       trailing: this.learnedTechniques[index].getTypeIcon(),
       onTap: () {
-        this.learnedTechniques[index].learned = this.learnedTechniques[index].learned ? false : true;
+        this.learnedTechniques[index].getLearnedAsBool() ? this.learnedTechniques[index].setLearnedAsBool(false) : this.learnedTechniques[index].setLearnedAsBool(true);
         if (_checkBoxVal[index]) {
           print("entfernen");
           setState(() {
@@ -144,8 +144,8 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
 
   void updateTechniquesDatabaseEntry(Technique t) async {
     Map<String, dynamic> row = {
-      TechniquesDatabaseHelper.columnId: t.id,
-      TechniquesDatabaseHelper.columnName: t.name,
+      TechniquesDatabaseHelper.columnId: t.getId(),
+      TechniquesDatabaseHelper.columnName: t.getName(),
       TechniquesDatabaseHelper.columnLink: t.getLink(),
       TechniquesDatabaseHelper.columnExplanation: t.getErklaerung(),
       TechniquesDatabaseHelper.columnType: t.getType(),

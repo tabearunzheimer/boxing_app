@@ -6,6 +6,7 @@ class Validator{
     this._errorText = "";
   }
 
+  ///validates if the day exists
   bool validateDay(int day, int month){
     if (day < 0){
       _errorText  = " Bitte gib einen korrekten Tag an";
@@ -23,6 +24,7 @@ class Validator{
     return true;
   }
 
+  ///checks that the given int is a month starting with 1 for january
   bool validateMonth(int month){
     print("Monat :P");
     if (month < 1) {
@@ -35,6 +37,7 @@ class Validator{
     return true;
   }
 
+  ///checks if the year is correct
   bool validateYear(int year){
     if (year < 1850){
       _errorText = "Bitte gib einen korrekten Monat an";
@@ -46,6 +49,7 @@ class Validator{
     return true;
   }
 
+  ///validates an email
   bool validateMail(String mail){
     if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(mail)){
       _errorText = "Bitte gib eine korrekte Email an";
@@ -54,6 +58,7 @@ class Validator{
     return true;
   }
 
+  ///validates if the training days os over 7 days
   bool validateDaysPerWeek(int days){
     if (days < 0){
       _errorText = "Bitte gib einen Wert größer als 1 an.";
@@ -65,6 +70,7 @@ class Validator{
     return true;
   }
 
+  ///checks if the given weight can be correct
   bool validateWeight(double weight){
     print("weight $weight");
     if (weight < 30){
@@ -77,6 +83,7 @@ class Validator{
     return true;
   }
 
+  ///checks if the give size can be correct
   bool validateSize(int size){
     if (size < 30){
       _errorText = "Bitte gib für deine Größe mit einem Wert größer als 30 an.";
@@ -88,6 +95,7 @@ class Validator{
     return true;
   }
 
+  ///checks if the birthday can be used for registration
   bool validateBirthday(DateTime birth){
     if (birth.isAfter(DateTime.now())){
       _errorText = "Bitte gib einen korrekten Wert an.";
@@ -96,6 +104,7 @@ class Validator{
     return true;
   }
 
+  ///returns a string containing why one of the above methods returned false
   String getErrorText(){
     return _errorText;
   }

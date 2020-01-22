@@ -22,7 +22,7 @@ class CustomRateWorkoutPainter extends CustomPainter{
       ..strokeCap = StrokeCap.butt
       ..style = PaintingStyle.stroke;
 
-    ///zeichnet den weißen Kasten
+    ///draws the white box
     Rect r = Rect.fromLTWH(0, size.height-140, size.width, 140);
     Path path = Path();
     path.addRect(r);
@@ -30,8 +30,8 @@ class CustomRateWorkoutPainter extends CustomPainter{
     path.close();
     canvas.drawPath(path, paint);
 
-    ///zeichnet den Fortschritt
-    print("Zeichne Kasten");
+    ///draws the progress as an overlying box
+    //print("Zeichne Kasten");
     paint.color = this.color;
     Rect r2 = Rect.fromLTWH(0, size.height-140, posX, 140);
     Path p2 =Path();
@@ -41,7 +41,7 @@ class CustomRateWorkoutPainter extends CustomPainter{
     canvas.drawPath(p2, paint);
 
 
-    ///zeichnet die Index-Striche im Kasten
+    ///draws the index lines for the box
     paint.style = PaintingStyle.stroke;
     paint.color = Colors.black54;
     paint.strokeWidth = 2;
@@ -57,6 +57,7 @@ class CustomRateWorkoutPainter extends CustomPainter{
 
   }
 
+  ///redraws the painting
   @override
   bool shouldRepaint(CustomRateWorkoutPainter old) {
     //print("nue zeichnen: ${animation.value}");

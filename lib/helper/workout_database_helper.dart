@@ -34,7 +34,7 @@ class WorkoutDatabaseHelper {
     return _database;
   }
 
-  //oeffnet und gegebenenfalls erstellt die Datenbank
+  ///opens and possibly creates the database
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
@@ -42,14 +42,14 @@ class WorkoutDatabaseHelper {
         version: _databaseVersion, onCreate: _onCreate);
   }
 
-  //erstellt die Tabelle
+  ///creates the table
   Future _onCreate(Database db, int version) async {
     await db.execute(
         '''CREATE TABLE $table($columnId INTEGER PRIMARY KEY, $columnType STRING, $columnBurnedCalories DOUBLE, $columnDuration DOUBLE, $columnWeekDay STRING, $columnTechniques STRING, $columnTrainingDay INTEGER, $columnTrainingMonth INTEGER, $columnTrainingYear INTEGER)''');
   }
 
-  // fuegt eine Spalte hinzu, rueckgabe-wert ist der wert der eingefuegten Spalte
-  //Map<String, dynamic> row
+  ///adds a new column
+  ///returns the value of the added column
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
     /*
@@ -68,6 +68,7 @@ class WorkoutDatabaseHelper {
     return await db.insert(table, row);
   }
 
+  ///returns the column which fits to the id as a map
   Future<List> getList(int id) async{
     Database db = await instance.database;
     final Future<List<Map<String, dynamic>>> map =  db.query(table, where: 'id = ?', whereArgs: [id]);
@@ -75,20 +76,20 @@ class WorkoutDatabaseHelper {
     return m;
   }
 
-  //alle Spalten werden zurueckgegeben
+  ///returns all columns
   Future<List<Map<String, dynamic>>> queryAllRows() async {
     Database db = await instance.database;
     return await db.query(table);
   }
 
-  //gibt alle Spalten zurueck
+  ///returns the amount of columns
   Future<int> queryRowCount() async {
     Database db = await instance.database;
     return Sqflite.firstIntValue(
         await db.rawQuery('SELECT COUNT(*) FROM $table'));
   }
 
-  //update die Spalte mit dem gegebenem Namen
+  ///updates the column with a given column
   Future<int> update(Map<String, dynamic> row) async {
     Database db = await instance.database;
     int id = row[columnId];
@@ -96,12 +97,13 @@ class WorkoutDatabaseHelper {
         .update(table, row, where: '$columnId = ?', whereArgs: [id]);
   }
 
-  //loescht die Spalte anhand des Namens
+  ///deletes the column with the given id
   Future<int> delete(int id) async {
     Database db = await instance.database;
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
 
+  ///deletes the whole database
   Future<int> deleteAll() async{
     Database db = await instance.database;
     db.delete(table);

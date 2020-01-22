@@ -237,7 +237,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   }
 
   void moveToDoneWorkoutScreen() {
-    widget.workoutInformation.rating = this.rating;
+    widget.workoutInformation.setRating(this.rating);
     saveNewWorkout();
   }
 
@@ -320,10 +320,10 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
   Future saveNewWorkout() async {
     int x = await dbHelperWorkouts.queryRowCount();
     List<Map<String, dynamic>> y = await dbHelperWorkouts.queryAllRows();
-    double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 100)) * widget.workoutInformation.roundAmount;
+    double duration = (widget.workoutInformation.getRoundLengthMin() + (widget.workoutInformation.getRoundLengthSec() / 100)) * widget.workoutInformation.getRoundAmount();
     double burnedkcal = this.weight / 5 * duration;
     print("weight ${this.weight}");
-    widget.workoutInformation.kcal = burnedkcal;
+    widget.workoutInformation.setKcal(burnedkcal);
     DateTime dt = new DateTime.now();
     Workout w;
     print("row count $x");
@@ -342,7 +342,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
 
     Map<String, dynamic> row = {
       WorkoutDatabaseHelper.columnId: highestId + 1,
-      WorkoutDatabaseHelper.columnType: widget.workoutInformation.type,
+      WorkoutDatabaseHelper.columnType: widget.workoutInformation.getType(),
       WorkoutDatabaseHelper.columnBurnedCalories: burnedkcal,
       WorkoutDatabaseHelper.columnDuration: duration,
       WorkoutDatabaseHelper.columnTrainingYear: dt.year,

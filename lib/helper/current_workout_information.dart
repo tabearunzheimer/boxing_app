@@ -7,83 +7,104 @@ import 'Technique.dart';
 /// saves current workout informations like techniques and how long you want to train
 class CurrentWorkoutInformation{
 
-  int breakTimeMin;
-  int breakTimeSec;
-  int roundAmount;
-  int roundLengthMin;
-  int roundLengthSec;
-  double kcal;
-  String type;
-  List <Technique> techniques;
-  int rating;
-  List<SongInfo> playlist;
+  int _breakTimeMin;
+  int _breakTimeSec;
+  int _roundAmount;
+  int _roundLengthMin;
+  int _roundLengthSec;
+  double _kcal;
+  String _type;
+  List <Technique> _techniques;
+  int _rating;
+  List<SongInfo> _playlist;
 
   CurrentWorkoutInformation(int bt1, int bt2, int ra, int rl, int r2, String t){
-    this.breakTimeMin = bt1;
-    this.breakTimeSec = bt2;
-    this.roundAmount = ra;
-    this.roundLengthMin = rl;
-    this.roundLengthSec = r2;
-    this.type = t;
+    this._breakTimeMin = bt1;
+    this._breakTimeSec = bt2;
+    this._roundAmount = ra;
+    this._roundLengthMin = rl;
+    this._roundLengthSec = r2;
+    this._type = t;
   }
 
   ///takes a list of techniques and saves them
   void addTechniques(List<Technique> l){
-    this.techniques = l;
+    this._techniques = l;
   }
 
   ///returns the current techniques
   List<Technique> getTechniques(){
-    return this.techniques;
+    return this._techniques;
   }
 
   ///returns the minutes for one break time
   int getBreakTimeMin(){
-    return this.breakTimeMin;
+    return this._breakTimeMin;
   }
 
   ///returns the seconds for one breaktime
   int getBreakTimeSec(){
-    return this.breakTimeSec;
+    return this._breakTimeSec;
   }
 
   ///returns the amount of rounds you want to train
   int getRoundAmount(){
-    return this.roundAmount;
+    return this._roundAmount;
   }
 
   ///returns the minutes you train for one round
   int getRoundLengthMin(){
-    return this.roundLengthMin;
+    return this._roundLengthMin;
   }
 
   ///returns the seconds you train for one round
   int getRoundLengthSec(){
-    return this.roundLengthSec;
+    return this._roundLengthSec;
   }
 
   ///returns either Reaktion, Runde or Offen for the different training types
   String getType(){
-    return this.type;
+    return this._type;
   }
+
+  ///returns the kcals
+  double getKcal(){
+    return this._kcal;
+  }
+
+  ///sets the kcals
+  void setKcal(double k){
+    this._kcal = k;
+  }
+
+  ///sets a new rating for a workout
+  void setRating(int r){
+    this._rating = r;
+  }
+
+  ///returns the current workout rating
+  int getRating(){
+    return this._rating;
+  }
+
 
   ///returns all techniques as a String
   ///techniques are separated by ", "
   String getTechniquesAsString(){
     String erg = "";
-    for (int i = 0; i < this.techniques.length; i++){
-      erg += i == this.techniques.length-1 ? "${this.techniques[i].getName()}" : "${this.techniques[i].getName()}, "; //if this is the last technique don't add a ", "
+    for (int i = 0; i < this._techniques.length; i++){
+      erg += i == this._techniques.length-1 ? "${this._techniques[i].getName()}" : "${this._techniques[i].getName()}, "; //if this is the last technique don't add a ", "
     }
     return erg;
   }
 
   ///saves a list of paths to songs of a playlist
   void setPlaylist(List<SongInfo> songs){
-    this.playlist = songs;
+    this._playlist = songs;
   }
 
   ///returns a list of paths to different songs, combined in a playlist
   List<SongInfo> getPlaylist(){
-    return this.playlist;
+    return this._playlist;
   }
 }

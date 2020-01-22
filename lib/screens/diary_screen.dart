@@ -378,7 +378,7 @@ class _DiaryScreenState extends State<DiaryScreen>
       dense: true,
       leading: this.learnedTechniques[index].getTypeIcon(),
       title: Text(
-        this.learnedTechniques[index].name,
+        this.learnedTechniques[index].getName(),
         style: TextStyle(fontSize: 15.0),
       ),
       subtitle: Text("Datum: ${this.learnedTechniques[index].getLastTrained()}"),
@@ -401,7 +401,7 @@ class _DiaryScreenState extends State<DiaryScreen>
             onPressed: (){
               setState(() {
                 this.learnedTechniquesCounter--;
-                this.learnedTechniques[index].learned = false;
+                this.learnedTechniques[index].setLearnedAsBool(false);
                 updateTechniquesDatabaseEntry(this.learnedTechniques[index]);
                 this.notLearnedTechniques.add(this.learnedTechniques[index]);
                 this.learnedTechniques.removeAt(index);
@@ -423,7 +423,7 @@ class _DiaryScreenState extends State<DiaryScreen>
       dense: true,
       leading: this.notLearnedTechniques[index].getTypeIcon(),
       title: Text(
-        this.notLearnedTechniques[index].name,
+        this.notLearnedTechniques[index].getName(),
         style: TextStyle(fontSize: 15.0),
       ),
       subtitle: Text("Datum: ${this.notLearnedTechniques[index].getLastTrained()}"),
@@ -446,8 +446,8 @@ class _DiaryScreenState extends State<DiaryScreen>
             onPressed: (){
               print("Pressed");
               setState(() {
-                this.notLearnedTechniques[index].learned = true;
-                print("learned: ${this.notLearnedTechniques[index].id} ${this.notLearnedTechniques[index].name}");
+                this.notLearnedTechniques[index].setLearnedAsBool(true);
+                print("learned: ${this.notLearnedTechniques[index].getId()} ${this.notLearnedTechniques[index].getName()}");
                 updateTechniquesDatabaseEntry(this.notLearnedTechniques[index]);
                 this.learnedTechniques.add(this.notLearnedTechniques[index]);
                 this.learnedTechniquesCounter++;
@@ -482,8 +482,8 @@ class _DiaryScreenState extends State<DiaryScreen>
 
   void updateTechniquesDatabaseEntry(Technique t) async {
     Map<String, dynamic> row = {
-      TechniquesDatabaseHelper.columnId: t.id,
-      TechniquesDatabaseHelper.columnName: t.name,
+      TechniquesDatabaseHelper.columnId: t.getId(),
+      TechniquesDatabaseHelper.columnName: t.getName(),
       TechniquesDatabaseHelper.columnLink: t.getLink(),
       TechniquesDatabaseHelper.columnExplanation: t.getErklaerung(),
       TechniquesDatabaseHelper.columnType: t.getType(),
@@ -511,8 +511,8 @@ class _DiaryScreenState extends State<DiaryScreen>
     for (int i = 0; i < techniqueListLength; i++) {
       //print("${l[0]}");
       Technique t = new Technique.fromJson(l.removeAt(0));
-      print("ID: ${t.id}");
-      if (t.learned){
+      print("ID: ${t.getId()}");
+      if (t.getLearnedAsBool()){
         learned.add(t);
         learnedTechniquesCounter++;
       } else {

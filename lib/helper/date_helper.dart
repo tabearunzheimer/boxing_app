@@ -1,6 +1,7 @@
 class DateHelper{
 
 
+  ///returns the name of the month starting with 1 for Januar
   String getMonthName(int month) {
     String erg = "";
     switch (month) {
