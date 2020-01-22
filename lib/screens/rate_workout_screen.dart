@@ -156,6 +156,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     );
   }
 
+  ///saves the position of a tap
   void dragStart(BuildContext context, DragStartDetails details) {
     //print('Start: ${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
@@ -168,6 +169,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     });
   }
 
+  ///saves the position when the tap ends
   dragDown(BuildContext context, DragDownDetails details) {
     //print('Ende: ${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
@@ -180,6 +182,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     });
   }
 
+  ///saves the position during a tap
   void dragUpdate(BuildContext context, DragUpdateDetails details) {
     //print('${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
@@ -193,6 +196,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     });
   }
 
+  ///returns a number between 1-10 as a string
   String getCurrentRating(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     double alt = 0;
@@ -207,6 +211,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     return "Fehler";
   }
 
+  ///returns a strign containing a text to describe the number rating
   String getRatingDefinition() {
     double size = MediaQuery.of(context).size.width;
     double alt = 0;
@@ -222,6 +227,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     return "Fehler";
   }
 
+  ///returns a short text how the training felt for the user
   String getRatingText() {
     double size = MediaQuery.of(context).size.width;
     double alt = 0;
@@ -236,11 +242,13 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     return "Fehler";
   }
 
+  ///starts the moving to the next screen
   void moveToDoneWorkoutScreen() {
     widget.workoutInformation.setRating(this.rating);
     saveNewWorkout();
   }
 
+  ///describes how the training felt in detail
   String ratingText(int i) {
     String erg = "";
     switch (i) {
@@ -280,6 +288,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     return erg;
   }
 
+  ///short informative rating texts
   String ratingDefinition(int i) {
     String erg = "";
     switch (i) {
@@ -317,6 +326,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     return erg;
   }
 
+  ///saves all workout informations in the workout database and opens the next screen
   Future saveNewWorkout() async {
     int x = await dbHelperWorkouts.queryRowCount();
     List<Map<String, dynamic>> y = await dbHelperWorkouts.queryAllRows();
@@ -367,11 +377,13 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     );
   }
 
+  ///saves a double using shared preferences
   Future<Null> setDouble(String key, double w) async {
     await this.prefs.setDouble(key, w);
     print("Double saved");
   }
 
+  ///loads a double using shared preferences
   void loadDouble(String key) async {
     setState(() {
       this.weight = prefs.get(key) ?? 0;

@@ -35,6 +35,8 @@ class SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  ///checks if this is the first time the user uses the app
+  ///loads first launch screen if it is the first time
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);

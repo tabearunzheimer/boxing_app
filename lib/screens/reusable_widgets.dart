@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 
+
+///class with different widgets to reuse
 class ReusableWidgets {
 
   BuildContext context;
@@ -11,12 +13,14 @@ class ReusableWidgets {
     selectedIndex = index;
   }
 
+  ///returns the appbar with only a title
   AppBar getSimpleAppBar(){
     return AppBar(
       title: Text("Kickbox App",),
     );
   }
 
+  ///returns the full appbar
   Widget getAppBar() {
     return AppBar(
       title: Text("Kickbox App",),
@@ -52,6 +56,7 @@ class ReusableWidgets {
     );
   }
 
+  ///returns the full bottom navigation bar
   Widget getBottomNavigataionBar() {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
@@ -74,6 +79,7 @@ class ReusableWidgets {
     );
   }
 
+  ///handles navigation on the bottom navigation bar
   void onTapNavigation(int value) {
     //setState(() {
     if (selectedIndex == value) {

@@ -72,6 +72,7 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
     );
   }
 
+  ///returns a list of techniques the user can choose from by clicking the checkboxes
   Widget _buildTechniqueListItems(int index) {
     return ListTile(
       leading: Checkbox(
@@ -120,10 +121,12 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
     );
   }
 
+  ///adds the given technique to a list
   void addToTechniquesList(int index) {
     this.techniques.add(this.list[index]);
   }
 
+  ///removes the given technique from the list
   void removeFromTechniquesList(int index) {
     for (int i = 0; i < this.techniques.length; i++) {
       if (this.techniques.remove((this.list[index]))) {
@@ -132,12 +135,14 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
     }
   }
 
+  ///shows the next screen and passes the workout information
   void moveToChooseWorkoutSummaryScreen() {
     print("Change to choose-Workout-Summary-Screen");
     widget.workoutInformation.addTechniques(this.techniques);
     Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseWorkoutSummaryScreen(widget.workoutInformation)),);
   }
 
+  ///creates the list of all techniques sorted by learned techniques
   void createList() async {
     List l;
     final allRows = await dbHelper.queryAllRows();

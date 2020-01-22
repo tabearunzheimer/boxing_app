@@ -22,44 +22,44 @@ class DiaryScreen extends StatefulWidget {
 
 class _DiaryScreenState extends State<DiaryScreen>
     with TickerProviderStateMixin {
-  int selectedIndex = 1;
+  int _selectedIndex = 1;
   ReusableWidgets _reusableWidgets;
-  SharedPreferences prefs;
+  SharedPreferences _prefs;
   DateTime _currentDate;
-  List<Technique> learnedTechniques;
-  List<Technique> notLearnedTechniques;
-  EventList<Event> trainingDays;
-  List<Workout> workoutList;
-  int learnedTechniquesCounter;
-  int workoutCounter;
-  DateHelper datehelper;
-  AnimationController controller;
-  double posx = 100.0;
-  bool tapInProgress;
+  List<Technique> _learnedTechniques;
+  List<Technique> _notLearnedTechniques;
+  EventList<Event> _trainingDays;
+  List<Workout> _workoutList;
+  int _learnedTechniquesCounter;
+  int _workoutCounter;
+  DateHelper _datehelper;
+  AnimationController _controller;
+  double _posx = 100.0;
+  bool _tapInProgress;
 
-  final dbHelperTechniques = TechniquesDatabaseHelper.instance;
-  final dbHelperWorkouts = WorkoutDatabaseHelper.instance;
+  final _dbHelperTechniques = TechniquesDatabaseHelper.instance;
+  final _dbHelperWorkouts = WorkoutDatabaseHelper.instance;
 
-  List<int> testwerte = [0,0,0,0,0,0,0,0,0,0,0,0];
-  List<String> testWerteX = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+  List<int> _yValues = [0,0,0,0,0,0,0,0,0,0,0,0];
+  List<String> _months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 
   @override
   void initState() {
     super.initState();
     this._currentDate = DateTime.now();
     print("init");
-    datehelper = new DateHelper();
-    learnedTechniquesCounter = 0;
-    workoutCounter = 0;
-    this.trainingDays = new EventList();
+    _datehelper = new DateHelper();
+    _learnedTechniquesCounter = 0;
+    _workoutCounter = 0;
+    this._trainingDays = new EventList();
     createTechniquesList();
     createWorkoutsList();
-    this.controller = AnimationController(
+    this._controller = AnimationController(
       vsync: this,
     );
-    this.tapInProgress = false;
+    this._tapInProgress = false;
     SharedPreferences.getInstance().then((sp) {
-      this.prefs = sp;
+      this._prefs = sp;
     });
 
   }
@@ -72,7 +72,7 @@ class _DiaryScreenState extends State<DiaryScreen>
 
   @override
   Widget build(BuildContext context) {
-    this._reusableWidgets = new ReusableWidgets(context, selectedIndex);
+    this._reusableWidgets = new ReusableWidgets(context, _selectedIndex);
     List<String> ll = [
       "Erlernte Techniken",
       "Zu lernende Techniken",
@@ -101,6 +101,7 @@ class _DiaryScreenState extends State<DiaryScreen>
     );
   }
 
+  ///returns an expansion tile containing a container
   Widget _buildExpansionTile(List<Object> ll, int index) {
     return ExpansionTile(
       title: Text(ll[index]),
@@ -110,19 +111,21 @@ class _DiaryScreenState extends State<DiaryScreen>
     );
   }
 
+  ///returns a container with a given height
+  ///contains different lists (learned techniques, not learned techniques, statistics and calendar)
   Widget _buildContainer(int index) {
     int anzahlListenElemente = 1;
     try {
       switch(index){
         case 0:
-          anzahlListenElemente = this.learnedTechniquesCounter;
-          anzahlListenElemente = (this.learnedTechniquesCounter == 0) ? 1 : this.learnedTechniquesCounter;
+          anzahlListenElemente = this._learnedTechniquesCounter;
+          anzahlListenElemente = (this._learnedTechniquesCounter == 0) ? 1 : this._learnedTechniquesCounter;
           break;
         case 1:
-          anzahlListenElemente = this.notLearnedTechniques.length;
+          anzahlListenElemente = this._notLearnedTechniques.length;
           break;
         case 2:
-          anzahlListenElemente = (this.workoutCounter == 0) ? 1 : this.workoutCounter;
+          anzahlListenElemente = (this._workoutCounter == 0) ? 1 : this._workoutCounter;
       }
     } catch (e) {
       print(e);
@@ -138,7 +141,7 @@ class _DiaryScreenState extends State<DiaryScreen>
               //return _buildTechniqueListItems(indexZwei);
               switch (index) {
                 case 0:
-                  if (this.learnedTechniquesCounter == 0){
+                  if (this._learnedTechniquesCounter == 0){
                     return Container(
                       padding: EdgeInsets.only(left: 10),
                       child: Text("Keine erlernten Techniken", style: Theme.of(context).textTheme.body2,),
@@ -151,7 +154,7 @@ class _DiaryScreenState extends State<DiaryScreen>
                   return _buildNotLearnedTechniqueListItems(indexZwei);
                   break;
                 case 2:
-                  if (this.workoutCounter == 0){
+                  if (this._workoutCounter == 0){
                     return Container(
                       padding: EdgeInsets.only(left: 10),
                       child: Text("Keine gespeicherten Workouts", style: Theme.of(context).textTheme.body2,),
@@ -180,6 +183,7 @@ class _DiaryScreenState extends State<DiaryScreen>
     return c;
   }
 
+  ///returns a calendar
   Widget buildCalender() {
     print("Haha");
     return SingleChildScrollView(
@@ -201,21 +205,22 @@ class _DiaryScreenState extends State<DiaryScreen>
         onDayPressed: (DateTime date, List<Event> events) {
           this.setState(() => this._currentDate = date);
         },
-        markedDatesMap: trainingDays,  //gibt die Trainingstage an
+        markedDatesMap: _trainingDays,  //gibt die Trainingstage an
         markedDateWidget: Container(color: Colors.black, height: 4.0, width: 4.0, margin: EdgeInsets.only(right: 1),),
       ),
     );
   }
 
 
+  ///returns different statistics
   Widget buildStatistics() {
     List <String> techniken = new List();
     int z = 0;
-    for (int i = 0; i < workoutList.length; i++){
-      print(workoutList[i].getTechniques());
-      if (workoutList[i].getTechniques().length > 2){
+    for (int i = 0; i < _workoutList.length; i++){
+      print(_workoutList[i].getTechniques());
+      if (_workoutList[i].getTechniques().length > 2){
         print("hinzufügen");
-        List<String> zw = workoutList[i].separateTechniques();
+        List<String> zw = _workoutList[i].separateTechniques();
         for (int j = 0; j < zw.length; j++){
           if (z < 5){
             techniken.add(zw[j]);
@@ -278,17 +283,17 @@ class _DiaryScreenState extends State<DiaryScreen>
                     onHorizontalDragDown: (DragDownDetails details) =>
                         dragDown(context, details),
                     child: AnimatedBuilder(
-                      animation: this.controller,
+                      animation: this._controller,
                       builder: (BuildContext context, Widget child) {
                         return CustomPaint(
                           painter: CustomStatisticPainter(
-                            animation: this.controller,
+                            animation: this._controller,
                             backgroundColor: Colors.white,
                             color: Theme.of(context).accentColor,
-                            posX: this.posx,
-                            anzahlWerteX: this.testWerteX.length,
-                            werteY: testwerte,
-                            werteX: this.testWerteX
+                            posX: this._posx,
+                            anzahlWerteX: this._months.length,
+                            werteY: _yValues,
+                            werteX: this._months
                           ),
                         );
                       },
@@ -298,7 +303,7 @@ class _DiaryScreenState extends State<DiaryScreen>
                 Container(
                   padding: EdgeInsets.all(20),
                   child: AnimatedBuilder(
-                    animation: controller,
+                    animation: _controller,
                     builder: (BuildContext context, Widget child) {
                       return Text(
                         getCurrentInput(),
@@ -316,11 +321,12 @@ class _DiaryScreenState extends State<DiaryScreen>
     );
   }
 
+  ///returns a list containing all workouts
   Widget _buildWorkoutListItems(int index){
     print("index ${index}");
     return ListTile(
-      title: Text("${this.workoutList[index].getType()}-Training: ${this.workoutList[index].getDurationAsString()}"),
-      subtitle: Text("Datum: ${this.workoutList[index].getDateTimeString()}", style: TextStyle(fontSize: 12.0),),
+      title: Text("${this._workoutList[index].getType()}-Training: ${this._workoutList[index].getDurationAsString()}"),
+      subtitle: Text("Datum: ${this._workoutList[index].getDateTimeString()}", style: TextStyle(fontSize: 12.0),),
       trailing: IconButton(
         icon: Icon(Icons.delete),
         onPressed: (){
@@ -334,11 +340,11 @@ class _DiaryScreenState extends State<DiaryScreen>
                 child: Text("Löschen"),
                 onPressed: (){
                   Navigator.pop(context);
-                  dbHelperWorkouts.delete(this.workoutList[index].getId());
+                  _dbHelperWorkouts.delete(this._workoutList[index].getId());
 
                   setState(() {
-                    this.workoutList.removeAt(index);
-                    this.workoutCounter--;
+                    this._workoutList.removeAt(index);
+                    this._workoutCounter--;
                   });
                 },
               ),
@@ -361,11 +367,11 @@ class _DiaryScreenState extends State<DiaryScreen>
             elevation: 1,
             contentPadding: EdgeInsets.all(10),
             children: <Widget>[
-              Text("Trainingstyp: ${this.workoutList[index].getType()}",style: Theme.of(context).textTheme.body2,),
-              Text("Datum: ${this.workoutList[index].getDateTimeString()}",style: Theme.of(context).textTheme.body2,),
-              Text("Gesamtdauer: ${this.workoutList[index].getDurationAsString()}",style: Theme.of(context).textTheme.body2,),
-              Text("Kcal: ${double.parse(this.workoutList[index].getBurnedCalories().toStringAsFixed(2))}",style: Theme.of(context).textTheme.body2,),
-              Text("Techniken: ${this.workoutList[index].getTechniques()}",style: Theme.of(context).textTheme.body2,),
+              Text("Trainingstyp: ${this._workoutList[index].getType()}",style: Theme.of(context).textTheme.body2,),
+              Text("Datum: ${this._workoutList[index].getDateTimeString()}",style: Theme.of(context).textTheme.body2,),
+              Text("Gesamtdauer: ${this._workoutList[index].getDurationAsString()}",style: Theme.of(context).textTheme.body2,),
+              Text("Kcal: ${double.parse(this._workoutList[index].getBurnedCalories().toStringAsFixed(2))}",style: Theme.of(context).textTheme.body2,),
+              Text("Techniken: ${this._workoutList[index].getTechniques()}",style: Theme.of(context).textTheme.body2,),
             ],
           ),
         );
@@ -373,15 +379,16 @@ class _DiaryScreenState extends State<DiaryScreen>
     );
   }
 
+  ///returns a list containing all learned techniques
   Widget _buildLearnedTechniqueListItems(int index) {
     return ListTile(
       dense: true,
-      leading: this.learnedTechniques[index].getTypeIcon(),
+      leading: this._learnedTechniques[index].getTypeIcon(),
       title: Text(
-        this.learnedTechniques[index].getName(),
+        this._learnedTechniques[index].getName(),
         style: TextStyle(fontSize: 15.0),
       ),
-      subtitle: Text("Datum: ${this.learnedTechniques[index].getLastTrained()}"),
+      subtitle: Text("Datum: ${this._learnedTechniques[index].getLastTrained()}"),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -393,18 +400,18 @@ class _DiaryScreenState extends State<DiaryScreen>
               color: Colors.black,
             ),
             onPressed: (){
-                this.learnedTechniques[index].speak();
+                this._learnedTechniques[index].speak();
             },
           ),
           IconButton(
-            icon: this.learnedTechniques[index].getLearnedIcon(),
+            icon: this._learnedTechniques[index].getLearnedIcon(),
             onPressed: (){
               setState(() {
-                this.learnedTechniquesCounter--;
-                this.learnedTechniques[index].setLearnedAsBool(false);
-                updateTechniquesDatabaseEntry(this.learnedTechniques[index]);
-                this.notLearnedTechniques.add(this.learnedTechniques[index]);
-                this.learnedTechniques.removeAt(index);
+                this._learnedTechniquesCounter--;
+                this._learnedTechniques[index].setLearnedAsBool(false);
+                updateTechniquesDatabaseEntry(this._learnedTechniques[index]);
+                this._notLearnedTechniques.add(this._learnedTechniques[index]);
+                this._learnedTechniques.removeAt(index);
               });
             },
           ),
@@ -413,20 +420,21 @@ class _DiaryScreenState extends State<DiaryScreen>
       //oeffne Infos zum Kick
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => TechniqueDetailsScreen(this.learnedTechniques[index])));
+            MaterialPageRoute(builder: (context) => TechniqueDetailsScreen(this._learnedTechniques[index])));
       },
     );
   }
 
+  ///returns a list containing all not learned techniques
   Widget _buildNotLearnedTechniqueListItems(int index) {
     return ListTile(
       dense: true,
-      leading: this.notLearnedTechniques[index].getTypeIcon(),
+      leading: this._notLearnedTechniques[index].getTypeIcon(),
       title: Text(
-        this.notLearnedTechniques[index].getName(),
+        this._notLearnedTechniques[index].getName(),
         style: TextStyle(fontSize: 15.0),
       ),
-      subtitle: Text("Datum: ${this.notLearnedTechniques[index].getLastTrained()}"),
+      subtitle: Text("Datum: ${this._notLearnedTechniques[index].getLastTrained()}"),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -438,20 +446,20 @@ class _DiaryScreenState extends State<DiaryScreen>
               color: Colors.black,
             ),
             onPressed: (){
-              this.notLearnedTechniques[index].speak();
+              this._notLearnedTechniques[index].speak();
             },
           ),
           IconButton(
-            icon: this.notLearnedTechniques[index].getLearnedIcon(),
+            icon: this._notLearnedTechniques[index].getLearnedIcon(),
             onPressed: (){
               print("Pressed");
               setState(() {
-                this.notLearnedTechniques[index].setLearnedAsBool(true);
-                print("learned: ${this.notLearnedTechniques[index].getId()} ${this.notLearnedTechniques[index].getName()}");
-                updateTechniquesDatabaseEntry(this.notLearnedTechniques[index]);
-                this.learnedTechniques.add(this.notLearnedTechniques[index]);
-                this.learnedTechniquesCounter++;
-                this.notLearnedTechniques.removeAt(index);
+                this._notLearnedTechniques[index].setLearnedAsBool(true);
+                print("learned: ${this._notLearnedTechniques[index].getId()} ${this._notLearnedTechniques[index].getName()}");
+                updateTechniquesDatabaseEntry(this._notLearnedTechniques[index]);
+                this._learnedTechniques.add(this._notLearnedTechniques[index]);
+                this._learnedTechniquesCounter++;
+                this._notLearnedTechniques.removeAt(index);
               });
             },
           ),
@@ -459,7 +467,7 @@ class _DiaryScreenState extends State<DiaryScreen>
       ),
       //oeffne Infos zum Kick
       onTap: () {
-        Technique t = this.notLearnedTechniques[index];
+        Technique t = this._notLearnedTechniques[index];
         print(t.getName());
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => TechniqueDetailsScreen(t)));
@@ -467,6 +475,7 @@ class _DiaryScreenState extends State<DiaryScreen>
     );
   }
 
+  ///returns to the home screen when pressing the back button twice
   Future<bool> backButtonOverride() {
     setState(() {
       Navigator.pushReplacementNamed(context, '/home');
@@ -474,12 +483,14 @@ class _DiaryScreenState extends State<DiaryScreen>
     return Future.value(true);
   }
 
+  ///prints all techniques saved in the database
   void query() async {
-    final allRows = await dbHelperTechniques.queryAllRows();
+    final allRows = await _dbHelperTechniques.queryAllRows();
     print('query all rows:');
     allRows.forEach((row) => print(row));
   }
 
+  ///updates on technique in the database
   void updateTechniquesDatabaseEntry(Technique t) async {
     Map<String, dynamic> row = {
       TechniquesDatabaseHelper.columnId: t.getId(),
@@ -492,15 +503,16 @@ class _DiaryScreenState extends State<DiaryScreen>
       TechniquesDatabaseHelper.columnLastTrainedMonth: t.getMonth(),
       TechniquesDatabaseHelper.columnLastTrainedYear: t.getYear(),
     };
-    final rowsAffected = await dbHelperTechniques.update(row);
+    final rowsAffected = await _dbHelperTechniques.update(row);
     print('updated $rowsAffected row(s)');
   }
 
+  ///gets all techniques from the database and saves them in a list
   void createTechniquesList() async {
     List l;
     print("Create List");
-    final allRows = await dbHelperTechniques.queryAllRows();
-    final techniqueListLength = await dbHelperTechniques.queryRowCount();
+    final allRows = await _dbHelperTechniques.queryAllRows();
+    final techniqueListLength = await _dbHelperTechniques.queryRowCount();
     //final allRows = await dbHelper.queryAllRows();
     l = allRows.toList();
     print("Liste: ${l.length}");
@@ -514,23 +526,24 @@ class _DiaryScreenState extends State<DiaryScreen>
       print("ID: ${t.getId()}");
       if (t.getLearnedAsBool()){
         learned.add(t);
-        learnedTechniquesCounter++;
+        _learnedTechniquesCounter++;
       } else {
         notlearned.add(t);
       }
     }
     //print(list[2].name);
     setState(() {
-      this.learnedTechniques = learned;
-      this.notLearnedTechniques = notlearned;
-      print("Liste uebergeben, laenge: ${notLearnedTechniques.length}");
+      this._learnedTechniques = learned;
+      this._notLearnedTechniques = notlearned;
+      print("Liste uebergeben, laenge: ${_notLearnedTechniques.length}");
     });
   }
 
+  ///gets all workouts gtom the database and saves them in a list
   void createWorkoutsList() async{
     List l;
     print("Create Workout List");
-    final allRows = await dbHelperWorkouts.queryAllRows();
+    final allRows = await _dbHelperWorkouts.queryAllRows();
     l = allRows.toList();
     List<Workout> erg = new List();
     EventList<Event> ev = new EventList();
@@ -545,74 +558,80 @@ class _DiaryScreenState extends State<DiaryScreen>
 
 
     setState(() {
-      this.workoutList = erg;
-      this.workoutCounter = x;
-      this.trainingDays = ev;
-      print("Workout-Liste uebergeben, laenge: ${this.workoutList.length}");
+      this._workoutList = erg;
+      this._workoutCounter = x;
+      this._trainingDays = ev;
+      print("Workout-Liste uebergeben, laenge: ${this._workoutList.length}");
     });
 
     getTrainingAmountPerMonth();
   }
 
-
+  ///get the x value for the statistics
   void getTrainingAmountPerMonth() async {
     print("get training amount");
-    for (int i = 0; i < this.workoutList.length; i++){
-      int m = this.workoutList[i].getDateTime().month-1;
+    for (int i = 0; i < this._workoutList.length; i++){
+      int m = this._workoutList[i].getDateTime().month-1;
       print("month m");
-      print("testwerte v m ${testwerte[m]}");
+      print("testwerte v m ${_yValues[m]}");
       setState(() {
-        this.testwerte[m]++;
+        this._yValues[m]++;
       });
     }
   }
 
+  ///loads an int from a shred preference
   Future<int> loadInt(String key) async {
-    return prefs.get(key) ?? 0;
+    return _prefs.get(key) ?? 0;
   }
 
+  ///saves the position of a tap
   void dragStart(BuildContext context, DragStartDetails details) {
     //print('Start: ${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
 
     setState(() {
-      posx = localOffset.dx;
-      this.tapInProgress = true;
+      _posx = localOffset.dx;
+      this._tapInProgress = true;
     });
   }
 
+  ///saves the position when the tap ends
   dragDown(BuildContext context, DragDownDetails details) {
     //print('Ende: ${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
 
     setState(() {
-      posx = localOffset.dx;
-      this.tapInProgress = true;
+      _posx = localOffset.dx;
+      this._tapInProgress = true;
     });
   }
 
+  ///saves the position during a tap
   void dragUpdate(BuildContext context, DragUpdateDetails details) {
     //print('${details.globalPosition}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
 
     setState(() {
-      posx = localOffset.dx;
-      this.controller.value = localOffset.dx;
-      this.tapInProgress = true;
+      _posx = localOffset.dx;
+      this._controller.value = localOffset.dx;
+      this._tapInProgress = true;
     });
   }
 
+  ///returns a string containing how often the user trained
+  ///used for the statistics
   String getCurrentInput() {
 
     int index = 0;
     double alt = 0;
-    for (double i = 50; i < MediaQuery.of(context).size.width && index < this.testWerteX.length; i = i + (MediaQuery.of(context).size.width - 60) / this.testWerteX.length) {
-      if (this.posx <= i && this.posx >= alt) {
-        String month = datehelper.getMonthName(int.parse(this.testWerteX[index]));
-        return "$month: ${this.testwerte[index]} mal trainiert";
+    for (double i = 50; i < MediaQuery.of(context).size.width && index < this._months.length; i = i + (MediaQuery.of(context).size.width - 60) / this._months.length) {
+      if (this._posx <= i && this._posx >= alt) {
+        String month = _datehelper.getMonthName(int.parse(this._months[index]));
+        return "$month: ${this._yValues[index]} mal trainiert";
       }
       alt = i;
       index++;

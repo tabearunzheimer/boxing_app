@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  ///returns an image from the asset
   Widget buildBackgroundImage() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -90,11 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  ///moves to the next screen
   void startChooseWorkout() {
     print("Change to Choose-Workout-Style-Screen");
     Navigator.pushNamed(context, '/chooseWorkoutStyle');
   }
 
+  ///closes the app if the back button is pressed two times in a short time
   Future<bool> backButtonOverride() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {

@@ -62,6 +62,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
     );
   }
 
+  ///returns a stack with a picture in the background, some motivational quote and the current workout information
   Widget _buildFirstListItem(){
     return Stack(
       children: <Widget>[
@@ -155,6 +156,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
     );
   }
 
+  ///returns the techniques you're training as a list
   Widget _buildListItems(int index) {
       return new ListTile(
         title: Text(this.list[index].getName(), style: Theme.of(context).textTheme.display2,),
@@ -179,11 +181,7 @@ class _ChooseWorkoutSummaryScreenState extends State<ChooseWorkoutSummaryScreen>
 
   }
 
-  /*
-
-   */
-
-
+  ///opens the next screen where you can start your workout
   void sendToWorkoutScreen() {
     print("Change to Workout-Screen");
     Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutScreen(widget.workoutInformation)),

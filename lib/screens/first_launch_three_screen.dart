@@ -59,6 +59,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
     );
   }
 
+  ///returns a scrollable list off all techniques
   Widget _buildTechniqueListItems(int index) {
     return ListTile(
       leading: Checkbox(
@@ -94,6 +95,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
     );
   }
 
+  ///saves all techniques as a list
   void createList() async {
     List l;
     final allRows = await dbHelper.queryAllRows();
@@ -113,7 +115,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
     });
   }
 
-
+  ///shows the next screen
   void moveToHome() {
     showDialog(
       context: context,
@@ -142,6 +144,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
     );
   }
 
+  ///updates a technique in the database
   void updateTechniquesDatabaseEntry(Technique t) async {
     Map<String, dynamic> row = {
       TechniquesDatabaseHelper.columnId: t.getId(),

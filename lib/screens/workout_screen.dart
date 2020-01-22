@@ -216,12 +216,13 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     );
   }
 
-
+  ///returns the remaining time
   String getTimerString() {
     Duration duration = controller.duration * controller.value;
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
+  ///returns the current round
   String getRoundStatus() {
     int roundAmount = widget.workoutInformation.getRoundAmount();
     if (roundAmount == 0) {
@@ -231,16 +232,19 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     }
   }
 
+  ///checks whether the timer is still animating
   void checkTimer() {
     if (!controller.isAnimating) {
       print(controller.value);
     }
   }
 
+  ///checks if a new timer needs to start and if it is a training or a break
+  ///if no new timer is needed it automatically moves to the next screen
   void startNewTimer() {
     //TODO neuer sound weil zu leise
     final AudioCache cache  = AudioCache();
-    cache.load('sounds/ringtone_trumpet.mp3');
+    cache.load('sounds/ringtone_trumpet.mp3');                    //sound to declare switching between breaks and training
     cache.play('sounds/ringtone_trumpet.mp3', volume: 2.0);
     Timer(Duration(seconds: 1), (){
       loudLocal();
@@ -286,6 +290,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     }
   }
 
+  ///checks if a new round needs to be started
   bool checkForRepeat() {
     int roundAmount = widget.workoutInformation.getRoundAmount();
     if (this.doneRounds < roundAmount) {
@@ -295,6 +300,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     }
   }
 
+  ///checks if a break needs to start
   bool checkForBreak() {
     int breakTime = widget.workoutInformation.getBreakTimeMin() + widget.workoutInformation.getBreakTimeSec();
     if (breakTime == 0) {
@@ -304,6 +310,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     }
   }
 
+  ///stops back button and alerts the user he will loose progress
   Future<bool> backButtonAlert() {
     showDialog(
       context: context,
@@ -330,11 +337,13 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     );
   }
 
+  ///creates a random integer value and return the name wof a technique which fits to the value
   String createRandomItem() {
     var rng = new Random();
     return "${this.list[(rng.nextInt(this.list.length))].getName()} ";
   }
 
+  ///lets the application speak the name of the technique
   void sayText(){
     var rng = new Random();
     print("party?");
@@ -353,6 +362,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     }
   }
 
+  ///stops the application from saying texts
   void stopText(){
     setState(() {
       this.speaking = false;
@@ -360,22 +370,27 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     });
   }
 
+  ///starts a local song
   Future playLocal(String url) async {
     await audioPlayer.play(url, isLocal: true);
   }
 
+  ///stops a local song
   Future stopLocal()async{
     await audioPlayer.stop();
   }
 
+  ///pauses a local song
   Future pauseLocal()async{
     await audioPlayer.pause();
   }
 
+  ///resumes a local song at the given time
   Future resumeLocal()async{
     await audioPlayer.resume();
   }
 
+  ///reduces the volume of the playing song
   Future quietLocal() async{
     await audioPlayer.pause();
     await audioPlayer.setVolume(0.5);
@@ -383,6 +398,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
 
   }
 
+  ///increases the volume of the playing song
   Future loudLocal() async{
     await audioPlayer.pause();
     await audioPlayer.setVolume(1.0);

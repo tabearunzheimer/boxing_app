@@ -31,7 +31,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
         child: Stack(
           children: <Widget>[
             Container(
-              ///Hintergrundbild
+              //background picture
               child: new Image.asset(
                 'assets/img/female_boxer.jpg',
                 fit: BoxFit.fill,

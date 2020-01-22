@@ -461,6 +461,7 @@ class _MeScreenState extends State<MeScreen> {
     );
   }
 
+  ///returns the user picture
   Widget buildUserPicture() {
     return Container(
       height: (MediaQuery.of(context).size.height / 3.5),
@@ -490,6 +491,7 @@ class _MeScreenState extends State<MeScreen> {
     );
   }
 
+  ///lets the user pick an image from the file system and saves it as a new profile picture
   Future getImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
@@ -505,11 +507,13 @@ class _MeScreenState extends State<MeScreen> {
     });
   }
 
+  ///saves an integer with shared preferences
   Future<Null> setInt(String key, int w) async {
     await this.prefs.setInt(key, w);
     print("Int saved");
   }
 
+  ///loads an integer with shared preferences
   void loadInt(String key) async {
     setState(() {
       switch (key) {
@@ -532,22 +536,26 @@ class _MeScreenState extends State<MeScreen> {
     });
   }
 
+  ///saves a double with shared preferences
   Future<Null> setDouble(String key, double w) async {
     await this.prefs.setDouble(key, w);
     print("Double saved");
   }
 
+  ///loads an double with shared preferences
   void loadDouble(String key) async {
     setState(() {
       this.weight = prefs.get(key) ?? 0;
     });
   }
 
+  ///saves a string with shared preferences
   Future<Null> setString(String key, String g) async {
     await this.prefs.setString(key, g);
     print("String saved");
   }
 
+  ///loads a string with shared preferences
   void loadString(String key) async {
     setState(() {
       print("Get data");
@@ -569,6 +577,7 @@ class _MeScreenState extends State<MeScreen> {
     });
   }
 
+  ///when the back button is pressed the user is navigated to the home screen
   Future<bool> backButtonOverride() {
     setState(() {
       Navigator.pushReplacementNamed(context, '/home');

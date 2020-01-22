@@ -347,12 +347,14 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
     );
   }
 
+  ///switches the radio button value
   void handleRadioButtonValueChange(int value) {
     setState(() {
       this.radioButtonValue = value;
     });
   }
 
+  ///moves to the next screen, validates the input and saves the input
   Widget showNextScreen() {
     String name = "";
     String email = "";
@@ -419,13 +421,13 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
 
       SharedPreferences.getInstance().then((sp) {
         this.prefs = sp;
-        setString(userNameKey, name);
-        setString(userEmailKey, email);
-        setString(userGenderKey, gender);
-        setInt(userSizeKey, size);
-        setDouble(userWeightKey, weight);
-        setInt(userBirthdayKey, birthday);
-        setInt(trainingDaysKey, trainingdays);
+        setString(_userNameKey, name);
+        setString(_userEmailKey, email);
+        setString(_userGenderKey, gender);
+        setInt(_userSizeKey, size);
+        setDouble(_userWeightKey, weight);
+        setInt(_userBirthdayKey, birthday);
+        setInt(_trainingDaysKey, trainingdays);
       });
 
       Navigator.push(context,
@@ -443,26 +445,30 @@ class _FirstLaunchScreenTwoState extends State<FirstLaunchScreenTwo> {
     }
   }
 
+  ///saves a double shared preference value
   Future<Null> setDouble(String key, double w) async {
     await this.prefs.setDouble(key, w);
     print("Double saved $w");
   }
 
+  ///saves a string shared preference value
   Future<Null> setString(String key, String g) async {
     await this.prefs.setString(key, g);
     print("String saved $g");
   }
 
+  ///saves a integer shared preference value
   Future<Null> setInt(String key, int w) async {
     await this.prefs.setInt(key, w);
     print("Int saved $w");
   }
 
-  static const String userWeightKey = 'userWeight';
-  static const String userGenderKey = 'userGender';
-  static const String userSizeKey = 'userSize';
-  static const String userNameKey = 'userName';
-  static const String userEmailKey = 'userEmail';
-  static const String userBirthdayKey = 'userBirthday';
-  static const String trainingDaysKey = 'userTrainingDays';
+  ///keys for shred preferences
+  static const String _userWeightKey = 'userWeight';
+  static const String _userGenderKey = 'userGender';
+  static const String _userSizeKey = 'userSize';
+  static const String _userNameKey = 'userName';
+  static const String _userEmailKey = 'userEmail';
+  static const String _userBirthdayKey = 'userBirthday';
+  static const String _trainingDaysKey = 'userTrainingDays';
 }

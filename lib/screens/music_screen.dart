@@ -49,13 +49,7 @@ class _MusicScreenState extends State<MusicScreen> {
     );
   }
 
-  void getPlaylist() async {
-    List <PlaylistInfo> l = await audioQuery.getPlaylists();
-    setState(() {
-      playlist = l;
-    });
-  }
-
+  ///returns a list containing all playlist names
   Widget buildListTile(BuildContext context, int index) {
     return ListTile(
       title: Text(index < playlist.length ? playlist[index].name : "Keine Musik"),
@@ -94,6 +88,15 @@ class _MusicScreenState extends State<MusicScreen> {
     );
   }
 
+  ///saves all playlist in a list
+  void getPlaylist() async {
+    List <PlaylistInfo> l = await audioQuery.getPlaylists();
+    setState(() {
+      playlist = l;
+    });
+  }
+
+  ///saves all songs paths from a playlist
   Future loadSongs(int index) async {
     List<SongInfo> songs;
     if (index >= playlist.length){

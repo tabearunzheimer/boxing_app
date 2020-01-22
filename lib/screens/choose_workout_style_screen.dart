@@ -302,37 +302,6 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     );
   }
 
-  bool validateMinutes(int min, int sec) {
-    if (min == 0 && sec == 0 && this.breakBetweenRounds) {
-      errorText = "Einer der beider Werte muss größer als 0 sein";
-      return false;
-    }
-    return true;
-  }
-
-  bool validateSeconds(int sec, int min, bool testSecond) {
-    if (sec == 0 && min == 0 && this.breakBetweenRounds) {
-      errorText = "Einer der beider Werte muss größer als 0 sein";
-      return false;
-    }  else if (min == 0 && sec == 0 && testSecond){
-      print("Fehler min $min und sec $sec");
-      errorText = "Einer der beider Werte muss größer als 0 sein";
-      return false;
-    } else if (sec >= 60) {
-      errorText = "Einer der beider Werte muss größer als 0 sein";
-      return false;
-    }
-    return true;
-  }
-
-  bool validateRounds(int r) {
-    if (r == 0) {
-      errorText = "Der Rundenwert muss größer als 0 sein";
-      return false;
-    }
-    return true;
-  }
-
   Widget buildOffenElement(String imgPfad) {
     String type = "Offen";
     return SingleChildScrollView(
@@ -454,6 +423,42 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     );
   }
 
+  ///validates if at least one of the values is over 0
+  bool validateMinutes(int min, int sec) {
+    if (min == 0 && sec == 0 && this.breakBetweenRounds) {
+      errorText = "Einer der beider Werte muss größer als 0 sein";
+      return false;
+    }
+    return true;
+  }
+
+  ///validates if at least one of the values is over 0
+  ///seconds must be under 60
+  bool validateSeconds(int sec, int min, bool testSecond) {
+    if (sec == 0 && min == 0 && this.breakBetweenRounds) {
+      errorText = "Einer der beider Werte muss größer als 0 sein";
+      return false;
+    }  else if (min == 0 && sec == 0 && testSecond){
+      print("Fehler min $min und sec $sec");
+      errorText = "Einer der beider Werte muss größer als 0 sein";
+      return false;
+    } else if (sec >= 60) {
+      errorText = "Einer der beider Werte muss größer als 0 sein";
+      return false;
+    }
+    return true;
+  }
+
+  ///checks theres at least one round
+  bool validateRounds(int r) {
+    if (r == 0) {
+      errorText = "Der Rundenwert muss größer als 0 sein";
+      return false;
+    }
+    return true;
+  }
+
+  ///opens the next screen where you can choose a playlist
   void showMusicScreen(String type) {
     print("Change to Music-Screen");
     try {
@@ -473,6 +478,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     }
   }
 
+  ///validates all values using the given validators
   bool validateAll() {
     if (!validateMinutes(this.breakminutes, this.breakseconds)) return false;
     if (!validateSeconds(this.breakseconds, this.breakminutes, false)) return false;
@@ -482,6 +488,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     return true;
   }
 
+  ///shows the next screen where you can choose the techniques you want to train
   void showChooseWorkoutTechniquesScreen(String type) {
     print("Change to choose-Workout-Techniques-Screen");
     try {
