@@ -61,6 +61,7 @@ flutter:
    - assets/img/female_punchingbag.jpg
    - assets/img/moon_two_fighter.jpg
    - assets/img/training_fight.jpg
+   - assets/sounds/ringtone_trumpet.mp3
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

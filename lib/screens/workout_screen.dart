@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
@@ -84,6 +85,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       } else if (status == AnimationStatus.dismissed) {
         controller.reverse();
         print("StatusController - restart");
+        quietLocal();
         startNewTimer();
       } else if (!controller.isAnimating && this.breakDone && widget.workoutInformation.type == "Reaktion"){
         stopText();
@@ -236,7 +238,15 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   }
 
   void startNewTimer() {
-    //TODO pause runden wechsel sound
+    //TODO neuer sound weil zu leise
+    final AudioCache cache  = AudioCache();
+    cache.load('sounds/ringtone_trumpet.mp3');
+    cache.play('sounds/ringtone_trumpet.mp3', volume: 2.0);
+    Timer(Duration(seconds: 1), (){
+      loudLocal();
+    });
+
+
     if (checkForRepeat()) {
       print("Repeat war true");
       if (checkForBreak() && !this.breakDone) {
@@ -266,6 +276,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       //Navigator.pushNamed(context, '/RateWorkoutScreen');
       CurrentWorkoutInformation c = widget.workoutInformation;
       Wakelock.disable();
+      cache.clearCache();
       Navigator.push(context,
         MaterialPageRoute(
             builder: (context) => RateWorkoutScreen(c)),
@@ -364,5 +375,19 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   Future resumeLocal()async{
     await audioPlayer.resume();
   }
+
+  Future quietLocal() async{
+    await audioPlayer.pause();
+    await audioPlayer.setVolume(0.5);
+    await audioPlayer.resume();
+
+  }
+
+  Future loudLocal() async{
+    await audioPlayer.pause();
+    await audioPlayer.setVolume(1.0);
+    await audioPlayer.resume();
+  }
+
 
 }
