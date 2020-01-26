@@ -51,7 +51,7 @@ class _ChooseWorkoutStyleScreenState extends State<ChooseWorkoutStyleScreen>
     return new Scaffold(
       appBar: AppBar(
         title: Text(
-          "Kickbox App",
+          "Martial Arts Trainer",
         ),
         bottom: TabBar(
           controller: _tabController,

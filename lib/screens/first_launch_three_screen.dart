@@ -27,7 +27,7 @@ class _FirstLaunchScreenThreeState extends State<FirstLaunchScreenThree> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Kickbox App",
+          "Martial Arts Trainer",
         ),
         actions: <Widget>[
           IconButton(

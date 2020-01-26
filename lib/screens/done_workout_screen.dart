@@ -18,7 +18,7 @@ class _DoneWorkoutScreenState extends State<DoneWorkoutScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Kickbox App",
+          "Martial Arts Trainer",
         ),
         actions: <Widget>[
           IconButton(

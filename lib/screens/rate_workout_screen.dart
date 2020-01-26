@@ -49,7 +49,7 @@ class _RateWorkoutScreenState extends State<RateWorkoutScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Kickbox App",
+          "Martial Arts Trainer",
         ),
         actions: <Widget>[
           IconButton(

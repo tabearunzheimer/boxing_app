@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uebung02/helper/techniques_database_helper.dart';
@@ -180,6 +181,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void handleRadioButtonValueChange(int value) {
     setState(() {
       this.radioButtonValue = value;
+      if (radioButtonValue == 1){
+        Flushbar(
+          title: "Hinweis",
+          message: "Diese Funktion ist noch nicht implementiert",
+          backgroundColor: Colors.black54,
+          margin: EdgeInsets.all(10),
+          borderRadius: 10,
+          duration: Duration(seconds: 3),
+        )..show(context);
+      }
     });
   }
 }

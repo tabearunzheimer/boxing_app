@@ -280,7 +280,9 @@ class _WorkoutScreenState extends State<WorkoutScreen>
       //Navigator.pushNamed(context, '/RateWorkoutScreen');
       CurrentWorkoutInformation c = widget.workoutInformation;
       Wakelock.disable();
+      stopLocal();
       cache.clearCache();
+
       Navigator.push(context,
         MaterialPageRoute(
             builder: (context) => RateWorkoutScreen(c)),

@@ -40,7 +40,7 @@ class _ChooseWorkoutTechniquesState extends State<ChooseWorkoutTechniques> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Kickbox App",
+          "Martial Arts Trainer",
         ),
         actions: <Widget>[
           IconButton(

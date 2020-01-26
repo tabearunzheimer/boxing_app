@@ -216,7 +216,6 @@ class Technique {
     String text = this._name;
     await _flutterTts.setLanguage("en-US");
     //flutterTts.setLanguage('de-DE');
-    _flutterTts.setSpeechRate(1.5);
     _flutterTts.setVolume(1.0);
     _flutterTts.setPitch(1.0);
     await _flutterTts.speak(text.toLowerCase());

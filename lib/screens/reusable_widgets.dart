@@ -16,14 +16,14 @@ class ReusableWidgets {
   ///returns the appbar with only a title
   AppBar getSimpleAppBar(){
     return AppBar(
-      title: Text("Kickbox App",),
+      title: Text("Martial Arts Trainer",),
     );
   }
 
   ///returns the full appbar
   Widget getAppBar() {
     return AppBar(
-      title: Text("Kickbox App",),
+      title: Text("Martial Arts Trainer",),
       automaticallyImplyLeading: false,
       actions: <Widget>[
         PopupMenuButton<int>(
